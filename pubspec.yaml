@@ -1,0 +1,83 @@
+name: zembo_agent_app
+description: Agent App
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: ^3.8.0
+
+dependencies:
+  another_flushbar: ^1.12.30
+  bloc: ^9.0.0
+  country_code: ^1.1.0
+  country_picker: ^2.0.27
+  dartz: ^0.10.1
+  dev: ^1.0.0
+  dio: ^5.8.0+1
+  dio_smart_retry: ^7.0.1
+  dlibphonenumber: ^1.1.42
+  flex_color_scheme: ^8.2.0
+  flutter:
+    sdk: flutter
+  flutter_bloc: ^9.1.1
+  flutter_dotenv: ^5.2.1
+  flutter_localizations:
+    sdk: flutter
+  flutter_secure_storage: ^4.2.1
+  flutter_svg: ^2.2.0
+  freezed_annotation: ^3.1.0
+  get_it: ^8.0.3
+  go_router: ^16.0.0
+  image_cropper: ^9.1.0
+  image_picker: ^1.1.2
+  injectable: ^2.5.0
+  intl: ^0.20.2
+  intl_phone_field: ^3.2.0
+  jiffy: ^6.4.3
+  json_annotation: ^4.9.0
+  line_awesome_flutter: ^3.0.1
+  messaging: ^0.3.1
+  oktoast: ^3.4.0
+  sentry_flutter: ^9.4.0
+  simple_connection_checker: ^0.3.4
+
+dev_dependencies:
+  bloc_test: ^10.0.0
+  build_runner: ^2.5.4
+  flutter_test:
+    sdk: flutter
+  freezed: ^3.1.0
+  http_mock_adapter: ^0.6.1
+  injectable_generator: ^2.7.0
+  json_serializable: ^6.9.5
+  mocktail: ^1.0.4
+  very_good_analysis: ^9.0.0
+
+flutter:
+  generate: true
+  uses-material-design: true
+
+  assets:
+    - .env
+    - assets/
+    - assets/images/png/
+    - assets/images/svg/
+    - assets/fonts/Gilroy/
+
+  fonts:
+    - family: Gilroy
+      fonts:
+        - asset: assets/fonts/Gilroy/GilroyLight.ttf
+          weight: 300 
+        - asset: assets/fonts/Gilroy/GilroyRegular.ttf
+          weight: 400
+        - asset: assets/fonts/Gilroy/GilroySemiBold.ttf
+          weight: 500
+        - asset: assets/fonts/Gilroy/GilroyMedium.ttf
+          weight: 600
+        - asset: assets/fonts/Gilroy/GilroyBold.ttf
+          weight: 700
+        - asset: assets/fonts/Gilroy/GilroyHeavy.ttf
+          weight: 800
+        - asset: assets/fonts/Gilroy/GilroyExtraBold.ttf
+          weight: 900
