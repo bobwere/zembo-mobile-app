@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:zembo_agent_app/application/auth/auth_cubit.dart';
 import 'package:zembo_agent_app/core/utils/ui_util.dart';
 import 'package:zembo_agent_app/presentation/router/routes.dart';
-import 'package:zembo_agent_app/presentation/widgets/app_loader.dart';
 
 class SplashPage extends StatelessWidget {
   const SplashPage({super.key});
@@ -16,14 +15,20 @@ class SplashPage extends StatelessWidget {
       listenWhen: (previous, current) =>
           previous.isAuthenticated != current.isAuthenticated,
       listener: (context, state) async {
-        context.goNamed(homeRoute);
+        if (state.isAuthenticated != null && state.isAuthenticated!) {
+          context.goNamed(homeRoute);
+        } else {
+          context.goNamed(loginRoute);
+        }
         return;
       },
       child: SafeArea(
         child: Scaffold(
           body: Center(
-            child: AppLoader(
-              color: ui.theme.colorScheme.primary,
+            child: Image.asset(
+              scale: ui.scale,
+              width: ui.scaleWidthFactor(180),
+              'assets/images/png/logo.png',
             ),
           ),
         ),

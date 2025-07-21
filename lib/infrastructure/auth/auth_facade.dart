@@ -14,7 +14,17 @@ class AuthFacade implements IAuthFacade {
 
   @override
   Future<User> getSignedInUser() async {
-    return User.initial();
+    try {
+      final response = await _dio.get<dynamic>(
+        '/users',
+      );
+
+      final user = response.data['data'] as Map<String, dynamic>;
+
+      return User.fromJson(user);
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
@@ -22,21 +32,25 @@ class AuthFacade implements IAuthFacade {
     required String username,
     required String password,
   }) async {
-    final response = await _dio.post<dynamic>(
-      '/auth/signin',
-      data: {
-        'username': username,
-        'password': password,
-      },
-    );
+    try {
+      final response = await _dio.post<dynamic>(
+        '/auth/signin',
+        data: {
+          'username': username,
+          'password': password,
+        },
+      );
 
-    final token = response.data['data']['accessToken'] as String;
-    final refreshToken = response.data['data']['refreshToken'] as String;
+      final token = response.data['data']['accessToken'] as String;
+      final refreshToken = response.data['data']['refreshToken'] as String;
 
-    await _storage.write(key: accessToken, value: token);
-    await _storage.write(key: refreshToken, value: refreshToken);
+      await _storage.write(key: accessToken, value: token);
+      await _storage.write(key: refreshToken, value: refreshToken);
 
-    return;
+      return;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override

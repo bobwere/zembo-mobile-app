@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
@@ -41,10 +42,31 @@ class AuthCubit extends Cubit<AuthState> {
     required String username,
     required String password,
   }) async {
-    await _authFacade.signInWithUsernameAndPassword(
-      username: username,
-      password: password,
-    );
+    try {
+      emit(state.copyWith.call(signInFormStatus: AppStatus.submitting));
+      await _authFacade.signInWithUsernameAndPassword(
+        username: username,
+        password: password,
+      );
+
+      await getUserProfile();
+
+      emit(state.copyWith.call(signInFormStatus: AppStatus.success));
+    } on DioException catch (e) {
+      emit(
+        state.copyWith.call(
+          signInError: e.response?.data['error']['message'] as String?,
+          signInFormStatus: AppStatus.failure,
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith.call(
+          signInError: 'An error occurred',
+          signInFormStatus: AppStatus.failure,
+        ),
+      );
+    }
   }
 
   Future<void> signOut() async {

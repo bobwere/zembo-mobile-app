@@ -26,6 +26,13 @@ class AppButton extends StatelessWidget {
         height: isFullWidth ?? true ? 50 : null,
         child: FilledButton(
           onPressed: onPressed,
+          style: FilledButton.styleFrom(
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
           child: isLoading!
               ? const AppLoader()
               : Text(
@@ -34,6 +41,7 @@ class AppButton extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w600,
                     fontSize: 18,
+                    color: Colors.white,
                   ),
                 ),
         ),

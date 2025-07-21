@@ -43,7 +43,7 @@ class ProfilePage extends StatelessWidget {
                           ),
                           SizedBox(height: ui.scaleHeightFactor(20)),
                           Text(
-                            state.user?.username ?? 'Bob Were',
+                            state.user?.username ?? '',
                             textScaler: TextScaler.linear(ui.textScaleFactor),
                             style: Theme.of(context).textTheme.titleMedium
                                 ?.copyWith(
@@ -52,7 +52,7 @@ class ProfilePage extends StatelessWidget {
                                 ),
                           ),
                           Text(
-                            state.user?.role ?? 'Swapper',
+                            state.user?.role ?? '',
                             textScaler: TextScaler.linear(ui.textScaleFactor),
                             style: Theme.of(context).textTheme.titleMedium
                                 ?.copyWith(
@@ -96,7 +96,7 @@ class ProfilePage extends StatelessWidget {
                                               ?.copyWith(
                                                 fontWeight: FontWeight.w600,
                                                 fontSize: 22,
-                                                color: Colors.black,
+                                                color: Colors.white,
                                               ),
                                         ),
                                         SizedBox(
@@ -113,7 +113,7 @@ class ProfilePage extends StatelessWidget {
                                               ?.copyWith(
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 18,
-                                                color: Colors.black,
+                                                color: Colors.white,
                                               ),
                                         ),
                                       ],
