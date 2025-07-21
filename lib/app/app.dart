@@ -13,11 +13,18 @@ class App extends StatelessWidget {
 
     return MaterialApp.router(
       title: 'Zembo Agent',
+      debugShowCheckedModeBanner: false,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-
-      theme: FlexThemeData.light(scheme: FlexScheme.shadYellow),
-      darkTheme: FlexThemeData.dark(scheme: FlexScheme.shadYellow),
+      themeMode: ThemeMode.light,
+      theme: FlexThemeData.light(
+        scheme: FlexScheme.dellGenoa,
+        fontFamily: 'Gilroy',
+      ),
+      darkTheme: FlexThemeData.dark(
+        scheme: FlexScheme.dellGenoa,
+        fontFamily: 'Gilroy',
+      ),
       routerConfig: goRouter,
     );
   }

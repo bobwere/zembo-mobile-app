@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:zembo_agent_app/application/auth/auth_cubit.dart';
 import 'package:zembo_agent_app/presentation/pages/auth/login_page.dart';
 import 'package:zembo_agent_app/presentation/pages/root/battery_requests/request_delivery_page.dart';
 import 'package:zembo_agent_app/presentation/pages/root/home/home_page.dart';
@@ -30,22 +32,13 @@ GoRouter goRouter = GoRouter(
       return null;
     }
 
-    // final isLoggedIn =
-    //     false; // context.read<AuthCubit>().state.isAuthenticated ?? false;
-    // final goingToLoginPage = state.matchedLocation == loginPath;
-    // final goingToDashBoardPage = state.matchedLocation == homePath;
+    final isLoggedIn = context.read<AuthCubit>().state.isAuthenticated ?? false;
+    final goingToLoginPage = state.matchedLocation == loginPath;
+    final goingToHomePage = state.matchedLocation == homePath;
 
-    // if (isLoggedIn && (goingToLoginPage || goingToDashBoardPage)) {
-    //   // final userID = context.read<AuthCubit>().state.user?.id ?? '';
-    //   // if (context.read<TableCubit>().state.marketTables!.isEmpty) {
-    //   //   unawaited(context.read<TableCubit>().fetchMarketTables(userID));
-    //   //   unawaited(context.read<NotificationCubit>().getAllNotifications());
-    //   // }
-
-    //   // final state = context.read<AuthCubit>().state;
-
-    //   return homePath;
-    // }
+    if (isLoggedIn && (goingToLoginPage || goingToHomePage)) {
+      return homePath;
+    }
 
     // no need to redirect at all
     return null;

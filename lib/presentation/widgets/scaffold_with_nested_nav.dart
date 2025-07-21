@@ -159,13 +159,13 @@ class _ScaffoldWithNestedNavigationState
                                 ?.copyWith(
                                   fontSize: 14,
                                   fontWeight: pageIndex == item.idx
-                                      ? FontWeight.w600
+                                      ? FontWeight.w700
                                       : FontWeight.w400,
                                   color: pageIndex == item.idx
                                       ? Theme.of(context).colorScheme.primary
                                       : Theme.of(
                                           context,
-                                        ).colorScheme.primary.withOpacity(0.3),
+                                        ).colorScheme.primary.withOpacity(0.5),
                                 ),
                           ),
                         ],

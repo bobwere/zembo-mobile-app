@@ -3,7 +3,9 @@ analyzer:
   errors:
     avoid_catches_without_on_clauses: ignore
     avoid_dynamic_calls: ignore
+    deprecated_member_use: ignore
     invalid_annotation_target: ignore
+    lines_longer_than_80_chars: ignore
   exclude:
     - lib/l10n/gen/*
 linter:
