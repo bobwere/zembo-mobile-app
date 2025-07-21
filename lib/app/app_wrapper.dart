@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zembo_agent_app/app/app.dart';
+import 'package:zembo_agent_app/application/auth/auth_cubit.dart';
+import 'package:zembo_agent_app/injection.dart';
 
 class AppWrapper extends StatelessWidget {
   const AppWrapper({super.key});
@@ -8,7 +10,9 @@ class AppWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: const [],
+      providers: [
+        BlocProvider(create: (context) => getIt<AuthCubit>()..initialize()),
+      ],
       child: const App(),
     );
   }

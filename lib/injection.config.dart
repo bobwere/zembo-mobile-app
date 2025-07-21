@@ -16,8 +16,11 @@ import 'package:injectable/injectable.dart' as _i526;
 import 'package:simple_connection_checker/simple_connection_checker.dart'
     as _i271;
 
+import 'application/auth/auth_cubit.dart' as _i457;
+import 'application/auth/i_auth_facade.dart' as _i485;
 import 'core/injectable/http_module.dart' as _i225;
 import 'core/injectable/utility_module.dart' as _i959;
+import 'infrastructure/auth/auth_facade.dart' as _i480;
 
 const String _staging = 'staging';
 const String _dev = 'dev';
@@ -78,6 +81,10 @@ _i174.GetIt init(
       gh<_i271.SimpleConnectionChecker>(),
     ),
   );
+  gh.lazySingleton<_i485.IAuthFacade>(
+    () => _i480.AuthFacade(gh<_i361.Dio>(), gh<_i558.FlutterSecureStorage>()),
+  );
+  gh.factory<_i457.AuthCubit>(() => _i457.AuthCubit(gh<_i485.IAuthFacade>()));
   return getIt;
 }
 
