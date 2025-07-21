@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:zembo_agent_app/presentation/pages/auth/login_page.dart';
+import 'package:zembo_agent_app/presentation/pages/root/battery_requests/request_delivery_page.dart';
+import 'package:zembo_agent_app/presentation/pages/root/home/home_page.dart';
+import 'package:zembo_agent_app/presentation/pages/root/profile/profile_page.dart';
+import 'package:zembo_agent_app/presentation/pages/splash/splash_page.dart';
 import 'package:zembo_agent_app/presentation/router/routes.dart';
 import 'package:zembo_agent_app/presentation/widgets/scaffold_with_nested_nav.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
 final _homeShellNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'Home');
+
 final _requestDeliveryShellNavigatorKey = GlobalKey<NavigatorState>(
   debugLabel: 'Request Delivery',
 );
+
 final _profileShellNavigatorKey = GlobalKey<NavigatorState>(
   debugLabel: 'Profile',
 );
@@ -51,7 +58,7 @@ GoRouter goRouter = GoRouter(
         return CustomTransitionPage<void>(
           key: state.pageKey,
           name: state.name,
-          child: const Scaffold(),
+          child: const SplashPage(),
           transitionsBuilder:
               (
                 context,
@@ -69,7 +76,7 @@ GoRouter goRouter = GoRouter(
         return CustomTransitionPage<void>(
           key: state.pageKey,
           name: state.name,
-          child: const Scaffold(),
+          child: const LoginPage(),
           transitionsBuilder:
               (
                 context,
@@ -79,46 +86,6 @@ GoRouter goRouter = GoRouter(
               ) => FadeTransition(opacity: animation, child: child),
         );
       },
-      routes: [
-        GoRoute(
-          name: requestNewPasswordRoute,
-          path: requestNewPasswordPath,
-          pageBuilder: (context, state) {
-            return CustomTransitionPage<void>(
-              key: state.pageKey,
-              name: state.name,
-              child: const Scaffold(),
-              transitionsBuilder:
-                  (
-                    context,
-                    animation,
-                    secondaryAnimation,
-                    child,
-                  ) => FadeTransition(opacity: animation, child: child),
-            );
-          },
-          routes: [
-            GoRoute(
-              name: changePasswordRoute,
-              path: changePasswordPath,
-              pageBuilder: (context, state) {
-                return CustomTransitionPage<void>(
-                  key: state.pageKey,
-                  name: state.name,
-                  child: const Scaffold(),
-                  transitionsBuilder:
-                      (
-                        context,
-                        animation,
-                        secondaryAnimation,
-                        child,
-                      ) => FadeTransition(opacity: animation, child: child),
-                );
-              },
-            ),
-          ],
-        ),
-      ],
     ),
 
     // Stateful nested navigation
@@ -143,7 +110,7 @@ GoRouter goRouter = GoRouter(
                 return CustomTransitionPage<void>(
                   key: state.pageKey,
                   name: state.name,
-                  child: const Scaffold(),
+                  child: const HomePage(),
                   transitionsBuilder:
                       (
                         context,
@@ -169,7 +136,7 @@ GoRouter goRouter = GoRouter(
                 return CustomTransitionPage<void>(
                   key: state.pageKey,
                   name: state.name,
-                  child: const Scaffold(),
+                  child: const RequestDeliveryPage(),
                   transitionsBuilder:
                       (
                         context,
@@ -195,7 +162,7 @@ GoRouter goRouter = GoRouter(
                 return CustomTransitionPage<void>(
                   key: state.pageKey,
                   name: state.name,
-                  child: const Scaffold(),
+                  child: const ProfilePage(),
                   transitionsBuilder:
                       (
                         context,

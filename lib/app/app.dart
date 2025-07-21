@@ -16,8 +16,8 @@ class App extends StatelessWidget {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
 
-      theme: FlexThemeData.light(scheme: FlexScheme.dellGenoa),
-      darkTheme: FlexThemeData.dark(scheme: FlexScheme.dellGenoa),
+      theme: FlexThemeData.light(scheme: FlexScheme.shadYellow),
+      darkTheme: FlexThemeData.dark(scheme: FlexScheme.shadYellow),
       routerConfig: goRouter,
     );
   }

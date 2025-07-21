@@ -1,4 +1,4 @@
-package com.zembo.agent
+package com.raundtable.mobileapp
 
 import io.flutter.embedding.android.FlutterActivity
 

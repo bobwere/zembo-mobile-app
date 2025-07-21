@@ -9,6 +9,7 @@ environment:
 dependencies:
   another_flushbar: ^1.12.30
   bloc: ^9.0.0
+  cloudinary: ^1.2.0
   country_code: ^1.1.0
   country_picker: ^2.0.27
   dartz: ^0.10.1
@@ -23,7 +24,7 @@ dependencies:
   flutter_dotenv: ^5.2.1
   flutter_localizations:
     sdk: flutter
-  flutter_secure_storage: ^4.2.1
+  flutter_secure_storage: ^9.2.4
   flutter_svg: ^2.2.0
   freezed_annotation: ^3.1.0
   get_it: ^8.0.3
