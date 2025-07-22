@@ -22,7 +22,8 @@ mixin _$ShiftState {
  List<ShiftHistory>? get allShiftHistory; AppStatus? get fetchAllShiftHistoryStatus; String? get fetchAllShiftHistoryError;// has active shift
  bool? get hasActiveShift; AppStatus? get fetchHasActiveShiftStatus; String? get fetchHasActiveShiftError;// start shift
  AppStatus? get startShiftStatus; String? get startShiftError;// end shift
- AppStatus? get endShiftStatus; String? get endShiftError;
+ AppStatus? get endShiftStatus; String? get endShiftError;// shift messaging
+ bool? get showStartShiftButton; bool? get showEndShiftButton; String? get shiftMessaging;
 /// Create a copy of ShiftState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -33,16 +34,16 @@ $ShiftStateCopyWith<ShiftState> get copyWith => _$ShiftStateCopyWithImpl<ShiftSt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShiftState&&(identical(other.currentStation, currentStation) || other.currentStation == currentStation)&&(identical(other.currentShift, currentShift) || other.currentShift == currentShift)&&(identical(other.activeShift, activeShift) || other.activeShift == activeShift)&&const DeepCollectionEquality().equals(other.currentDaysShiftHistory, currentDaysShiftHistory)&&(identical(other.fetchCurrentDaysShiftHistoryStatus, fetchCurrentDaysShiftHistoryStatus) || other.fetchCurrentDaysShiftHistoryStatus == fetchCurrentDaysShiftHistoryStatus)&&(identical(other.fetchDaysShiftHistoryError, fetchDaysShiftHistoryError) || other.fetchDaysShiftHistoryError == fetchDaysShiftHistoryError)&&const DeepCollectionEquality().equals(other.allShiftHistory, allShiftHistory)&&(identical(other.fetchAllShiftHistoryStatus, fetchAllShiftHistoryStatus) || other.fetchAllShiftHistoryStatus == fetchAllShiftHistoryStatus)&&(identical(other.fetchAllShiftHistoryError, fetchAllShiftHistoryError) || other.fetchAllShiftHistoryError == fetchAllShiftHistoryError)&&(identical(other.hasActiveShift, hasActiveShift) || other.hasActiveShift == hasActiveShift)&&(identical(other.fetchHasActiveShiftStatus, fetchHasActiveShiftStatus) || other.fetchHasActiveShiftStatus == fetchHasActiveShiftStatus)&&(identical(other.fetchHasActiveShiftError, fetchHasActiveShiftError) || other.fetchHasActiveShiftError == fetchHasActiveShiftError)&&(identical(other.startShiftStatus, startShiftStatus) || other.startShiftStatus == startShiftStatus)&&(identical(other.startShiftError, startShiftError) || other.startShiftError == startShiftError)&&(identical(other.endShiftStatus, endShiftStatus) || other.endShiftStatus == endShiftStatus)&&(identical(other.endShiftError, endShiftError) || other.endShiftError == endShiftError));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShiftState&&(identical(other.currentStation, currentStation) || other.currentStation == currentStation)&&(identical(other.currentShift, currentShift) || other.currentShift == currentShift)&&(identical(other.activeShift, activeShift) || other.activeShift == activeShift)&&const DeepCollectionEquality().equals(other.currentDaysShiftHistory, currentDaysShiftHistory)&&(identical(other.fetchCurrentDaysShiftHistoryStatus, fetchCurrentDaysShiftHistoryStatus) || other.fetchCurrentDaysShiftHistoryStatus == fetchCurrentDaysShiftHistoryStatus)&&(identical(other.fetchDaysShiftHistoryError, fetchDaysShiftHistoryError) || other.fetchDaysShiftHistoryError == fetchDaysShiftHistoryError)&&const DeepCollectionEquality().equals(other.allShiftHistory, allShiftHistory)&&(identical(other.fetchAllShiftHistoryStatus, fetchAllShiftHistoryStatus) || other.fetchAllShiftHistoryStatus == fetchAllShiftHistoryStatus)&&(identical(other.fetchAllShiftHistoryError, fetchAllShiftHistoryError) || other.fetchAllShiftHistoryError == fetchAllShiftHistoryError)&&(identical(other.hasActiveShift, hasActiveShift) || other.hasActiveShift == hasActiveShift)&&(identical(other.fetchHasActiveShiftStatus, fetchHasActiveShiftStatus) || other.fetchHasActiveShiftStatus == fetchHasActiveShiftStatus)&&(identical(other.fetchHasActiveShiftError, fetchHasActiveShiftError) || other.fetchHasActiveShiftError == fetchHasActiveShiftError)&&(identical(other.startShiftStatus, startShiftStatus) || other.startShiftStatus == startShiftStatus)&&(identical(other.startShiftError, startShiftError) || other.startShiftError == startShiftError)&&(identical(other.endShiftStatus, endShiftStatus) || other.endShiftStatus == endShiftStatus)&&(identical(other.endShiftError, endShiftError) || other.endShiftError == endShiftError)&&(identical(other.showStartShiftButton, showStartShiftButton) || other.showStartShiftButton == showStartShiftButton)&&(identical(other.showEndShiftButton, showEndShiftButton) || other.showEndShiftButton == showEndShiftButton)&&(identical(other.shiftMessaging, shiftMessaging) || other.shiftMessaging == shiftMessaging));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,currentStation,currentShift,activeShift,const DeepCollectionEquality().hash(currentDaysShiftHistory),fetchCurrentDaysShiftHistoryStatus,fetchDaysShiftHistoryError,const DeepCollectionEquality().hash(allShiftHistory),fetchAllShiftHistoryStatus,fetchAllShiftHistoryError,hasActiveShift,fetchHasActiveShiftStatus,fetchHasActiveShiftError,startShiftStatus,startShiftError,endShiftStatus,endShiftError);
+int get hashCode => Object.hashAll([runtimeType,currentStation,currentShift,activeShift,const DeepCollectionEquality().hash(currentDaysShiftHistory),fetchCurrentDaysShiftHistoryStatus,fetchDaysShiftHistoryError,const DeepCollectionEquality().hash(allShiftHistory),fetchAllShiftHistoryStatus,fetchAllShiftHistoryError,hasActiveShift,fetchHasActiveShiftStatus,fetchHasActiveShiftError,startShiftStatus,startShiftError,endShiftStatus,endShiftError,showStartShiftButton,showEndShiftButton,shiftMessaging]);
 
 @override
 String toString() {
-  return 'ShiftState(currentStation: $currentStation, currentShift: $currentShift, activeShift: $activeShift, currentDaysShiftHistory: $currentDaysShiftHistory, fetchCurrentDaysShiftHistoryStatus: $fetchCurrentDaysShiftHistoryStatus, fetchDaysShiftHistoryError: $fetchDaysShiftHistoryError, allShiftHistory: $allShiftHistory, fetchAllShiftHistoryStatus: $fetchAllShiftHistoryStatus, fetchAllShiftHistoryError: $fetchAllShiftHistoryError, hasActiveShift: $hasActiveShift, fetchHasActiveShiftStatus: $fetchHasActiveShiftStatus, fetchHasActiveShiftError: $fetchHasActiveShiftError, startShiftStatus: $startShiftStatus, startShiftError: $startShiftError, endShiftStatus: $endShiftStatus, endShiftError: $endShiftError)';
+  return 'ShiftState(currentStation: $currentStation, currentShift: $currentShift, activeShift: $activeShift, currentDaysShiftHistory: $currentDaysShiftHistory, fetchCurrentDaysShiftHistoryStatus: $fetchCurrentDaysShiftHistoryStatus, fetchDaysShiftHistoryError: $fetchDaysShiftHistoryError, allShiftHistory: $allShiftHistory, fetchAllShiftHistoryStatus: $fetchAllShiftHistoryStatus, fetchAllShiftHistoryError: $fetchAllShiftHistoryError, hasActiveShift: $hasActiveShift, fetchHasActiveShiftStatus: $fetchHasActiveShiftStatus, fetchHasActiveShiftError: $fetchHasActiveShiftError, startShiftStatus: $startShiftStatus, startShiftError: $startShiftError, endShiftStatus: $endShiftStatus, endShiftError: $endShiftError, showStartShiftButton: $showStartShiftButton, showEndShiftButton: $showEndShiftButton, shiftMessaging: $shiftMessaging)';
 }
 
 
@@ -53,7 +54,7 @@ abstract mixin class $ShiftStateCopyWith<$Res>  {
   factory $ShiftStateCopyWith(ShiftState value, $Res Function(ShiftState) _then) = _$ShiftStateCopyWithImpl;
 @useResult
 $Res call({
- Station? currentStation, Shift? currentShift, ShiftHistory? activeShift, List<ShiftHistory>? currentDaysShiftHistory, AppStatus? fetchCurrentDaysShiftHistoryStatus, String? fetchDaysShiftHistoryError, List<ShiftHistory>? allShiftHistory, AppStatus? fetchAllShiftHistoryStatus, String? fetchAllShiftHistoryError, bool? hasActiveShift, AppStatus? fetchHasActiveShiftStatus, String? fetchHasActiveShiftError, AppStatus? startShiftStatus, String? startShiftError, AppStatus? endShiftStatus, String? endShiftError
+ Station? currentStation, Shift? currentShift, ShiftHistory? activeShift, List<ShiftHistory>? currentDaysShiftHistory, AppStatus? fetchCurrentDaysShiftHistoryStatus, String? fetchDaysShiftHistoryError, List<ShiftHistory>? allShiftHistory, AppStatus? fetchAllShiftHistoryStatus, String? fetchAllShiftHistoryError, bool? hasActiveShift, AppStatus? fetchHasActiveShiftStatus, String? fetchHasActiveShiftError, AppStatus? startShiftStatus, String? startShiftError, AppStatus? endShiftStatus, String? endShiftError, bool? showStartShiftButton, bool? showEndShiftButton, String? shiftMessaging
 });
 
 
@@ -70,7 +71,7 @@ class _$ShiftStateCopyWithImpl<$Res>
 
 /// Create a copy of ShiftState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? currentStation = freezed,Object? currentShift = freezed,Object? activeShift = freezed,Object? currentDaysShiftHistory = freezed,Object? fetchCurrentDaysShiftHistoryStatus = freezed,Object? fetchDaysShiftHistoryError = freezed,Object? allShiftHistory = freezed,Object? fetchAllShiftHistoryStatus = freezed,Object? fetchAllShiftHistoryError = freezed,Object? hasActiveShift = freezed,Object? fetchHasActiveShiftStatus = freezed,Object? fetchHasActiveShiftError = freezed,Object? startShiftStatus = freezed,Object? startShiftError = freezed,Object? endShiftStatus = freezed,Object? endShiftError = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? currentStation = freezed,Object? currentShift = freezed,Object? activeShift = freezed,Object? currentDaysShiftHistory = freezed,Object? fetchCurrentDaysShiftHistoryStatus = freezed,Object? fetchDaysShiftHistoryError = freezed,Object? allShiftHistory = freezed,Object? fetchAllShiftHistoryStatus = freezed,Object? fetchAllShiftHistoryError = freezed,Object? hasActiveShift = freezed,Object? fetchHasActiveShiftStatus = freezed,Object? fetchHasActiveShiftError = freezed,Object? startShiftStatus = freezed,Object? startShiftError = freezed,Object? endShiftStatus = freezed,Object? endShiftError = freezed,Object? showStartShiftButton = freezed,Object? showEndShiftButton = freezed,Object? shiftMessaging = freezed,}) {
   return _then(_self.copyWith(
 currentStation: freezed == currentStation ? _self.currentStation : currentStation // ignore: cast_nullable_to_non_nullable
 as Station?,currentShift: freezed == currentShift ? _self.currentShift : currentShift // ignore: cast_nullable_to_non_nullable
@@ -88,6 +89,9 @@ as String?,startShiftStatus: freezed == startShiftStatus ? _self.startShiftStatu
 as AppStatus?,startShiftError: freezed == startShiftError ? _self.startShiftError : startShiftError // ignore: cast_nullable_to_non_nullable
 as String?,endShiftStatus: freezed == endShiftStatus ? _self.endShiftStatus : endShiftStatus // ignore: cast_nullable_to_non_nullable
 as AppStatus?,endShiftError: freezed == endShiftError ? _self.endShiftError : endShiftError // ignore: cast_nullable_to_non_nullable
+as String?,showStartShiftButton: freezed == showStartShiftButton ? _self.showStartShiftButton : showStartShiftButton // ignore: cast_nullable_to_non_nullable
+as bool?,showEndShiftButton: freezed == showEndShiftButton ? _self.showEndShiftButton : showEndShiftButton // ignore: cast_nullable_to_non_nullable
+as bool?,shiftMessaging: freezed == shiftMessaging ? _self.shiftMessaging : shiftMessaging // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -209,10 +213,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Station? currentStation,  Shift? currentShift,  ShiftHistory? activeShift,  List<ShiftHistory>? currentDaysShiftHistory,  AppStatus? fetchCurrentDaysShiftHistoryStatus,  String? fetchDaysShiftHistoryError,  List<ShiftHistory>? allShiftHistory,  AppStatus? fetchAllShiftHistoryStatus,  String? fetchAllShiftHistoryError,  bool? hasActiveShift,  AppStatus? fetchHasActiveShiftStatus,  String? fetchHasActiveShiftError,  AppStatus? startShiftStatus,  String? startShiftError,  AppStatus? endShiftStatus,  String? endShiftError)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Station? currentStation,  Shift? currentShift,  ShiftHistory? activeShift,  List<ShiftHistory>? currentDaysShiftHistory,  AppStatus? fetchCurrentDaysShiftHistoryStatus,  String? fetchDaysShiftHistoryError,  List<ShiftHistory>? allShiftHistory,  AppStatus? fetchAllShiftHistoryStatus,  String? fetchAllShiftHistoryError,  bool? hasActiveShift,  AppStatus? fetchHasActiveShiftStatus,  String? fetchHasActiveShiftError,  AppStatus? startShiftStatus,  String? startShiftError,  AppStatus? endShiftStatus,  String? endShiftError,  bool? showStartShiftButton,  bool? showEndShiftButton,  String? shiftMessaging)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ShiftState() when $default != null:
-return $default(_that.currentStation,_that.currentShift,_that.activeShift,_that.currentDaysShiftHistory,_that.fetchCurrentDaysShiftHistoryStatus,_that.fetchDaysShiftHistoryError,_that.allShiftHistory,_that.fetchAllShiftHistoryStatus,_that.fetchAllShiftHistoryError,_that.hasActiveShift,_that.fetchHasActiveShiftStatus,_that.fetchHasActiveShiftError,_that.startShiftStatus,_that.startShiftError,_that.endShiftStatus,_that.endShiftError);case _:
+return $default(_that.currentStation,_that.currentShift,_that.activeShift,_that.currentDaysShiftHistory,_that.fetchCurrentDaysShiftHistoryStatus,_that.fetchDaysShiftHistoryError,_that.allShiftHistory,_that.fetchAllShiftHistoryStatus,_that.fetchAllShiftHistoryError,_that.hasActiveShift,_that.fetchHasActiveShiftStatus,_that.fetchHasActiveShiftError,_that.startShiftStatus,_that.startShiftError,_that.endShiftStatus,_that.endShiftError,_that.showStartShiftButton,_that.showEndShiftButton,_that.shiftMessaging);case _:
   return orElse();
 
 }
@@ -230,10 +234,10 @@ return $default(_that.currentStation,_that.currentShift,_that.activeShift,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Station? currentStation,  Shift? currentShift,  ShiftHistory? activeShift,  List<ShiftHistory>? currentDaysShiftHistory,  AppStatus? fetchCurrentDaysShiftHistoryStatus,  String? fetchDaysShiftHistoryError,  List<ShiftHistory>? allShiftHistory,  AppStatus? fetchAllShiftHistoryStatus,  String? fetchAllShiftHistoryError,  bool? hasActiveShift,  AppStatus? fetchHasActiveShiftStatus,  String? fetchHasActiveShiftError,  AppStatus? startShiftStatus,  String? startShiftError,  AppStatus? endShiftStatus,  String? endShiftError)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Station? currentStation,  Shift? currentShift,  ShiftHistory? activeShift,  List<ShiftHistory>? currentDaysShiftHistory,  AppStatus? fetchCurrentDaysShiftHistoryStatus,  String? fetchDaysShiftHistoryError,  List<ShiftHistory>? allShiftHistory,  AppStatus? fetchAllShiftHistoryStatus,  String? fetchAllShiftHistoryError,  bool? hasActiveShift,  AppStatus? fetchHasActiveShiftStatus,  String? fetchHasActiveShiftError,  AppStatus? startShiftStatus,  String? startShiftError,  AppStatus? endShiftStatus,  String? endShiftError,  bool? showStartShiftButton,  bool? showEndShiftButton,  String? shiftMessaging)  $default,) {final _that = this;
 switch (_that) {
 case _ShiftState():
-return $default(_that.currentStation,_that.currentShift,_that.activeShift,_that.currentDaysShiftHistory,_that.fetchCurrentDaysShiftHistoryStatus,_that.fetchDaysShiftHistoryError,_that.allShiftHistory,_that.fetchAllShiftHistoryStatus,_that.fetchAllShiftHistoryError,_that.hasActiveShift,_that.fetchHasActiveShiftStatus,_that.fetchHasActiveShiftError,_that.startShiftStatus,_that.startShiftError,_that.endShiftStatus,_that.endShiftError);case _:
+return $default(_that.currentStation,_that.currentShift,_that.activeShift,_that.currentDaysShiftHistory,_that.fetchCurrentDaysShiftHistoryStatus,_that.fetchDaysShiftHistoryError,_that.allShiftHistory,_that.fetchAllShiftHistoryStatus,_that.fetchAllShiftHistoryError,_that.hasActiveShift,_that.fetchHasActiveShiftStatus,_that.fetchHasActiveShiftError,_that.startShiftStatus,_that.startShiftError,_that.endShiftStatus,_that.endShiftError,_that.showStartShiftButton,_that.showEndShiftButton,_that.shiftMessaging);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -250,10 +254,10 @@ return $default(_that.currentStation,_that.currentShift,_that.activeShift,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Station? currentStation,  Shift? currentShift,  ShiftHistory? activeShift,  List<ShiftHistory>? currentDaysShiftHistory,  AppStatus? fetchCurrentDaysShiftHistoryStatus,  String? fetchDaysShiftHistoryError,  List<ShiftHistory>? allShiftHistory,  AppStatus? fetchAllShiftHistoryStatus,  String? fetchAllShiftHistoryError,  bool? hasActiveShift,  AppStatus? fetchHasActiveShiftStatus,  String? fetchHasActiveShiftError,  AppStatus? startShiftStatus,  String? startShiftError,  AppStatus? endShiftStatus,  String? endShiftError)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Station? currentStation,  Shift? currentShift,  ShiftHistory? activeShift,  List<ShiftHistory>? currentDaysShiftHistory,  AppStatus? fetchCurrentDaysShiftHistoryStatus,  String? fetchDaysShiftHistoryError,  List<ShiftHistory>? allShiftHistory,  AppStatus? fetchAllShiftHistoryStatus,  String? fetchAllShiftHistoryError,  bool? hasActiveShift,  AppStatus? fetchHasActiveShiftStatus,  String? fetchHasActiveShiftError,  AppStatus? startShiftStatus,  String? startShiftError,  AppStatus? endShiftStatus,  String? endShiftError,  bool? showStartShiftButton,  bool? showEndShiftButton,  String? shiftMessaging)?  $default,) {final _that = this;
 switch (_that) {
 case _ShiftState() when $default != null:
-return $default(_that.currentStation,_that.currentShift,_that.activeShift,_that.currentDaysShiftHistory,_that.fetchCurrentDaysShiftHistoryStatus,_that.fetchDaysShiftHistoryError,_that.allShiftHistory,_that.fetchAllShiftHistoryStatus,_that.fetchAllShiftHistoryError,_that.hasActiveShift,_that.fetchHasActiveShiftStatus,_that.fetchHasActiveShiftError,_that.startShiftStatus,_that.startShiftError,_that.endShiftStatus,_that.endShiftError);case _:
+return $default(_that.currentStation,_that.currentShift,_that.activeShift,_that.currentDaysShiftHistory,_that.fetchCurrentDaysShiftHistoryStatus,_that.fetchDaysShiftHistoryError,_that.allShiftHistory,_that.fetchAllShiftHistoryStatus,_that.fetchAllShiftHistoryError,_that.hasActiveShift,_that.fetchHasActiveShiftStatus,_that.fetchHasActiveShiftError,_that.startShiftStatus,_that.startShiftError,_that.endShiftStatus,_that.endShiftError,_that.showStartShiftButton,_that.showEndShiftButton,_that.shiftMessaging);case _:
   return null;
 
 }
@@ -265,7 +269,7 @@ return $default(_that.currentStation,_that.currentShift,_that.activeShift,_that.
 
 
 class _ShiftState implements ShiftState {
-   _ShiftState({this.currentStation, this.currentShift, this.activeShift, final  List<ShiftHistory>? currentDaysShiftHistory, this.fetchCurrentDaysShiftHistoryStatus, this.fetchDaysShiftHistoryError, final  List<ShiftHistory>? allShiftHistory, this.fetchAllShiftHistoryStatus, this.fetchAllShiftHistoryError, this.hasActiveShift, this.fetchHasActiveShiftStatus, this.fetchHasActiveShiftError, this.startShiftStatus, this.startShiftError, this.endShiftStatus, this.endShiftError}): _currentDaysShiftHistory = currentDaysShiftHistory,_allShiftHistory = allShiftHistory;
+   _ShiftState({this.currentStation, this.currentShift, this.activeShift, final  List<ShiftHistory>? currentDaysShiftHistory, this.fetchCurrentDaysShiftHistoryStatus, this.fetchDaysShiftHistoryError, final  List<ShiftHistory>? allShiftHistory, this.fetchAllShiftHistoryStatus, this.fetchAllShiftHistoryError, this.hasActiveShift, this.fetchHasActiveShiftStatus, this.fetchHasActiveShiftError, this.startShiftStatus, this.startShiftError, this.endShiftStatus, this.endShiftError, this.showStartShiftButton, this.showEndShiftButton, this.shiftMessaging}): _currentDaysShiftHistory = currentDaysShiftHistory,_allShiftHistory = allShiftHistory;
   
 
 // current station
@@ -310,6 +314,10 @@ class _ShiftState implements ShiftState {
 // end shift
 @override final  AppStatus? endShiftStatus;
 @override final  String? endShiftError;
+// shift messaging
+@override final  bool? showStartShiftButton;
+@override final  bool? showEndShiftButton;
+@override final  String? shiftMessaging;
 
 /// Create a copy of ShiftState
 /// with the given fields replaced by the non-null parameter values.
@@ -321,16 +329,16 @@ _$ShiftStateCopyWith<_ShiftState> get copyWith => __$ShiftStateCopyWithImpl<_Shi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShiftState&&(identical(other.currentStation, currentStation) || other.currentStation == currentStation)&&(identical(other.currentShift, currentShift) || other.currentShift == currentShift)&&(identical(other.activeShift, activeShift) || other.activeShift == activeShift)&&const DeepCollectionEquality().equals(other._currentDaysShiftHistory, _currentDaysShiftHistory)&&(identical(other.fetchCurrentDaysShiftHistoryStatus, fetchCurrentDaysShiftHistoryStatus) || other.fetchCurrentDaysShiftHistoryStatus == fetchCurrentDaysShiftHistoryStatus)&&(identical(other.fetchDaysShiftHistoryError, fetchDaysShiftHistoryError) || other.fetchDaysShiftHistoryError == fetchDaysShiftHistoryError)&&const DeepCollectionEquality().equals(other._allShiftHistory, _allShiftHistory)&&(identical(other.fetchAllShiftHistoryStatus, fetchAllShiftHistoryStatus) || other.fetchAllShiftHistoryStatus == fetchAllShiftHistoryStatus)&&(identical(other.fetchAllShiftHistoryError, fetchAllShiftHistoryError) || other.fetchAllShiftHistoryError == fetchAllShiftHistoryError)&&(identical(other.hasActiveShift, hasActiveShift) || other.hasActiveShift == hasActiveShift)&&(identical(other.fetchHasActiveShiftStatus, fetchHasActiveShiftStatus) || other.fetchHasActiveShiftStatus == fetchHasActiveShiftStatus)&&(identical(other.fetchHasActiveShiftError, fetchHasActiveShiftError) || other.fetchHasActiveShiftError == fetchHasActiveShiftError)&&(identical(other.startShiftStatus, startShiftStatus) || other.startShiftStatus == startShiftStatus)&&(identical(other.startShiftError, startShiftError) || other.startShiftError == startShiftError)&&(identical(other.endShiftStatus, endShiftStatus) || other.endShiftStatus == endShiftStatus)&&(identical(other.endShiftError, endShiftError) || other.endShiftError == endShiftError));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShiftState&&(identical(other.currentStation, currentStation) || other.currentStation == currentStation)&&(identical(other.currentShift, currentShift) || other.currentShift == currentShift)&&(identical(other.activeShift, activeShift) || other.activeShift == activeShift)&&const DeepCollectionEquality().equals(other._currentDaysShiftHistory, _currentDaysShiftHistory)&&(identical(other.fetchCurrentDaysShiftHistoryStatus, fetchCurrentDaysShiftHistoryStatus) || other.fetchCurrentDaysShiftHistoryStatus == fetchCurrentDaysShiftHistoryStatus)&&(identical(other.fetchDaysShiftHistoryError, fetchDaysShiftHistoryError) || other.fetchDaysShiftHistoryError == fetchDaysShiftHistoryError)&&const DeepCollectionEquality().equals(other._allShiftHistory, _allShiftHistory)&&(identical(other.fetchAllShiftHistoryStatus, fetchAllShiftHistoryStatus) || other.fetchAllShiftHistoryStatus == fetchAllShiftHistoryStatus)&&(identical(other.fetchAllShiftHistoryError, fetchAllShiftHistoryError) || other.fetchAllShiftHistoryError == fetchAllShiftHistoryError)&&(identical(other.hasActiveShift, hasActiveShift) || other.hasActiveShift == hasActiveShift)&&(identical(other.fetchHasActiveShiftStatus, fetchHasActiveShiftStatus) || other.fetchHasActiveShiftStatus == fetchHasActiveShiftStatus)&&(identical(other.fetchHasActiveShiftError, fetchHasActiveShiftError) || other.fetchHasActiveShiftError == fetchHasActiveShiftError)&&(identical(other.startShiftStatus, startShiftStatus) || other.startShiftStatus == startShiftStatus)&&(identical(other.startShiftError, startShiftError) || other.startShiftError == startShiftError)&&(identical(other.endShiftStatus, endShiftStatus) || other.endShiftStatus == endShiftStatus)&&(identical(other.endShiftError, endShiftError) || other.endShiftError == endShiftError)&&(identical(other.showStartShiftButton, showStartShiftButton) || other.showStartShiftButton == showStartShiftButton)&&(identical(other.showEndShiftButton, showEndShiftButton) || other.showEndShiftButton == showEndShiftButton)&&(identical(other.shiftMessaging, shiftMessaging) || other.shiftMessaging == shiftMessaging));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,currentStation,currentShift,activeShift,const DeepCollectionEquality().hash(_currentDaysShiftHistory),fetchCurrentDaysShiftHistoryStatus,fetchDaysShiftHistoryError,const DeepCollectionEquality().hash(_allShiftHistory),fetchAllShiftHistoryStatus,fetchAllShiftHistoryError,hasActiveShift,fetchHasActiveShiftStatus,fetchHasActiveShiftError,startShiftStatus,startShiftError,endShiftStatus,endShiftError);
+int get hashCode => Object.hashAll([runtimeType,currentStation,currentShift,activeShift,const DeepCollectionEquality().hash(_currentDaysShiftHistory),fetchCurrentDaysShiftHistoryStatus,fetchDaysShiftHistoryError,const DeepCollectionEquality().hash(_allShiftHistory),fetchAllShiftHistoryStatus,fetchAllShiftHistoryError,hasActiveShift,fetchHasActiveShiftStatus,fetchHasActiveShiftError,startShiftStatus,startShiftError,endShiftStatus,endShiftError,showStartShiftButton,showEndShiftButton,shiftMessaging]);
 
 @override
 String toString() {
-  return 'ShiftState(currentStation: $currentStation, currentShift: $currentShift, activeShift: $activeShift, currentDaysShiftHistory: $currentDaysShiftHistory, fetchCurrentDaysShiftHistoryStatus: $fetchCurrentDaysShiftHistoryStatus, fetchDaysShiftHistoryError: $fetchDaysShiftHistoryError, allShiftHistory: $allShiftHistory, fetchAllShiftHistoryStatus: $fetchAllShiftHistoryStatus, fetchAllShiftHistoryError: $fetchAllShiftHistoryError, hasActiveShift: $hasActiveShift, fetchHasActiveShiftStatus: $fetchHasActiveShiftStatus, fetchHasActiveShiftError: $fetchHasActiveShiftError, startShiftStatus: $startShiftStatus, startShiftError: $startShiftError, endShiftStatus: $endShiftStatus, endShiftError: $endShiftError)';
+  return 'ShiftState(currentStation: $currentStation, currentShift: $currentShift, activeShift: $activeShift, currentDaysShiftHistory: $currentDaysShiftHistory, fetchCurrentDaysShiftHistoryStatus: $fetchCurrentDaysShiftHistoryStatus, fetchDaysShiftHistoryError: $fetchDaysShiftHistoryError, allShiftHistory: $allShiftHistory, fetchAllShiftHistoryStatus: $fetchAllShiftHistoryStatus, fetchAllShiftHistoryError: $fetchAllShiftHistoryError, hasActiveShift: $hasActiveShift, fetchHasActiveShiftStatus: $fetchHasActiveShiftStatus, fetchHasActiveShiftError: $fetchHasActiveShiftError, startShiftStatus: $startShiftStatus, startShiftError: $startShiftError, endShiftStatus: $endShiftStatus, endShiftError: $endShiftError, showStartShiftButton: $showStartShiftButton, showEndShiftButton: $showEndShiftButton, shiftMessaging: $shiftMessaging)';
 }
 
 
@@ -341,7 +349,7 @@ abstract mixin class _$ShiftStateCopyWith<$Res> implements $ShiftStateCopyWith<$
   factory _$ShiftStateCopyWith(_ShiftState value, $Res Function(_ShiftState) _then) = __$ShiftStateCopyWithImpl;
 @override @useResult
 $Res call({
- Station? currentStation, Shift? currentShift, ShiftHistory? activeShift, List<ShiftHistory>? currentDaysShiftHistory, AppStatus? fetchCurrentDaysShiftHistoryStatus, String? fetchDaysShiftHistoryError, List<ShiftHistory>? allShiftHistory, AppStatus? fetchAllShiftHistoryStatus, String? fetchAllShiftHistoryError, bool? hasActiveShift, AppStatus? fetchHasActiveShiftStatus, String? fetchHasActiveShiftError, AppStatus? startShiftStatus, String? startShiftError, AppStatus? endShiftStatus, String? endShiftError
+ Station? currentStation, Shift? currentShift, ShiftHistory? activeShift, List<ShiftHistory>? currentDaysShiftHistory, AppStatus? fetchCurrentDaysShiftHistoryStatus, String? fetchDaysShiftHistoryError, List<ShiftHistory>? allShiftHistory, AppStatus? fetchAllShiftHistoryStatus, String? fetchAllShiftHistoryError, bool? hasActiveShift, AppStatus? fetchHasActiveShiftStatus, String? fetchHasActiveShiftError, AppStatus? startShiftStatus, String? startShiftError, AppStatus? endShiftStatus, String? endShiftError, bool? showStartShiftButton, bool? showEndShiftButton, String? shiftMessaging
 });
 
 
@@ -358,7 +366,7 @@ class __$ShiftStateCopyWithImpl<$Res>
 
 /// Create a copy of ShiftState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? currentStation = freezed,Object? currentShift = freezed,Object? activeShift = freezed,Object? currentDaysShiftHistory = freezed,Object? fetchCurrentDaysShiftHistoryStatus = freezed,Object? fetchDaysShiftHistoryError = freezed,Object? allShiftHistory = freezed,Object? fetchAllShiftHistoryStatus = freezed,Object? fetchAllShiftHistoryError = freezed,Object? hasActiveShift = freezed,Object? fetchHasActiveShiftStatus = freezed,Object? fetchHasActiveShiftError = freezed,Object? startShiftStatus = freezed,Object? startShiftError = freezed,Object? endShiftStatus = freezed,Object? endShiftError = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? currentStation = freezed,Object? currentShift = freezed,Object? activeShift = freezed,Object? currentDaysShiftHistory = freezed,Object? fetchCurrentDaysShiftHistoryStatus = freezed,Object? fetchDaysShiftHistoryError = freezed,Object? allShiftHistory = freezed,Object? fetchAllShiftHistoryStatus = freezed,Object? fetchAllShiftHistoryError = freezed,Object? hasActiveShift = freezed,Object? fetchHasActiveShiftStatus = freezed,Object? fetchHasActiveShiftError = freezed,Object? startShiftStatus = freezed,Object? startShiftError = freezed,Object? endShiftStatus = freezed,Object? endShiftError = freezed,Object? showStartShiftButton = freezed,Object? showEndShiftButton = freezed,Object? shiftMessaging = freezed,}) {
   return _then(_ShiftState(
 currentStation: freezed == currentStation ? _self.currentStation : currentStation // ignore: cast_nullable_to_non_nullable
 as Station?,currentShift: freezed == currentShift ? _self.currentShift : currentShift // ignore: cast_nullable_to_non_nullable
@@ -376,6 +384,9 @@ as String?,startShiftStatus: freezed == startShiftStatus ? _self.startShiftStatu
 as AppStatus?,startShiftError: freezed == startShiftError ? _self.startShiftError : startShiftError // ignore: cast_nullable_to_non_nullable
 as String?,endShiftStatus: freezed == endShiftStatus ? _self.endShiftStatus : endShiftStatus // ignore: cast_nullable_to_non_nullable
 as AppStatus?,endShiftError: freezed == endShiftError ? _self.endShiftError : endShiftError // ignore: cast_nullable_to_non_nullable
+as String?,showStartShiftButton: freezed == showStartShiftButton ? _self.showStartShiftButton : showStartShiftButton // ignore: cast_nullable_to_non_nullable
+as bool?,showEndShiftButton: freezed == showEndShiftButton ? _self.showEndShiftButton : showEndShiftButton // ignore: cast_nullable_to_non_nullable
+as bool?,shiftMessaging: freezed == shiftMessaging ? _self.shiftMessaging : shiftMessaging // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }

@@ -2,8 +2,10 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:zembo_agent_app/application/shift/i_shift_facade.dart';
 import 'package:zembo_agent_app/core/constants/enum.dart';
+import 'package:zembo_agent_app/core/utils/core_util.dart';
 import 'package:zembo_agent_app/domain/shift/shift.dart';
 import 'package:zembo_agent_app/domain/shift_history/shift_history.dart';
 import 'package:zembo_agent_app/domain/station/station.dart';
@@ -17,6 +19,81 @@ class ShiftCubit extends Cubit<ShiftState> {
 
   final IShiftFacade _shiftFacade;
 
+  void updateShiftMessagingAnStatus() {
+    if (state.currentShift == null) return;
+
+    final shiftStartTime = getCurrentShiftTime(state.currentShift!.startTime!);
+    final shiftEndTime = getCurrentShiftTime(state.currentShift!.endTime!);
+
+    final hasActiveShift = state.currentShift != null;
+
+    // show start shift button
+    final isNotPastShiftTime = Jiffy.now().isBefore(shiftEndTime);
+    if (isNotPastShiftTime && !hasActiveShift) {
+      emit(
+        state.copyWith.call(
+          showStartShiftButton: true,
+          showEndShiftButton: false,
+        ),
+      );
+
+      if (state.currentDaysShiftHistory!.isNotEmpty) {
+        emit(
+          state.copyWith.call(
+            shiftMessaging: "You're on the clock!. Continue with your shift.",
+          ),
+        );
+        return;
+      }
+
+      final shiftHasNotStarted = Jiffy.now().isBefore(shiftStartTime);
+      if (shiftHasNotStarted) {
+        emit(
+          state.copyWith.call(
+            shiftMessaging:
+                "You're all set! Start your shift starts at ${shiftStartTime.format(pattern: 'h:mmA')}.",
+          ),
+        );
+        return;
+      }
+
+      if (!shiftHasNotStarted) {
+        emit(
+          state.copyWith.call(
+            shiftMessaging: "Your shift is underway let's go!",
+          ),
+        );
+        return;
+      }
+    }
+
+    // show end shift button
+    if (hasActiveShift) {
+      emit(
+        state.copyWith.call(
+          showStartShiftButton: false,
+          showEndShiftButton: true,
+          shiftMessaging: 'Your shift is in progress.',
+        ),
+      );
+      return;
+    }
+
+    // show no shift button
+    final isPastShiftTime = Jiffy.now().isAfter(shiftEndTime);
+    if (isPastShiftTime && !hasActiveShift) {
+      // show no shift button
+      emit(
+        state.copyWith.call(
+          showStartShiftButton: false,
+          showEndShiftButton: false,
+          shiftMessaging: "That's a wrap—your shift is over!",
+        ),
+      );
+      return;
+    }
+  }
+
   void updateShiftAndStation(Shift? shift, Station? station) {
     emit(
       state.copyWith.call(
@@ -24,10 +101,16 @@ class ShiftCubit extends Cubit<ShiftState> {
         currentStation: station,
       ),
     );
+    updateShiftMessagingAnStatus();
   }
 
   Future<void> fetchActiveShift(int userId) async {
     try {
+      emit(
+        state.copyWith.call(
+          fetchHasActiveShiftStatus: AppStatus.submitting,
+        ),
+      );
       final shift = await _shiftFacade.fetchActiveShift(userId: userId);
       if (shift == null) {
         emit(state.copyWith.call(hasActiveShift: false));
@@ -39,9 +122,17 @@ class ShiftCubit extends Cubit<ShiftState> {
           ),
         );
       }
+      emit(
+        state.copyWith.call(
+          fetchHasActiveShiftStatus: AppStatus.success,
+        ),
+      );
+      updateShiftMessagingAnStatus();
     } catch (e) {
       emit(
-        state.copyWith.call(),
+        state.copyWith.call(
+          fetchHasActiveShiftStatus: AppStatus.failure,
+        ),
       );
     }
   }
@@ -78,6 +169,7 @@ class ShiftCubit extends Cubit<ShiftState> {
 
       await fetchCurrentDaysShiftHistory();
       await fetchAllShiftHistory();
+      updateShiftMessagingAnStatus();
     } on DioException catch (e) {
       emit(
         state.copyWith.call(
@@ -128,6 +220,7 @@ class ShiftCubit extends Cubit<ShiftState> {
 
       await fetchCurrentDaysShiftHistory();
       await fetchAllShiftHistory();
+      updateShiftMessagingAnStatus();
     } on DioException catch (e) {
       emit(
         state.copyWith.call(
@@ -160,6 +253,7 @@ class ShiftCubit extends Cubit<ShiftState> {
           currentDaysShiftHistory: shiftHistory,
         ),
       );
+      updateShiftMessagingAnStatus();
     } on DioException catch (e) {
       emit(
         state.copyWith.call(
@@ -193,6 +287,7 @@ class ShiftCubit extends Cubit<ShiftState> {
           allShiftHistory: shiftHistory,
         ),
       );
+      updateShiftMessagingAnStatus();
     } on DioException catch (e) {
       emit(
         state.copyWith.call(

@@ -33,7 +33,18 @@ abstract class ShiftState with _$ShiftState {
     // end shift
     AppStatus? endShiftStatus,
     String? endShiftError,
+
+    // shift messaging
+    bool? showStartShiftButton,
+    bool? showEndShiftButton,
+    String? shiftMessaging,
   }) = _ShiftState;
 
-  factory ShiftState.initial() => ShiftState();
+  factory ShiftState.initial() => ShiftState(
+    currentDaysShiftHistory: [],
+    allShiftHistory: [],
+    showEndShiftButton: false,
+    showStartShiftButton: false,
+    shiftMessaging: '',
+  );
 }
