@@ -18,9 +18,16 @@ import 'package:simple_connection_checker/simple_connection_checker.dart'
 
 import 'application/auth/auth_cubit.dart' as _i457;
 import 'application/auth/i_auth_facade.dart' as _i485;
+import 'application/connectivity/connectivity_cubit.dart' as _i199;
+import 'application/notification/i_notification_facade.dart' as _i987;
+import 'application/notification/notification_cubit.dart' as _i478;
+import 'application/shift/i_shift_facade.dart' as _i833;
+import 'application/shift/shift_cubit.dart' as _i992;
 import 'core/injectable/http_module.dart' as _i225;
 import 'core/injectable/utility_module.dart' as _i959;
 import 'infrastructure/auth/auth_facade.dart' as _i480;
+import 'infrastructure/notification/notification_facade.dart' as _i459;
+import 'infrastructure/shift/shift_facade.dart' as _i397;
 
 const String _staging = 'staging';
 const String _dev = 'dev';
@@ -50,6 +57,9 @@ _i174.GetIt init(
     () => dioModule.provideDevBaseUrl(),
     instanceName: 'DEV_SERVER_URL',
     registerFor: {_dev},
+  );
+  gh.factory<_i199.ConnectivityCubit>(
+    () => _i199.ConnectivityCubit(gh<_i271.SimpleConnectionChecker>()),
   );
   gh.factory<String>(
     () => dioModule.provideProdBaseUrl(),
@@ -81,10 +91,22 @@ _i174.GetIt init(
       gh<_i271.SimpleConnectionChecker>(),
     ),
   );
+  gh.lazySingleton<_i833.IShiftFacade>(
+    () => _i397.ShiftFacade(gh<_i361.Dio>()),
+  );
+  gh.factory<_i992.ShiftCubit>(
+    () => _i992.ShiftCubit(gh<_i833.IShiftFacade>()),
+  );
+  gh.lazySingleton<_i987.INotificationFacade>(
+    () => _i459.NotificationFacade(gh<_i361.Dio>()),
+  );
   gh.lazySingleton<_i485.IAuthFacade>(
     () => _i480.AuthFacade(gh<_i361.Dio>(), gh<_i558.FlutterSecureStorage>()),
   );
   gh.factory<_i457.AuthCubit>(() => _i457.AuthCubit(gh<_i485.IAuthFacade>()));
+  gh.factory<_i478.NotificationCubit>(
+    () => _i478.NotificationCubit(gh<_i987.INotificationFacade>()),
+  );
   return getIt;
 }
 

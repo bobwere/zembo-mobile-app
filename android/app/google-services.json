@@ -1,0 +1,158 @@
+{
+  "project_info": {
+    "project_number": "1071810271410",
+    "project_id": "raundtable-auth",
+    "storage_bucket": "raundtable-auth.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1071810271410:android:8c83178e223fb957f851ab",
+        "android_client_info": {
+          "package_name": "com.raundtable.mobileapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1071810271410-abbhai29f5nkv0rihv6dsobonbu0l08o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.raundtable.mobileapp",
+            "certificate_hash": "c43dcf092e53c2dee57a5c0eb0e6a9b27df8e56d"
+          }
+        },
+        {
+          "client_id": "1071810271410-dv62bi70d6kdcmgscmn19005u48637oo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.raundtable.mobileapp",
+            "certificate_hash": "e88f1b069cfb6a1e4a338222d313bc950e751f48"
+          }
+        },
+        {
+          "client_id": "1071810271410-ej8ndqvco8kldtra6udmgn69dr66ohjo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.raundtable.mobileapp",
+            "certificate_hash": "f378f480a6a16c8fef3c39ee50832549e922813d"
+          }
+        },
+        {
+          "client_id": "1071810271410-k64b5i8s70jru5343ml59tcc1duuob43.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.raundtable.mobileapp",
+            "certificate_hash": "7053b517e23200703ea710f50ab43562536cfc22"
+          }
+        },
+        {
+          "client_id": "1071810271410-um1q1f1gcjkb8t20ovqah7b0n2tjgpr9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.raundtable.mobileapp",
+            "certificate_hash": "333d164a623a4da2e8a508bbca2fb2d75fcec310"
+          }
+        },
+        {
+          "client_id": "1071810271410-m5v9b5s0cejhmn2m4p6f78m0l7oobp3h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4TE6BRzpqmAjUbrLN_-tJT_isopEcYLo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1071810271410-m5v9b5s0cejhmn2m4p6f78m0l7oobp3h.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1071810271410-fmvejlff5pfc8sv3qjkq3emk7acrfbpc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.raundtable.mobileapp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1071810271410:android:93b195cc9cd8a3c2f851ab",
+        "android_client_info": {
+          "package_name": "com.raundtable.mobileapp.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1071810271410-m5v9b5s0cejhmn2m4p6f78m0l7oobp3h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4TE6BRzpqmAjUbrLN_-tJT_isopEcYLo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1071810271410-m5v9b5s0cejhmn2m4p6f78m0l7oobp3h.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1071810271410-fmvejlff5pfc8sv3qjkq3emk7acrfbpc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.raundtable.mobileapp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1071810271410:android:3d628de7df2ce57bf851ab",
+        "android_client_info": {
+          "package_name": "com.raundtable.mobileapp.stg"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1071810271410-m5v9b5s0cejhmn2m4p6f78m0l7oobp3h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4TE6BRzpqmAjUbrLN_-tJT_isopEcYLo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1071810271410-m5v9b5s0cejhmn2m4p6f78m0l7oobp3h.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1071810271410-fmvejlff5pfc8sv3qjkq3emk7acrfbpc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.raundtable.mobileapp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

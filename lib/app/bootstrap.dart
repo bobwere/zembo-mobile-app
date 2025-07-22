@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:zembo_agent_app/core/config/app_bloc_observer.dart';
 import 'package:zembo_agent_app/injection.dart';
 
@@ -18,12 +20,19 @@ Future<void> bootstrap(
 ) async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // await Firebase.initializeApp();
-
   await dotenv.load();
 
   // configure dependenices
   configureDependencies(env);
+
+  await Hive.initFlutter();
+
+  // set orientation to portrait only
+  await SystemChrome.setPreferredOrientations(
+    <DeviceOrientation>[DeviceOrientation.portraitUp],
+  );
+
+  await Firebase.initializeApp();
 
   Bloc.observer = const AppBlocObserver();
 

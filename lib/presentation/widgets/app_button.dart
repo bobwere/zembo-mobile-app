@@ -8,10 +8,12 @@ class AppButton extends StatelessWidget {
     required this.text,
     this.isFullWidth = true,
     this.isLoading = false,
+    this.width,
     super.key,
   });
 
   final bool? isFullWidth;
+  final double? width;
   final String text;
   final VoidCallback onPressed;
   final bool? isLoading;
@@ -22,7 +24,9 @@ class AppButton extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: isFullWidth ?? true ? 16 : 0),
       child: SizedBox(
-        width: isFullWidth ?? true ? MediaQuery.of(context).size.width : null,
+        width:
+            width ??
+            (isFullWidth ?? true ? MediaQuery.of(context).size.width : null),
         height: isFullWidth ?? true ? 50 : null,
         child: FilledButton(
           onPressed: onPressed,
