@@ -18,10 +18,13 @@ abstract class ShiftHistory with _$ShiftHistory {
     @JsonKey(name: 'end_location') AppLocation? endLocation,
     @JsonKey(name: 'end_photo_url') String? endPhotoUrl,
     @JsonKey(name: 'created_at') String? createdAt,
+    @JsonKey(name: 'synced') bool? synced,
   }) = _ShiftHistory;
 
   factory ShiftHistory.fromJson(Map<String, dynamic> json) =>
       _$ShiftHistoryFromJson(json);
 
-  factory ShiftHistory.initial() => ShiftHistory();
+  factory ShiftHistory.initial() => ShiftHistory(
+    synced: false,
+  );
 }

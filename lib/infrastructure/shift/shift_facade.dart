@@ -14,8 +14,12 @@ class ShiftFacade implements IShiftFacade {
     try {
       final res = await _dio.get<dynamic>('/shift-history/active');
 
+      if (res.data['data'] == null) {
+        return null;
+      }
+
       final results = Map<String, dynamic>.from(
-        res.data as Map<String, dynamic>,
+        (res.data as Map<String, dynamic>)['data'] as Map<String, dynamic>,
       );
 
       final shiftHistory = ShiftHistory.fromJson(results);

@@ -2,7 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
+import 'package:simple_connection_checker/simple_connection_checker.dart';
 import 'package:zembo_agent_app/application/auth/i_auth_facade.dart';
+import 'package:zembo_agent_app/application/local_db/i_localdb_facade.dart';
 import 'package:zembo_agent_app/core/constants/enum.dart';
 import 'package:zembo_agent_app/domain/user/user.dart';
 
@@ -11,9 +13,10 @@ part 'auth_state.dart';
 
 @injectable
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit(this._authFacade) : super(AuthState.initial());
+  AuthCubit(this._authFacade, this._localDBFacade) : super(AuthState.initial());
 
   final IAuthFacade _authFacade;
+  final ILocalDBFacade _localDBFacade;
 
   Future<void> initialize() async {
     final token = await _authFacade.getToken();
@@ -25,7 +28,7 @@ class AuthCubit extends Cubit<AuthState> {
 
     await getUserProfile();
 
-    if (state.user == null) {
+    if (state.user == User.initial()) {
       emit(state.copyWith.call(isAuthenticated: false));
       return;
     }
@@ -34,6 +37,14 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> getUserProfile() async {
+    final isConnected = await SimpleConnectionChecker.isConnectedToInternet();
+
+    if (!isConnected) {
+      final user = await _localDBFacade.getUser();
+      emit(state.copyWith.call(user: user));
+      return;
+    }
+
     final user = await _authFacade.getSignedInUser();
     emit(state.copyWith.call(user: user));
   }
@@ -50,6 +61,10 @@ class AuthCubit extends Cubit<AuthState> {
       );
 
       await getUserProfile();
+
+      if (state.user != User.initial() && state.user != null) {
+        await _localDBFacade.saveUser(state.user!);
+      }
 
       emit(state.copyWith.call(signInFormStatus: AppStatus.success));
     } on DioException catch (e) {

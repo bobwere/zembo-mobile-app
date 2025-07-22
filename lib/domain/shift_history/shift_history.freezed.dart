@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ShiftHistory {
 
-@JsonKey(name: 'id') int? get id;@JsonKey(name: 'user') User? get user;@JsonKey(name: 'shift') Shift? get shift;@JsonKey(name: 'start_time') String? get startTime;@JsonKey(name: 'start_location') AppLocation? get startLocation;@JsonKey(name: 'start_photo_url') String? get startPhotoUrl;@JsonKey(name: 'end_time') String? get endTime;@JsonKey(name: 'end_location') AppLocation? get endLocation;@JsonKey(name: 'end_photo_url') String? get endPhotoUrl;@JsonKey(name: 'created_at') String? get createdAt;
+@JsonKey(name: 'id') int? get id;@JsonKey(name: 'user') User? get user;@JsonKey(name: 'shift') Shift? get shift;@JsonKey(name: 'start_time') String? get startTime;@JsonKey(name: 'start_location') AppLocation? get startLocation;@JsonKey(name: 'start_photo_url') String? get startPhotoUrl;@JsonKey(name: 'end_time') String? get endTime;@JsonKey(name: 'end_location') AppLocation? get endLocation;@JsonKey(name: 'end_photo_url') String? get endPhotoUrl;@JsonKey(name: 'created_at') String? get createdAt;@JsonKey(name: 'synced') bool? get synced;
 /// Create a copy of ShiftHistory
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $ShiftHistoryCopyWith<ShiftHistory> get copyWith => _$ShiftHistoryCopyWithImpl<S
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShiftHistory&&(identical(other.id, id) || other.id == id)&&(identical(other.user, user) || other.user == user)&&(identical(other.shift, shift) || other.shift == shift)&&(identical(other.startTime, startTime) || other.startTime == startTime)&&(identical(other.startLocation, startLocation) || other.startLocation == startLocation)&&(identical(other.startPhotoUrl, startPhotoUrl) || other.startPhotoUrl == startPhotoUrl)&&(identical(other.endTime, endTime) || other.endTime == endTime)&&(identical(other.endLocation, endLocation) || other.endLocation == endLocation)&&(identical(other.endPhotoUrl, endPhotoUrl) || other.endPhotoUrl == endPhotoUrl)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShiftHistory&&(identical(other.id, id) || other.id == id)&&(identical(other.user, user) || other.user == user)&&(identical(other.shift, shift) || other.shift == shift)&&(identical(other.startTime, startTime) || other.startTime == startTime)&&(identical(other.startLocation, startLocation) || other.startLocation == startLocation)&&(identical(other.startPhotoUrl, startPhotoUrl) || other.startPhotoUrl == startPhotoUrl)&&(identical(other.endTime, endTime) || other.endTime == endTime)&&(identical(other.endLocation, endLocation) || other.endLocation == endLocation)&&(identical(other.endPhotoUrl, endPhotoUrl) || other.endPhotoUrl == endPhotoUrl)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.synced, synced) || other.synced == synced));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,user,shift,startTime,startLocation,startPhotoUrl,endTime,endLocation,endPhotoUrl,createdAt);
+int get hashCode => Object.hash(runtimeType,id,user,shift,startTime,startLocation,startPhotoUrl,endTime,endLocation,endPhotoUrl,createdAt,synced);
 
 @override
 String toString() {
-  return 'ShiftHistory(id: $id, user: $user, shift: $shift, startTime: $startTime, startLocation: $startLocation, startPhotoUrl: $startPhotoUrl, endTime: $endTime, endLocation: $endLocation, endPhotoUrl: $endPhotoUrl, createdAt: $createdAt)';
+  return 'ShiftHistory(id: $id, user: $user, shift: $shift, startTime: $startTime, startLocation: $startLocation, startPhotoUrl: $startPhotoUrl, endTime: $endTime, endLocation: $endLocation, endPhotoUrl: $endPhotoUrl, createdAt: $createdAt, synced: $synced)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $ShiftHistoryCopyWith<$Res>  {
   factory $ShiftHistoryCopyWith(ShiftHistory value, $Res Function(ShiftHistory) _then) = _$ShiftHistoryCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'id') int? id,@JsonKey(name: 'user') User? user,@JsonKey(name: 'shift') Shift? shift,@JsonKey(name: 'start_time') String? startTime,@JsonKey(name: 'start_location') AppLocation? startLocation,@JsonKey(name: 'start_photo_url') String? startPhotoUrl,@JsonKey(name: 'end_time') String? endTime,@JsonKey(name: 'end_location') AppLocation? endLocation,@JsonKey(name: 'end_photo_url') String? endPhotoUrl,@JsonKey(name: 'created_at') String? createdAt
+@JsonKey(name: 'id') int? id,@JsonKey(name: 'user') User? user,@JsonKey(name: 'shift') Shift? shift,@JsonKey(name: 'start_time') String? startTime,@JsonKey(name: 'start_location') AppLocation? startLocation,@JsonKey(name: 'start_photo_url') String? startPhotoUrl,@JsonKey(name: 'end_time') String? endTime,@JsonKey(name: 'end_location') AppLocation? endLocation,@JsonKey(name: 'end_photo_url') String? endPhotoUrl,@JsonKey(name: 'created_at') String? createdAt,@JsonKey(name: 'synced') bool? synced
 });
 
 
@@ -65,7 +65,7 @@ class _$ShiftHistoryCopyWithImpl<$Res>
 
 /// Create a copy of ShiftHistory
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? user = freezed,Object? shift = freezed,Object? startTime = freezed,Object? startLocation = freezed,Object? startPhotoUrl = freezed,Object? endTime = freezed,Object? endLocation = freezed,Object? endPhotoUrl = freezed,Object? createdAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? user = freezed,Object? shift = freezed,Object? startTime = freezed,Object? startLocation = freezed,Object? startPhotoUrl = freezed,Object? endTime = freezed,Object? endLocation = freezed,Object? endPhotoUrl = freezed,Object? createdAt = freezed,Object? synced = freezed,}) {
   return _then(_self.copyWith(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,user: freezed == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
@@ -77,7 +77,8 @@ as String?,endTime: freezed == endTime ? _self.endTime : endTime // ignore: cast
 as String?,endLocation: freezed == endLocation ? _self.endLocation : endLocation // ignore: cast_nullable_to_non_nullable
 as AppLocation?,endPhotoUrl: freezed == endPhotoUrl ? _self.endPhotoUrl : endPhotoUrl // ignore: cast_nullable_to_non_nullable
 as String?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,synced: freezed == synced ? _self.synced : synced // ignore: cast_nullable_to_non_nullable
+as bool?,
   ));
 }
 /// Create a copy of ShiftHistory
@@ -210,10 +211,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'user')  User? user, @JsonKey(name: 'shift')  Shift? shift, @JsonKey(name: 'start_time')  String? startTime, @JsonKey(name: 'start_location')  AppLocation? startLocation, @JsonKey(name: 'start_photo_url')  String? startPhotoUrl, @JsonKey(name: 'end_time')  String? endTime, @JsonKey(name: 'end_location')  AppLocation? endLocation, @JsonKey(name: 'end_photo_url')  String? endPhotoUrl, @JsonKey(name: 'created_at')  String? createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'user')  User? user, @JsonKey(name: 'shift')  Shift? shift, @JsonKey(name: 'start_time')  String? startTime, @JsonKey(name: 'start_location')  AppLocation? startLocation, @JsonKey(name: 'start_photo_url')  String? startPhotoUrl, @JsonKey(name: 'end_time')  String? endTime, @JsonKey(name: 'end_location')  AppLocation? endLocation, @JsonKey(name: 'end_photo_url')  String? endPhotoUrl, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'synced')  bool? synced)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ShiftHistory() when $default != null:
-return $default(_that.id,_that.user,_that.shift,_that.startTime,_that.startLocation,_that.startPhotoUrl,_that.endTime,_that.endLocation,_that.endPhotoUrl,_that.createdAt);case _:
+return $default(_that.id,_that.user,_that.shift,_that.startTime,_that.startLocation,_that.startPhotoUrl,_that.endTime,_that.endLocation,_that.endPhotoUrl,_that.createdAt,_that.synced);case _:
   return orElse();
 
 }
@@ -231,10 +232,10 @@ return $default(_that.id,_that.user,_that.shift,_that.startTime,_that.startLocat
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'user')  User? user, @JsonKey(name: 'shift')  Shift? shift, @JsonKey(name: 'start_time')  String? startTime, @JsonKey(name: 'start_location')  AppLocation? startLocation, @JsonKey(name: 'start_photo_url')  String? startPhotoUrl, @JsonKey(name: 'end_time')  String? endTime, @JsonKey(name: 'end_location')  AppLocation? endLocation, @JsonKey(name: 'end_photo_url')  String? endPhotoUrl, @JsonKey(name: 'created_at')  String? createdAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'user')  User? user, @JsonKey(name: 'shift')  Shift? shift, @JsonKey(name: 'start_time')  String? startTime, @JsonKey(name: 'start_location')  AppLocation? startLocation, @JsonKey(name: 'start_photo_url')  String? startPhotoUrl, @JsonKey(name: 'end_time')  String? endTime, @JsonKey(name: 'end_location')  AppLocation? endLocation, @JsonKey(name: 'end_photo_url')  String? endPhotoUrl, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'synced')  bool? synced)  $default,) {final _that = this;
 switch (_that) {
 case _ShiftHistory():
-return $default(_that.id,_that.user,_that.shift,_that.startTime,_that.startLocation,_that.startPhotoUrl,_that.endTime,_that.endLocation,_that.endPhotoUrl,_that.createdAt);case _:
+return $default(_that.id,_that.user,_that.shift,_that.startTime,_that.startLocation,_that.startPhotoUrl,_that.endTime,_that.endLocation,_that.endPhotoUrl,_that.createdAt,_that.synced);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -251,10 +252,10 @@ return $default(_that.id,_that.user,_that.shift,_that.startTime,_that.startLocat
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'user')  User? user, @JsonKey(name: 'shift')  Shift? shift, @JsonKey(name: 'start_time')  String? startTime, @JsonKey(name: 'start_location')  AppLocation? startLocation, @JsonKey(name: 'start_photo_url')  String? startPhotoUrl, @JsonKey(name: 'end_time')  String? endTime, @JsonKey(name: 'end_location')  AppLocation? endLocation, @JsonKey(name: 'end_photo_url')  String? endPhotoUrl, @JsonKey(name: 'created_at')  String? createdAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'user')  User? user, @JsonKey(name: 'shift')  Shift? shift, @JsonKey(name: 'start_time')  String? startTime, @JsonKey(name: 'start_location')  AppLocation? startLocation, @JsonKey(name: 'start_photo_url')  String? startPhotoUrl, @JsonKey(name: 'end_time')  String? endTime, @JsonKey(name: 'end_location')  AppLocation? endLocation, @JsonKey(name: 'end_photo_url')  String? endPhotoUrl, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'synced')  bool? synced)?  $default,) {final _that = this;
 switch (_that) {
 case _ShiftHistory() when $default != null:
-return $default(_that.id,_that.user,_that.shift,_that.startTime,_that.startLocation,_that.startPhotoUrl,_that.endTime,_that.endLocation,_that.endPhotoUrl,_that.createdAt);case _:
+return $default(_that.id,_that.user,_that.shift,_that.startTime,_that.startLocation,_that.startPhotoUrl,_that.endTime,_that.endLocation,_that.endPhotoUrl,_that.createdAt,_that.synced);case _:
   return null;
 
 }
@@ -266,7 +267,7 @@ return $default(_that.id,_that.user,_that.shift,_that.startTime,_that.startLocat
 @JsonSerializable()
 
 class _ShiftHistory implements ShiftHistory {
-   _ShiftHistory({@JsonKey(name: 'id') this.id, @JsonKey(name: 'user') this.user, @JsonKey(name: 'shift') this.shift, @JsonKey(name: 'start_time') this.startTime, @JsonKey(name: 'start_location') this.startLocation, @JsonKey(name: 'start_photo_url') this.startPhotoUrl, @JsonKey(name: 'end_time') this.endTime, @JsonKey(name: 'end_location') this.endLocation, @JsonKey(name: 'end_photo_url') this.endPhotoUrl, @JsonKey(name: 'created_at') this.createdAt});
+   _ShiftHistory({@JsonKey(name: 'id') this.id, @JsonKey(name: 'user') this.user, @JsonKey(name: 'shift') this.shift, @JsonKey(name: 'start_time') this.startTime, @JsonKey(name: 'start_location') this.startLocation, @JsonKey(name: 'start_photo_url') this.startPhotoUrl, @JsonKey(name: 'end_time') this.endTime, @JsonKey(name: 'end_location') this.endLocation, @JsonKey(name: 'end_photo_url') this.endPhotoUrl, @JsonKey(name: 'created_at') this.createdAt, @JsonKey(name: 'synced') this.synced});
   factory _ShiftHistory.fromJson(Map<String, dynamic> json) => _$ShiftHistoryFromJson(json);
 
 @override@JsonKey(name: 'id') final  int? id;
@@ -279,6 +280,7 @@ class _ShiftHistory implements ShiftHistory {
 @override@JsonKey(name: 'end_location') final  AppLocation? endLocation;
 @override@JsonKey(name: 'end_photo_url') final  String? endPhotoUrl;
 @override@JsonKey(name: 'created_at') final  String? createdAt;
+@override@JsonKey(name: 'synced') final  bool? synced;
 
 /// Create a copy of ShiftHistory
 /// with the given fields replaced by the non-null parameter values.
@@ -293,16 +295,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShiftHistory&&(identical(other.id, id) || other.id == id)&&(identical(other.user, user) || other.user == user)&&(identical(other.shift, shift) || other.shift == shift)&&(identical(other.startTime, startTime) || other.startTime == startTime)&&(identical(other.startLocation, startLocation) || other.startLocation == startLocation)&&(identical(other.startPhotoUrl, startPhotoUrl) || other.startPhotoUrl == startPhotoUrl)&&(identical(other.endTime, endTime) || other.endTime == endTime)&&(identical(other.endLocation, endLocation) || other.endLocation == endLocation)&&(identical(other.endPhotoUrl, endPhotoUrl) || other.endPhotoUrl == endPhotoUrl)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShiftHistory&&(identical(other.id, id) || other.id == id)&&(identical(other.user, user) || other.user == user)&&(identical(other.shift, shift) || other.shift == shift)&&(identical(other.startTime, startTime) || other.startTime == startTime)&&(identical(other.startLocation, startLocation) || other.startLocation == startLocation)&&(identical(other.startPhotoUrl, startPhotoUrl) || other.startPhotoUrl == startPhotoUrl)&&(identical(other.endTime, endTime) || other.endTime == endTime)&&(identical(other.endLocation, endLocation) || other.endLocation == endLocation)&&(identical(other.endPhotoUrl, endPhotoUrl) || other.endPhotoUrl == endPhotoUrl)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.synced, synced) || other.synced == synced));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,user,shift,startTime,startLocation,startPhotoUrl,endTime,endLocation,endPhotoUrl,createdAt);
+int get hashCode => Object.hash(runtimeType,id,user,shift,startTime,startLocation,startPhotoUrl,endTime,endLocation,endPhotoUrl,createdAt,synced);
 
 @override
 String toString() {
-  return 'ShiftHistory(id: $id, user: $user, shift: $shift, startTime: $startTime, startLocation: $startLocation, startPhotoUrl: $startPhotoUrl, endTime: $endTime, endLocation: $endLocation, endPhotoUrl: $endPhotoUrl, createdAt: $createdAt)';
+  return 'ShiftHistory(id: $id, user: $user, shift: $shift, startTime: $startTime, startLocation: $startLocation, startPhotoUrl: $startPhotoUrl, endTime: $endTime, endLocation: $endLocation, endPhotoUrl: $endPhotoUrl, createdAt: $createdAt, synced: $synced)';
 }
 
 
@@ -313,7 +315,7 @@ abstract mixin class _$ShiftHistoryCopyWith<$Res> implements $ShiftHistoryCopyWi
   factory _$ShiftHistoryCopyWith(_ShiftHistory value, $Res Function(_ShiftHistory) _then) = __$ShiftHistoryCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'id') int? id,@JsonKey(name: 'user') User? user,@JsonKey(name: 'shift') Shift? shift,@JsonKey(name: 'start_time') String? startTime,@JsonKey(name: 'start_location') AppLocation? startLocation,@JsonKey(name: 'start_photo_url') String? startPhotoUrl,@JsonKey(name: 'end_time') String? endTime,@JsonKey(name: 'end_location') AppLocation? endLocation,@JsonKey(name: 'end_photo_url') String? endPhotoUrl,@JsonKey(name: 'created_at') String? createdAt
+@JsonKey(name: 'id') int? id,@JsonKey(name: 'user') User? user,@JsonKey(name: 'shift') Shift? shift,@JsonKey(name: 'start_time') String? startTime,@JsonKey(name: 'start_location') AppLocation? startLocation,@JsonKey(name: 'start_photo_url') String? startPhotoUrl,@JsonKey(name: 'end_time') String? endTime,@JsonKey(name: 'end_location') AppLocation? endLocation,@JsonKey(name: 'end_photo_url') String? endPhotoUrl,@JsonKey(name: 'created_at') String? createdAt,@JsonKey(name: 'synced') bool? synced
 });
 
 
@@ -330,7 +332,7 @@ class __$ShiftHistoryCopyWithImpl<$Res>
 
 /// Create a copy of ShiftHistory
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? user = freezed,Object? shift = freezed,Object? startTime = freezed,Object? startLocation = freezed,Object? startPhotoUrl = freezed,Object? endTime = freezed,Object? endLocation = freezed,Object? endPhotoUrl = freezed,Object? createdAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? user = freezed,Object? shift = freezed,Object? startTime = freezed,Object? startLocation = freezed,Object? startPhotoUrl = freezed,Object? endTime = freezed,Object? endLocation = freezed,Object? endPhotoUrl = freezed,Object? createdAt = freezed,Object? synced = freezed,}) {
   return _then(_ShiftHistory(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,user: freezed == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
@@ -342,7 +344,8 @@ as String?,endTime: freezed == endTime ? _self.endTime : endTime // ignore: cast
 as String?,endLocation: freezed == endLocation ? _self.endLocation : endLocation // ignore: cast_nullable_to_non_nullable
 as AppLocation?,endPhotoUrl: freezed == endPhotoUrl ? _self.endPhotoUrl : endPhotoUrl // ignore: cast_nullable_to_non_nullable
 as String?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,synced: freezed == synced ? _self.synced : synced // ignore: cast_nullable_to_non_nullable
+as bool?,
   ));
 }
 

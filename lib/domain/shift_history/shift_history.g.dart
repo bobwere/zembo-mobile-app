@@ -28,6 +28,7 @@ _ShiftHistory _$ShiftHistoryFromJson(Map<String, dynamic> json) =>
           : AppLocation.fromJson(json['end_location'] as Map<String, dynamic>),
       endPhotoUrl: json['end_photo_url'] as String?,
       createdAt: json['created_at'] as String?,
+      synced: json['synced'] as bool?,
     );
 
 Map<String, dynamic> _$ShiftHistoryToJson(_ShiftHistory instance) =>
@@ -42,4 +43,5 @@ Map<String, dynamic> _$ShiftHistoryToJson(_ShiftHistory instance) =>
       'end_location': instance.endLocation,
       'end_photo_url': instance.endPhotoUrl,
       'created_at': instance.createdAt,
+      'synced': instance.synced,
     };

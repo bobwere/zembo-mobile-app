@@ -19,6 +19,7 @@ import 'package:simple_connection_checker/simple_connection_checker.dart'
 import 'application/auth/auth_cubit.dart' as _i457;
 import 'application/auth/i_auth_facade.dart' as _i485;
 import 'application/connectivity/connectivity_cubit.dart' as _i199;
+import 'application/local_db/i_localdb_facade.dart' as _i935;
 import 'application/notification/i_notification_facade.dart' as _i987;
 import 'application/notification/notification_cubit.dart' as _i478;
 import 'application/shift/i_shift_facade.dart' as _i833;
@@ -26,6 +27,7 @@ import 'application/shift/shift_cubit.dart' as _i992;
 import 'core/injectable/http_module.dart' as _i225;
 import 'core/injectable/utility_module.dart' as _i959;
 import 'infrastructure/auth/auth_facade.dart' as _i480;
+import 'infrastructure/local_db/local_db_facade.dart' as _i1027;
 import 'infrastructure/notification/notification_facade.dart' as _i459;
 import 'infrastructure/shift/shift_facade.dart' as _i397;
 
@@ -48,6 +50,7 @@ _i174.GetIt init(
   gh.lazySingleton<_i558.FlutterSecureStorage>(
     () => utilityModule.flutterSecureStorage,
   );
+  gh.lazySingleton<_i935.ILocalDBFacade>(() => _i1027.LocalDBFacade());
   gh.factory<String>(
     () => dioModule.provideStagingBaseUrl(),
     instanceName: 'STAGING_SERVER_URL',
@@ -95,7 +98,8 @@ _i174.GetIt init(
     () => _i397.ShiftFacade(gh<_i361.Dio>()),
   );
   gh.factory<_i992.ShiftCubit>(
-    () => _i992.ShiftCubit(gh<_i833.IShiftFacade>()),
+    () =>
+        _i992.ShiftCubit(gh<_i833.IShiftFacade>(), gh<_i935.ILocalDBFacade>()),
   );
   gh.lazySingleton<_i987.INotificationFacade>(
     () => _i459.NotificationFacade(gh<_i361.Dio>()),
@@ -103,7 +107,9 @@ _i174.GetIt init(
   gh.lazySingleton<_i485.IAuthFacade>(
     () => _i480.AuthFacade(gh<_i361.Dio>(), gh<_i558.FlutterSecureStorage>()),
   );
-  gh.factory<_i457.AuthCubit>(() => _i457.AuthCubit(gh<_i485.IAuthFacade>()));
+  gh.factory<_i457.AuthCubit>(
+    () => _i457.AuthCubit(gh<_i485.IAuthFacade>(), gh<_i935.ILocalDBFacade>()),
+  );
   gh.factory<_i478.NotificationCubit>(
     () => _i478.NotificationCubit(gh<_i987.INotificationFacade>()),
   );

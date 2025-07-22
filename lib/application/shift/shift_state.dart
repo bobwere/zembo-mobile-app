@@ -34,6 +34,10 @@ abstract class ShiftState with _$ShiftState {
     AppStatus? endShiftStatus,
     String? endShiftError,
 
+    // geolocation events
+    AppStatus? geoLocationStatus,
+    AppStatus? geoRadiusStatus,
+
     // shift messaging
     bool? showStartShiftButton,
     bool? showEndShiftButton,
