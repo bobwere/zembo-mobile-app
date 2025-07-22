@@ -33,12 +33,12 @@ $ShiftStateCopyWith<ShiftState> get copyWith => _$ShiftStateCopyWithImpl<ShiftSt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShiftState&&const DeepCollectionEquality().equals(other.currentStation, currentStation)&&const DeepCollectionEquality().equals(other.currentShift, currentShift)&&(identical(other.activeShift, activeShift) || other.activeShift == activeShift)&&const DeepCollectionEquality().equals(other.currentDaysShiftHistory, currentDaysShiftHistory)&&(identical(other.fetchCurrentDaysShiftHistoryStatus, fetchCurrentDaysShiftHistoryStatus) || other.fetchCurrentDaysShiftHistoryStatus == fetchCurrentDaysShiftHistoryStatus)&&(identical(other.fetchDaysShiftHistoryError, fetchDaysShiftHistoryError) || other.fetchDaysShiftHistoryError == fetchDaysShiftHistoryError)&&const DeepCollectionEquality().equals(other.allShiftHistory, allShiftHistory)&&(identical(other.fetchAllShiftHistoryStatus, fetchAllShiftHistoryStatus) || other.fetchAllShiftHistoryStatus == fetchAllShiftHistoryStatus)&&(identical(other.fetchAllShiftHistoryError, fetchAllShiftHistoryError) || other.fetchAllShiftHistoryError == fetchAllShiftHistoryError)&&(identical(other.hasActiveShift, hasActiveShift) || other.hasActiveShift == hasActiveShift)&&(identical(other.fetchHasActiveShiftStatus, fetchHasActiveShiftStatus) || other.fetchHasActiveShiftStatus == fetchHasActiveShiftStatus)&&(identical(other.fetchHasActiveShiftError, fetchHasActiveShiftError) || other.fetchHasActiveShiftError == fetchHasActiveShiftError)&&(identical(other.startShiftStatus, startShiftStatus) || other.startShiftStatus == startShiftStatus)&&(identical(other.startShiftError, startShiftError) || other.startShiftError == startShiftError)&&(identical(other.endShiftStatus, endShiftStatus) || other.endShiftStatus == endShiftStatus)&&(identical(other.endShiftError, endShiftError) || other.endShiftError == endShiftError));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShiftState&&(identical(other.currentStation, currentStation) || other.currentStation == currentStation)&&(identical(other.currentShift, currentShift) || other.currentShift == currentShift)&&(identical(other.activeShift, activeShift) || other.activeShift == activeShift)&&const DeepCollectionEquality().equals(other.currentDaysShiftHistory, currentDaysShiftHistory)&&(identical(other.fetchCurrentDaysShiftHistoryStatus, fetchCurrentDaysShiftHistoryStatus) || other.fetchCurrentDaysShiftHistoryStatus == fetchCurrentDaysShiftHistoryStatus)&&(identical(other.fetchDaysShiftHistoryError, fetchDaysShiftHistoryError) || other.fetchDaysShiftHistoryError == fetchDaysShiftHistoryError)&&const DeepCollectionEquality().equals(other.allShiftHistory, allShiftHistory)&&(identical(other.fetchAllShiftHistoryStatus, fetchAllShiftHistoryStatus) || other.fetchAllShiftHistoryStatus == fetchAllShiftHistoryStatus)&&(identical(other.fetchAllShiftHistoryError, fetchAllShiftHistoryError) || other.fetchAllShiftHistoryError == fetchAllShiftHistoryError)&&(identical(other.hasActiveShift, hasActiveShift) || other.hasActiveShift == hasActiveShift)&&(identical(other.fetchHasActiveShiftStatus, fetchHasActiveShiftStatus) || other.fetchHasActiveShiftStatus == fetchHasActiveShiftStatus)&&(identical(other.fetchHasActiveShiftError, fetchHasActiveShiftError) || other.fetchHasActiveShiftError == fetchHasActiveShiftError)&&(identical(other.startShiftStatus, startShiftStatus) || other.startShiftStatus == startShiftStatus)&&(identical(other.startShiftError, startShiftError) || other.startShiftError == startShiftError)&&(identical(other.endShiftStatus, endShiftStatus) || other.endShiftStatus == endShiftStatus)&&(identical(other.endShiftError, endShiftError) || other.endShiftError == endShiftError));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(currentStation),const DeepCollectionEquality().hash(currentShift),activeShift,const DeepCollectionEquality().hash(currentDaysShiftHistory),fetchCurrentDaysShiftHistoryStatus,fetchDaysShiftHistoryError,const DeepCollectionEquality().hash(allShiftHistory),fetchAllShiftHistoryStatus,fetchAllShiftHistoryError,hasActiveShift,fetchHasActiveShiftStatus,fetchHasActiveShiftError,startShiftStatus,startShiftError,endShiftStatus,endShiftError);
+int get hashCode => Object.hash(runtimeType,currentStation,currentShift,activeShift,const DeepCollectionEquality().hash(currentDaysShiftHistory),fetchCurrentDaysShiftHistoryStatus,fetchDaysShiftHistoryError,const DeepCollectionEquality().hash(allShiftHistory),fetchAllShiftHistoryStatus,fetchAllShiftHistoryError,hasActiveShift,fetchHasActiveShiftStatus,fetchHasActiveShiftError,startShiftStatus,startShiftError,endShiftStatus,endShiftError);
 
 @override
 String toString() {
@@ -57,7 +57,7 @@ $Res call({
 });
 
 
-$ShiftHistoryCopyWith<$Res>? get activeShift;
+$StationCopyWith<$Res>? get currentStation;$ShiftCopyWith<$Res>? get currentShift;$ShiftHistoryCopyWith<$Res>? get activeShift;
 
 }
 /// @nodoc
@@ -92,6 +92,30 @@ as String?,
   ));
 }
 /// Create a copy of ShiftState
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$StationCopyWith<$Res>? get currentStation {
+    if (_self.currentStation == null) {
+    return null;
+  }
+
+  return $StationCopyWith<$Res>(_self.currentStation!, (value) {
+    return _then(_self.copyWith(currentStation: value));
+  });
+}/// Create a copy of ShiftState
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ShiftCopyWith<$Res>? get currentShift {
+    if (_self.currentShift == null) {
+    return null;
+  }
+
+  return $ShiftCopyWith<$Res>(_self.currentShift!, (value) {
+    return _then(_self.copyWith(currentShift: value));
+  });
+}/// Create a copy of ShiftState
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
@@ -297,12 +321,12 @@ _$ShiftStateCopyWith<_ShiftState> get copyWith => __$ShiftStateCopyWithImpl<_Shi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShiftState&&const DeepCollectionEquality().equals(other.currentStation, currentStation)&&const DeepCollectionEquality().equals(other.currentShift, currentShift)&&(identical(other.activeShift, activeShift) || other.activeShift == activeShift)&&const DeepCollectionEquality().equals(other._currentDaysShiftHistory, _currentDaysShiftHistory)&&(identical(other.fetchCurrentDaysShiftHistoryStatus, fetchCurrentDaysShiftHistoryStatus) || other.fetchCurrentDaysShiftHistoryStatus == fetchCurrentDaysShiftHistoryStatus)&&(identical(other.fetchDaysShiftHistoryError, fetchDaysShiftHistoryError) || other.fetchDaysShiftHistoryError == fetchDaysShiftHistoryError)&&const DeepCollectionEquality().equals(other._allShiftHistory, _allShiftHistory)&&(identical(other.fetchAllShiftHistoryStatus, fetchAllShiftHistoryStatus) || other.fetchAllShiftHistoryStatus == fetchAllShiftHistoryStatus)&&(identical(other.fetchAllShiftHistoryError, fetchAllShiftHistoryError) || other.fetchAllShiftHistoryError == fetchAllShiftHistoryError)&&(identical(other.hasActiveShift, hasActiveShift) || other.hasActiveShift == hasActiveShift)&&(identical(other.fetchHasActiveShiftStatus, fetchHasActiveShiftStatus) || other.fetchHasActiveShiftStatus == fetchHasActiveShiftStatus)&&(identical(other.fetchHasActiveShiftError, fetchHasActiveShiftError) || other.fetchHasActiveShiftError == fetchHasActiveShiftError)&&(identical(other.startShiftStatus, startShiftStatus) || other.startShiftStatus == startShiftStatus)&&(identical(other.startShiftError, startShiftError) || other.startShiftError == startShiftError)&&(identical(other.endShiftStatus, endShiftStatus) || other.endShiftStatus == endShiftStatus)&&(identical(other.endShiftError, endShiftError) || other.endShiftError == endShiftError));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShiftState&&(identical(other.currentStation, currentStation) || other.currentStation == currentStation)&&(identical(other.currentShift, currentShift) || other.currentShift == currentShift)&&(identical(other.activeShift, activeShift) || other.activeShift == activeShift)&&const DeepCollectionEquality().equals(other._currentDaysShiftHistory, _currentDaysShiftHistory)&&(identical(other.fetchCurrentDaysShiftHistoryStatus, fetchCurrentDaysShiftHistoryStatus) || other.fetchCurrentDaysShiftHistoryStatus == fetchCurrentDaysShiftHistoryStatus)&&(identical(other.fetchDaysShiftHistoryError, fetchDaysShiftHistoryError) || other.fetchDaysShiftHistoryError == fetchDaysShiftHistoryError)&&const DeepCollectionEquality().equals(other._allShiftHistory, _allShiftHistory)&&(identical(other.fetchAllShiftHistoryStatus, fetchAllShiftHistoryStatus) || other.fetchAllShiftHistoryStatus == fetchAllShiftHistoryStatus)&&(identical(other.fetchAllShiftHistoryError, fetchAllShiftHistoryError) || other.fetchAllShiftHistoryError == fetchAllShiftHistoryError)&&(identical(other.hasActiveShift, hasActiveShift) || other.hasActiveShift == hasActiveShift)&&(identical(other.fetchHasActiveShiftStatus, fetchHasActiveShiftStatus) || other.fetchHasActiveShiftStatus == fetchHasActiveShiftStatus)&&(identical(other.fetchHasActiveShiftError, fetchHasActiveShiftError) || other.fetchHasActiveShiftError == fetchHasActiveShiftError)&&(identical(other.startShiftStatus, startShiftStatus) || other.startShiftStatus == startShiftStatus)&&(identical(other.startShiftError, startShiftError) || other.startShiftError == startShiftError)&&(identical(other.endShiftStatus, endShiftStatus) || other.endShiftStatus == endShiftStatus)&&(identical(other.endShiftError, endShiftError) || other.endShiftError == endShiftError));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(currentStation),const DeepCollectionEquality().hash(currentShift),activeShift,const DeepCollectionEquality().hash(_currentDaysShiftHistory),fetchCurrentDaysShiftHistoryStatus,fetchDaysShiftHistoryError,const DeepCollectionEquality().hash(_allShiftHistory),fetchAllShiftHistoryStatus,fetchAllShiftHistoryError,hasActiveShift,fetchHasActiveShiftStatus,fetchHasActiveShiftError,startShiftStatus,startShiftError,endShiftStatus,endShiftError);
+int get hashCode => Object.hash(runtimeType,currentStation,currentShift,activeShift,const DeepCollectionEquality().hash(_currentDaysShiftHistory),fetchCurrentDaysShiftHistoryStatus,fetchDaysShiftHistoryError,const DeepCollectionEquality().hash(_allShiftHistory),fetchAllShiftHistoryStatus,fetchAllShiftHistoryError,hasActiveShift,fetchHasActiveShiftStatus,fetchHasActiveShiftError,startShiftStatus,startShiftError,endShiftStatus,endShiftError);
 
 @override
 String toString() {
@@ -321,7 +345,7 @@ $Res call({
 });
 
 
-@override $ShiftHistoryCopyWith<$Res>? get activeShift;
+@override $StationCopyWith<$Res>? get currentStation;@override $ShiftCopyWith<$Res>? get currentShift;@override $ShiftHistoryCopyWith<$Res>? get activeShift;
 
 }
 /// @nodoc
@@ -357,6 +381,30 @@ as String?,
 }
 
 /// Create a copy of ShiftState
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$StationCopyWith<$Res>? get currentStation {
+    if (_self.currentStation == null) {
+    return null;
+  }
+
+  return $StationCopyWith<$Res>(_self.currentStation!, (value) {
+    return _then(_self.copyWith(currentStation: value));
+  });
+}/// Create a copy of ShiftState
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ShiftCopyWith<$Res>? get currentShift {
+    if (_self.currentShift == null) {
+    return null;
+  }
+
+  return $ShiftCopyWith<$Res>(_self.currentShift!, (value) {
+    return _then(_self.copyWith(currentShift: value));
+  });
+}/// Create a copy of ShiftState
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')

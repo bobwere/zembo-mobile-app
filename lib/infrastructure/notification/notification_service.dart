@@ -39,148 +39,154 @@ class NotificationService {
   }
 
   Future<void> initialize(BuildContext context) async {
-    final hasPermission =
-        await const FlutterSecureStorage().read(
-          key: 'notification_permission',
-        ) ??
-        'false';
+    try {
+      final hasPermission =
+          await const FlutterSecureStorage().read(
+            key: 'notification_permission',
+          ) ??
+          'false';
 
-    if (bool.parse(hasPermission)) {
-      // Configure Local Notification settings
-      const initializationSettingsAndroid = AndroidInitializationSettings(
-        'ic_launcher',
-      );
-
-      const initializationSettingsDarwin = DarwinInitializationSettings();
-
-      const initializationSettings = InitializationSettings(
-        android: initializationSettingsAndroid,
-        iOS: initializationSettingsDarwin,
-      );
-
-      await _flutterLocalNotificationsPlugin.initialize(
-        initializationSettings,
-        onDidReceiveNotificationResponse: _onDidReceiveNotificationResponse,
-      );
-
-      // Listen for foreground messages
-      FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-        final msgTitle = message.notification?.title;
-
-        log(msgTitle ?? '');
-        log('_start: ${msgTitle ?? ''}');
-
-        // log('firebase :: Received a foreground message: ${message.messageId}');
-        if (message.notification?.title != null) {
-          await _showNotification(message);
-        }
-
-        // If there's a foreground message handler, call it
-        if (onForegroundMessage != null) {
-          onForegroundMessage!(message);
-        }
-      });
-
-      // Handle when the app is opened from a notification
-      FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-        log(
-          'firebase :: Notification clicked! Message: ${message.notification?.title}',
+      if (bool.parse(hasPermission)) {
+        // Configure Local Notification settings
+        const initializationSettingsAndroid = AndroidInitializationSettings(
+          '@mipmap/ic_launcher',
         );
-        _handleNotificationClick(message);
-      });
 
-      // Handle background messages
-      FirebaseMessaging.onBackgroundMessage(
-        _firebaseMessagingBackgroundHandler,
-      );
-      return;
-    }
+        const initializationSettingsDarwin = DarwinInitializationSettings();
 
-    await showDialog<dynamic>(
-      context: context,
-      builder: (_) {
-        return NotificationPermissionDialog(
-          context: context,
-          onAllowed: () async {
-            Navigator.of(context).pop();
-            // Request permissions for iOS
-            final settings = await _firebaseMessaging.requestPermission();
+        const initializationSettings = InitializationSettings(
+          android: initializationSettingsAndroid,
+          iOS: initializationSettingsDarwin,
+        );
 
-            if (settings.authorizationStatus == AuthorizationStatus.denied ||
-                settings.authorizationStatus ==
-                    AuthorizationStatus.notDetermined) {
+        await _flutterLocalNotificationsPlugin.initialize(
+          initializationSettings,
+          onDidReceiveNotificationResponse: _onDidReceiveNotificationResponse,
+        );
+
+        // Listen for foreground messages
+        FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+          final msgTitle = message.notification?.title;
+
+          log(msgTitle ?? '');
+          log('_start: ${msgTitle ?? ''}');
+
+          // log('firebase :: Received a foreground message: ${message.messageId}');
+          if (message.notification?.title != null) {
+            await _showNotification(message);
+          }
+
+          // If there's a foreground message handler, call it
+          if (onForegroundMessage != null) {
+            onForegroundMessage!(message);
+          }
+        });
+
+        // Handle when the app is opened from a notification
+        FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+          log(
+            'firebase :: Notification clicked! Message: ${message.notification?.title}',
+          );
+          _handleNotificationClick(message);
+        });
+
+        // Handle background messages
+        FirebaseMessaging.onBackgroundMessage(
+          _firebaseMessagingBackgroundHandler,
+        );
+        return;
+      }
+
+      await showDialog<dynamic>(
+        context: context,
+        builder: (_) {
+          return NotificationPermissionDialog(
+            context: context,
+            onAllowed: () async {
+              Navigator.of(context).pop();
+              // Request permissions for iOS
+              final settings = await _firebaseMessaging.requestPermission();
+
+              if (settings.authorizationStatus == AuthorizationStatus.denied ||
+                  settings.authorizationStatus ==
+                      AuthorizationStatus.notDetermined) {
+                await const FlutterSecureStorage().write(
+                  key: 'notification_permission',
+                  value: false.toString(),
+                );
+                return;
+              }
+
               await const FlutterSecureStorage().write(
                 key: 'notification_permission',
-                value: false.toString(),
+                value: true.toString(),
               );
-              return;
-            }
 
-            await const FlutterSecureStorage().write(
-              key: 'notification_permission',
-              value: true.toString(),
-            );
-
-            log(
-              'firebase :: User granted permission: ${settings.authorizationStatus}',
-            );
-
-            // Configure Local Notification settings
-            const initializationSettingsAndroid = AndroidInitializationSettings(
-              'ic_launcher',
-            );
-
-            const initializationSettingsDarwin = DarwinInitializationSettings();
-
-            const initializationSettings = InitializationSettings(
-              android: initializationSettingsAndroid,
-              iOS: initializationSettingsDarwin,
-            );
-
-            await _flutterLocalNotificationsPlugin.initialize(
-              initializationSettings,
-              onDidReceiveNotificationResponse:
-                  _onDidReceiveNotificationResponse,
-            );
-
-            // Listen for foreground messages
-            FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
               log(
-                'firebase :: Received a foreground message: ${message.messageId}',
+                'firebase :: User granted permission: ${settings.authorizationStatus}',
               );
 
-              // log('firebase :: Received a foreground message: ${message.messageId}');
-              if (message.notification?.title != null) {
-                await _showNotification(message);
-              }
+              // Configure Local Notification settings
+              const initializationSettingsAndroid =
+                  AndroidInitializationSettings(
+                    'ic_launcher',
+                  );
 
-              // If there's a foreground message handler, call it
-              if (onForegroundMessage != null) {
-                onForegroundMessage!(message);
-              }
-            });
+              const initializationSettingsDarwin =
+                  DarwinInitializationSettings();
 
-            // Handle when the app is opened from a notification
-            FirebaseMessaging.onMessageOpenedApp.listen((
-              RemoteMessage message,
-            ) {
-              log(
-                'firebase :: Notification clicked! Message: ${message.notification?.title}',
+              const initializationSettings = InitializationSettings(
+                android: initializationSettingsAndroid,
+                iOS: initializationSettingsDarwin,
               );
-              _handleNotificationClick(message);
-            });
 
-            // Handle background messages
-            FirebaseMessaging.onBackgroundMessage(
-              _firebaseMessagingBackgroundHandler,
-            );
-          },
-          onDismissed: () {
-            Navigator.of(context).pop();
-          },
-        );
-      },
-    );
+              await _flutterLocalNotificationsPlugin.initialize(
+                initializationSettings,
+                onDidReceiveNotificationResponse:
+                    _onDidReceiveNotificationResponse,
+              );
+
+              // Listen for foreground messages
+              FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+                log(
+                  'firebase :: Received a foreground message: ${message.messageId}',
+                );
+
+                // log('firebase :: Received a foreground message: ${message.messageId}');
+                if (message.notification?.title != null) {
+                  await _showNotification(message);
+                }
+
+                // If there's a foreground message handler, call it
+                if (onForegroundMessage != null) {
+                  onForegroundMessage!(message);
+                }
+              });
+
+              // Handle when the app is opened from a notification
+              FirebaseMessaging.onMessageOpenedApp.listen((
+                RemoteMessage message,
+              ) {
+                log(
+                  'firebase :: Notification clicked! Message: ${message.notification?.title}',
+                );
+                _handleNotificationClick(message);
+              });
+
+              // Handle background messages
+              FirebaseMessaging.onBackgroundMessage(
+                _firebaseMessagingBackgroundHandler,
+              );
+            },
+            onDismissed: () {
+              Navigator.of(context).pop();
+            },
+          );
+        },
+      );
+    } catch (e) {
+      log('firebase :: Error initializing notifications: $e');
+    }
   }
 
   // Show local notification

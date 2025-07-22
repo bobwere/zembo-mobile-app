@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:zembo_agent_app/application/auth/auth_cubit.dart';
+import 'package:zembo_agent_app/application/shift/shift_cubit.dart';
 import 'package:zembo_agent_app/core/constants/enum.dart';
 import 'package:zembo_agent_app/core/utils/ui_util.dart';
 import 'package:zembo_agent_app/presentation/router/routes.dart';
@@ -30,6 +31,18 @@ class _LoginPageState extends State<LoginPage> {
       listenWhen: (p, c) => p.signInFormStatus != c.signInFormStatus,
       listener: (context, state) {
         if (state.signInFormStatus == AppStatus.success) {
+          final user = state.user;
+          context.read<ShiftCubit>().updateShiftAndStation(
+            user?.shift,
+            user?.station,
+          );
+
+          if (user != null) {
+            context.read<ShiftCubit>().fetchActiveShift(user.id!);
+            context.read<ShiftCubit>().fetchCurrentDaysShiftHistory();
+            context.read<ShiftCubit>().fetchAllShiftHistory();
+          }
+
           context.goNamed(homeRoute);
         }
 

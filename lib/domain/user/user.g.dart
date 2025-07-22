@@ -16,6 +16,12 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
   role: json['role'] as String?,
   createdAt: json['created_at'] as String?,
   updatedAt: json['updated_at'] as String?,
+  station: json['station'] == null
+      ? null
+      : Station.fromJson(json['station'] as Map<String, dynamic>),
+  shift: json['shift'] == null
+      ? null
+      : Shift.fromJson(json['shift'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
@@ -26,4 +32,6 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'role': instance.role,
   'created_at': instance.createdAt,
   'updated_at': instance.updatedAt,
+  'station': instance.station,
+  'shift': instance.shift,
 };

@@ -17,7 +17,7 @@ class ShiftCubit extends Cubit<ShiftState> {
 
   final IShiftFacade _shiftFacade;
 
-  void updateShiftAndStation(Shift shift, Station station) {
+  void updateShiftAndStation(Shift? shift, Station? station) {
     emit(
       state.copyWith.call(
         currentShift: shift,

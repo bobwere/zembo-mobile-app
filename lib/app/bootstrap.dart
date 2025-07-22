@@ -32,7 +32,11 @@ Future<void> bootstrap(
     <DeviceOrientation>[DeviceOrientation.portraitUp],
   );
 
-  await Firebase.initializeApp();
+  try {
+    await Firebase.initializeApp();
+  } catch (e) {
+    debugPrint('Error initializing Firebase: $e');
+  }
 
   Bloc.observer = const AppBlocObserver();
 

@@ -8,8 +8,8 @@ abstract class AppLocation with _$AppLocation {
   factory AppLocation({
     @JsonKey(name: 'id') int? id,
     @JsonKey(name: 'name') String? name,
-    @JsonKey(name: 'lat') double? latitude,
-    @JsonKey(name: 'lng') double? longitude,
+    @JsonKey(name: 'lat') String? latitude,
+    @JsonKey(name: 'lng') String? longitude,
   }) = _AppLocation;
 
   factory AppLocation.fromJson(Map<String, dynamic> json) =>

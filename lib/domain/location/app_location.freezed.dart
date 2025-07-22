@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AppLocation {
 
-@JsonKey(name: 'id') int? get id;@JsonKey(name: 'name') String? get name;@JsonKey(name: 'lat') double? get latitude;@JsonKey(name: 'lng') double? get longitude;
+@JsonKey(name: 'id') int? get id;@JsonKey(name: 'name') String? get name;@JsonKey(name: 'lat') String? get latitude;@JsonKey(name: 'lng') String? get longitude;
 /// Create a copy of AppLocation
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $AppLocationCopyWith<$Res>  {
   factory $AppLocationCopyWith(AppLocation value, $Res Function(AppLocation) _then) = _$AppLocationCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'id') int? id,@JsonKey(name: 'name') String? name,@JsonKey(name: 'lat') double? latitude,@JsonKey(name: 'lng') double? longitude
+@JsonKey(name: 'id') int? id,@JsonKey(name: 'name') String? name,@JsonKey(name: 'lat') String? latitude,@JsonKey(name: 'lng') String? longitude
 });
 
 
@@ -70,8 +70,8 @@ class _$AppLocationCopyWithImpl<$Res>
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String?,latitude: freezed == latitude ? _self.latitude : latitude // ignore: cast_nullable_to_non_nullable
-as double?,longitude: freezed == longitude ? _self.longitude : longitude // ignore: cast_nullable_to_non_nullable
-as double?,
+as String?,longitude: freezed == longitude ? _self.longitude : longitude // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -156,7 +156,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'name')  String? name, @JsonKey(name: 'lat')  double? latitude, @JsonKey(name: 'lng')  double? longitude)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'name')  String? name, @JsonKey(name: 'lat')  String? latitude, @JsonKey(name: 'lng')  String? longitude)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AppLocation() when $default != null:
 return $default(_that.id,_that.name,_that.latitude,_that.longitude);case _:
@@ -177,7 +177,7 @@ return $default(_that.id,_that.name,_that.latitude,_that.longitude);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'name')  String? name, @JsonKey(name: 'lat')  double? latitude, @JsonKey(name: 'lng')  double? longitude)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'name')  String? name, @JsonKey(name: 'lat')  String? latitude, @JsonKey(name: 'lng')  String? longitude)  $default,) {final _that = this;
 switch (_that) {
 case _AppLocation():
 return $default(_that.id,_that.name,_that.latitude,_that.longitude);case _:
@@ -197,7 +197,7 @@ return $default(_that.id,_that.name,_that.latitude,_that.longitude);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'name')  String? name, @JsonKey(name: 'lat')  double? latitude, @JsonKey(name: 'lng')  double? longitude)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'name')  String? name, @JsonKey(name: 'lat')  String? latitude, @JsonKey(name: 'lng')  String? longitude)?  $default,) {final _that = this;
 switch (_that) {
 case _AppLocation() when $default != null:
 return $default(_that.id,_that.name,_that.latitude,_that.longitude);case _:
@@ -217,8 +217,8 @@ class _AppLocation implements AppLocation {
 
 @override@JsonKey(name: 'id') final  int? id;
 @override@JsonKey(name: 'name') final  String? name;
-@override@JsonKey(name: 'lat') final  double? latitude;
-@override@JsonKey(name: 'lng') final  double? longitude;
+@override@JsonKey(name: 'lat') final  String? latitude;
+@override@JsonKey(name: 'lng') final  String? longitude;
 
 /// Create a copy of AppLocation
 /// with the given fields replaced by the non-null parameter values.
@@ -253,7 +253,7 @@ abstract mixin class _$AppLocationCopyWith<$Res> implements $AppLocationCopyWith
   factory _$AppLocationCopyWith(_AppLocation value, $Res Function(_AppLocation) _then) = __$AppLocationCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'id') int? id,@JsonKey(name: 'name') String? name,@JsonKey(name: 'lat') double? latitude,@JsonKey(name: 'lng') double? longitude
+@JsonKey(name: 'id') int? id,@JsonKey(name: 'name') String? name,@JsonKey(name: 'lat') String? latitude,@JsonKey(name: 'lng') String? longitude
 });
 
 
@@ -275,8 +275,8 @@ class __$AppLocationCopyWithImpl<$Res>
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String?,latitude: freezed == latitude ? _self.latitude : latitude // ignore: cast_nullable_to_non_nullable
-as double?,longitude: freezed == longitude ? _self.longitude : longitude // ignore: cast_nullable_to_non_nullable
-as double?,
+as String?,longitude: freezed == longitude ? _self.longitude : longitude // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

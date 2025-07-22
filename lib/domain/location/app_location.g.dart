@@ -9,8 +9,8 @@ part of 'app_location.dart';
 _AppLocation _$AppLocationFromJson(Map<String, dynamic> json) => _AppLocation(
   id: (json['id'] as num?)?.toInt(),
   name: json['name'] as String?,
-  latitude: (json['lat'] as num?)?.toDouble(),
-  longitude: (json['lng'] as num?)?.toDouble(),
+  latitude: json['lat'] as String?,
+  longitude: json['lng'] as String?,
 );
 
 Map<String, dynamic> _$AppLocationToJson(_AppLocation instance) =>

@@ -1,11 +1,15 @@
-// ignore_for_file: avoid_catches_without_on_clauses, deprecated_member_use, document_ignores, lines_longer_than_80_chars
+// ignore_for_file: avoid_catches_without_on_clauses, deprecated_member_use, document_ignores, lines_longer_than_80_chars, use_build_context_synchronously
 
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:zembo_agent_app/application/auth/auth_cubit.dart';
+import 'package:zembo_agent_app/application/notification/notification_cubit.dart';
 import 'package:zembo_agent_app/core/constants/enum.dart';
 import 'package:zembo_agent_app/core/utils/ui_util.dart';
+import 'package:zembo_agent_app/infrastructure/notification/notification_service.dart';
 
 class ScaffoldWithNestedNavigation extends StatefulWidget {
   const ScaffoldWithNestedNavigation({
@@ -34,11 +38,17 @@ class _ScaffoldWithNestedNavigationState
 
   Future<void> initializeNotifications() async {
     try {
-      // await NotificationService.instance.initialize(context);
-      // await NotificationService.instance.deleteToken();
+      if (mounted) {
+        await NotificationService.instance.initialize(context);
+        await NotificationService.instance.deleteToken();
 
-      // final token = await NotificationService.instance.getDeviceToken();
-      // await context.read<NotificationCubit>().registerDeviceToken(token ?? '');
+        final token = await NotificationService.instance.getDeviceToken();
+        final userId = context.read<AuthCubit>().state.user?.id ?? 0;
+        await context.read<NotificationCubit>().registerDeviceToken(
+          userId,
+          token ?? '',
+        );
+      }
     } catch (e) {
       //
     }

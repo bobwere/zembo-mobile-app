@@ -64,7 +64,7 @@ class NotificationFacade implements INotificationFacade {
   }) async {
     try {
       await _dio.post<dynamic>(
-        '/notification/register-device-token',
+        '/notification/update-device-token',
         data: {
           'id': id,
           'device_token': token,

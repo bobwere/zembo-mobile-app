@@ -18,12 +18,12 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> initialize() async {
     final token = await _authFacade.getToken();
 
-    await getUserProfile();
-
     if (token == null) {
       emit(state.copyWith.call(isAuthenticated: false));
       return;
     }
+
+    await getUserProfile();
 
     if (state.user == null) {
       emit(state.copyWith.call(isAuthenticated: false));
