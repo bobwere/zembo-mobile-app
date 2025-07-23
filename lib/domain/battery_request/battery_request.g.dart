@@ -18,7 +18,7 @@ _BatteryRequest _$BatteryRequestFromJson(Map<String, dynamic> json) =>
       rider: json['rider'] == null
           ? null
           : User.fromJson(json['rider'] as Map<String, dynamic>),
-      numberOfBatteries: json['number_of_batteries'] as bool?,
+      numberOfBatteries: (json['number_of_batteries'] as num?)?.toInt(),
       pickupTime: json['pickup_time'] as String?,
       deliveryTime: json['delivery_time'] as String?,
       status: json['status'] as String?,
@@ -26,6 +26,7 @@ _BatteryRequest _$BatteryRequestFromJson(Map<String, dynamic> json) =>
       destination: json['destination'] == null
           ? null
           : AppLocation.fromJson(json['destination'] as Map<String, dynamic>),
+      synced: json['synced'] as bool?,
       createdAt: json['created_at'] as String?,
       updatedAt: json['updated_at'] as String?,
     );
@@ -42,6 +43,7 @@ Map<String, dynamic> _$BatteryRequestToJson(_BatteryRequest instance) =>
       'status': instance.status,
       'comment': instance.comment,
       'destination': instance.destination,
+      'synced': instance.synced,
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,
     };

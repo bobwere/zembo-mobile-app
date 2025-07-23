@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zembo_agent_app/app/app.dart';
 import 'package:zembo_agent_app/application/auth/auth_cubit.dart';
+import 'package:zembo_agent_app/application/battery_request/battery_request_cubit.dart';
 import 'package:zembo_agent_app/application/connectivity/connectivity_cubit.dart';
 import 'package:zembo_agent_app/application/notification/notification_cubit.dart';
 import 'package:zembo_agent_app/application/shift/shift_cubit.dart';
@@ -23,6 +24,9 @@ class AppWrapper extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => getIt<ShiftCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<BatteryRequestCubit>(),
         ),
       ],
       child: const App(),

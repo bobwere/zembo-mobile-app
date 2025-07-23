@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zembo_agent_app/application/auth/auth_cubit.dart';
+import 'package:zembo_agent_app/application/battery_request/battery_request_cubit.dart';
 import 'package:zembo_agent_app/application/connectivity/connectivity_cubit.dart';
 import 'package:zembo_agent_app/application/notification/notification_cubit.dart';
 import 'package:zembo_agent_app/application/shift/shift_cubit.dart';
@@ -97,6 +98,9 @@ class _ScaffoldWithNestedNavigationState
           context.read<ShiftCubit>().syncLocalToRemoteShiftHistory(
             context.read<AuthCubit>().state.user!.id!,
           );
+          context.read<BatteryRequestCubit>().syncLocalToRemoteBatteryRequest(
+            context.read<AuthCubit>().state.user!.id!,
+          );
         }
       },
       child: Scaffold(
@@ -138,32 +142,6 @@ class _ScaffoldWithNestedNavigationState
                         setState(() {
                           pageIndex = item.idx;
                         });
-
-                        // final userId =
-                        //     context.read<AuthCubit>().state.user?.id ?? '';
-
-                        // switch (item.idx) {
-                        //   case 0:
-                        //     context.read<TableCubit>().fetchMarketTables(
-                        //       userId,
-                        //       onBackGround: true,
-                        //     );
-                        //   case 1:
-                        //     context.read<TableCubit>().fetchMarketTables(
-                        //       userId,
-                        //       onBackGround: true,
-                        //     );
-                        //   case 2:
-                        //     context.read<PaymentCubit>().fetchWallet(
-                        //       onBackGround: true,
-                        //     );
-                        //     context.read<PaymentCubit>().fetchWalletTransactions(
-                        //       onBackGround: true,
-                        //     );
-                        //   case 3:
-                        //     context.read<AuthCubit>().getUserProfile();
-                        //   default:
-                        // }
                       },
                       child: SizedBox(
                         width: MediaQuery.of(context).size.width / 3,

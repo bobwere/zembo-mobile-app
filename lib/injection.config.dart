@@ -9,6 +9,7 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:cloudinary/cloudinary.dart' as _i981;
 import 'package:dio/dio.dart' as _i361;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as _i558;
 import 'package:get_it/get_it.dart' as _i174;
@@ -18,6 +19,8 @@ import 'package:simple_connection_checker/simple_connection_checker.dart'
 
 import 'application/auth/auth_cubit.dart' as _i457;
 import 'application/auth/i_auth_facade.dart' as _i485;
+import 'application/battery_request/battery_request_cubit.dart' as _i978;
+import 'application/battery_request/i_battery_facade.dart' as _i461;
 import 'application/connectivity/connectivity_cubit.dart' as _i199;
 import 'application/local_db/i_localdb_facade.dart' as _i935;
 import 'application/notification/i_notification_facade.dart' as _i987;
@@ -27,6 +30,7 @@ import 'application/shift/shift_cubit.dart' as _i992;
 import 'core/injectable/http_module.dart' as _i225;
 import 'core/injectable/utility_module.dart' as _i959;
 import 'infrastructure/auth/auth_facade.dart' as _i480;
+import 'infrastructure/battery_request/battery_request_facade.dart' as _i781;
 import 'infrastructure/local_db/local_db_facade.dart' as _i1027;
 import 'infrastructure/notification/notification_facade.dart' as _i459;
 import 'infrastructure/shift/shift_facade.dart' as _i397;
@@ -101,6 +105,9 @@ _i174.GetIt init(
     () =>
         _i992.ShiftCubit(gh<_i833.IShiftFacade>(), gh<_i935.ILocalDBFacade>()),
   );
+  gh.lazySingleton<_i461.IBatteryRequestFacade>(
+    () => _i781.BatteryRequestFacade(gh<_i981.Dio>()),
+  );
   gh.lazySingleton<_i987.INotificationFacade>(
     () => _i459.NotificationFacade(gh<_i361.Dio>()),
   );
@@ -109,6 +116,12 @@ _i174.GetIt init(
   );
   gh.factory<_i457.AuthCubit>(
     () => _i457.AuthCubit(gh<_i485.IAuthFacade>(), gh<_i935.ILocalDBFacade>()),
+  );
+  gh.factory<_i978.BatteryRequestCubit>(
+    () => _i978.BatteryRequestCubit(
+      gh<_i461.IBatteryRequestFacade>(),
+      gh<_i935.ILocalDBFacade>(),
+    ),
   );
   gh.factory<_i478.NotificationCubit>(
     () => _i478.NotificationCubit(gh<_i987.INotificationFacade>()),

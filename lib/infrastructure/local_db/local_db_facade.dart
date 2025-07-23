@@ -1,6 +1,7 @@
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:injectable/injectable.dart';
 import 'package:zembo_agent_app/application/local_db/i_localdb_facade.dart';
+import 'package:zembo_agent_app/domain/battery_request/battery_request.dart';
 import 'package:zembo_agent_app/domain/shift_history/shift_history.dart';
 import 'package:zembo_agent_app/domain/user/user.dart';
 
@@ -144,4 +145,17 @@ class LocalDBFacade implements ILocalDBFacade {
       shiftHistory.map((h) => h.toJson()).toList(),
     );
   }
+
+  @override
+  Future<void> batchUpdateBatteryRequest(
+    List<BatteryRequest> batteryRequests,
+  ) async {}
+
+  @override
+  Future<List<BatteryRequest>> fetchBatteryRequests() async {
+    return [];
+  }
+
+  @override
+  Future<void> saveBatteryRequest(BatteryRequest batteryRequest) async {}
 }

@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:zembo_agent_app/core/utils/ui_util.dart';
 
-class ShiftHistoryTile extends StatelessWidget {
+class ShiftHistoryTile extends StatefulWidget {
   const ShiftHistoryTile({
     super.key,
   });
 
   @override
+  State<ShiftHistoryTile> createState() => _ShiftHistoryTileState();
+}
+
+class _ShiftHistoryTileState extends State<ShiftHistoryTile> {
+  bool isPositionTaken = false;
+
+  @override
   Widget build(BuildContext context) {
     final ui = UiUtil(context);
-    final isPositionTaken = false;
     return Card(
       color: Colors.white,
       elevation: ui.scaleWidthFactor(8),
