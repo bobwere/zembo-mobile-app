@@ -16,6 +16,9 @@ const String signupPath = '/signup';
 const String homeRoute = 'home_route';
 const String homePath = '/home';
 
+const String notificationRoute = 'notification_route';
+const String notificationPath = 'notification';
+
 const String requestDeliveryRoute = 'request_delivery_route';
 const String requestDeliveryPath = '/request_delivery';
 

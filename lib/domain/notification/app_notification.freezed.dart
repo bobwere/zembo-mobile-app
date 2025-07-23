@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AppNotification {
 
-@JsonKey(name: 'id') int? get id;@JsonKey(name: 'user') User? get user;@JsonKey(name: 'title') String? get title;@JsonKey(name: 'is_read') bool? get isRead;@JsonKey(name: 'message') bool? get message;@JsonKey(name: 'created_at') String? get createdAt;@JsonKey(name: 'updated_at') String? get updateAt;
+@JsonKey(name: 'id') int? get id;@JsonKey(name: 'user') User? get user;@JsonKey(name: 'title') String? get title;@JsonKey(name: 'is_read') bool? get isRead;@JsonKey(name: 'message') String? get message;@JsonKey(name: 'created_at') String? get createdAt;@JsonKey(name: 'updated_at') String? get updateAt;
 /// Create a copy of AppNotification
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $AppNotificationCopyWith<$Res>  {
   factory $AppNotificationCopyWith(AppNotification value, $Res Function(AppNotification) _then) = _$AppNotificationCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'id') int? id,@JsonKey(name: 'user') User? user,@JsonKey(name: 'title') String? title,@JsonKey(name: 'is_read') bool? isRead,@JsonKey(name: 'message') bool? message,@JsonKey(name: 'created_at') String? createdAt,@JsonKey(name: 'updated_at') String? updateAt
+@JsonKey(name: 'id') int? id,@JsonKey(name: 'user') User? user,@JsonKey(name: 'title') String? title,@JsonKey(name: 'is_read') bool? isRead,@JsonKey(name: 'message') String? message,@JsonKey(name: 'created_at') String? createdAt,@JsonKey(name: 'updated_at') String? updateAt
 });
 
 
@@ -72,7 +72,7 @@ as int?,user: freezed == user ? _self.user : user // ignore: cast_nullable_to_no
 as User?,title: freezed == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String?,isRead: freezed == isRead ? _self.isRead : isRead // ignore: cast_nullable_to_non_nullable
 as bool?,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
-as bool?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as String?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as String?,updateAt: freezed == updateAt ? _self.updateAt : updateAt // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
@@ -171,7 +171,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'user')  User? user, @JsonKey(name: 'title')  String? title, @JsonKey(name: 'is_read')  bool? isRead, @JsonKey(name: 'message')  bool? message, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'updated_at')  String? updateAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'user')  User? user, @JsonKey(name: 'title')  String? title, @JsonKey(name: 'is_read')  bool? isRead, @JsonKey(name: 'message')  String? message, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'updated_at')  String? updateAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AppNotification() when $default != null:
 return $default(_that.id,_that.user,_that.title,_that.isRead,_that.message,_that.createdAt,_that.updateAt);case _:
@@ -192,7 +192,7 @@ return $default(_that.id,_that.user,_that.title,_that.isRead,_that.message,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'user')  User? user, @JsonKey(name: 'title')  String? title, @JsonKey(name: 'is_read')  bool? isRead, @JsonKey(name: 'message')  bool? message, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'updated_at')  String? updateAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'user')  User? user, @JsonKey(name: 'title')  String? title, @JsonKey(name: 'is_read')  bool? isRead, @JsonKey(name: 'message')  String? message, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'updated_at')  String? updateAt)  $default,) {final _that = this;
 switch (_that) {
 case _AppNotification():
 return $default(_that.id,_that.user,_that.title,_that.isRead,_that.message,_that.createdAt,_that.updateAt);case _:
@@ -212,7 +212,7 @@ return $default(_that.id,_that.user,_that.title,_that.isRead,_that.message,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'user')  User? user, @JsonKey(name: 'title')  String? title, @JsonKey(name: 'is_read')  bool? isRead, @JsonKey(name: 'message')  bool? message, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'updated_at')  String? updateAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'user')  User? user, @JsonKey(name: 'title')  String? title, @JsonKey(name: 'is_read')  bool? isRead, @JsonKey(name: 'message')  String? message, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'updated_at')  String? updateAt)?  $default,) {final _that = this;
 switch (_that) {
 case _AppNotification() when $default != null:
 return $default(_that.id,_that.user,_that.title,_that.isRead,_that.message,_that.createdAt,_that.updateAt);case _:
@@ -234,7 +234,7 @@ class _AppNotification implements AppNotification {
 @override@JsonKey(name: 'user') final  User? user;
 @override@JsonKey(name: 'title') final  String? title;
 @override@JsonKey(name: 'is_read') final  bool? isRead;
-@override@JsonKey(name: 'message') final  bool? message;
+@override@JsonKey(name: 'message') final  String? message;
 @override@JsonKey(name: 'created_at') final  String? createdAt;
 @override@JsonKey(name: 'updated_at') final  String? updateAt;
 
@@ -271,7 +271,7 @@ abstract mixin class _$AppNotificationCopyWith<$Res> implements $AppNotification
   factory _$AppNotificationCopyWith(_AppNotification value, $Res Function(_AppNotification) _then) = __$AppNotificationCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'id') int? id,@JsonKey(name: 'user') User? user,@JsonKey(name: 'title') String? title,@JsonKey(name: 'is_read') bool? isRead,@JsonKey(name: 'message') bool? message,@JsonKey(name: 'created_at') String? createdAt,@JsonKey(name: 'updated_at') String? updateAt
+@JsonKey(name: 'id') int? id,@JsonKey(name: 'user') User? user,@JsonKey(name: 'title') String? title,@JsonKey(name: 'is_read') bool? isRead,@JsonKey(name: 'message') String? message,@JsonKey(name: 'created_at') String? createdAt,@JsonKey(name: 'updated_at') String? updateAt
 });
 
 
@@ -295,7 +295,7 @@ as int?,user: freezed == user ? _self.user : user // ignore: cast_nullable_to_no
 as User?,title: freezed == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String?,isRead: freezed == isRead ? _self.isRead : isRead // ignore: cast_nullable_to_non_nullable
 as bool?,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
-as bool?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as String?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as String?,updateAt: freezed == updateAt ? _self.updateAt : updateAt // ignore: cast_nullable_to_non_nullable
 as String?,
   ));

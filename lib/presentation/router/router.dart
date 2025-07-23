@@ -6,6 +6,7 @@ import 'package:zembo_agent_app/presentation/pages/auth/login_page.dart';
 import 'package:zembo_agent_app/presentation/pages/root/battery_requests/add_request_page.dart';
 import 'package:zembo_agent_app/presentation/pages/root/battery_requests/request_delivery_page.dart';
 import 'package:zembo_agent_app/presentation/pages/root/home/home_page.dart';
+import 'package:zembo_agent_app/presentation/pages/root/home/notification_page.dart';
 import 'package:zembo_agent_app/presentation/pages/root/profile/profile_page.dart';
 import 'package:zembo_agent_app/presentation/pages/splash/splash_page.dart';
 import 'package:zembo_agent_app/presentation/router/routes.dart';
@@ -114,6 +115,26 @@ GoRouter goRouter = GoRouter(
                       ) => FadeTransition(opacity: animation, child: child),
                 );
               },
+              routes: [
+                GoRoute(
+                  name: notificationRoute,
+                  path: notificationPath,
+                  pageBuilder: (context, state) {
+                    return CustomTransitionPage<void>(
+                      key: state.pageKey,
+                      name: state.name,
+                      child: const NotificationPage(),
+                      transitionsBuilder:
+                          (
+                            context,
+                            animation,
+                            secondaryAnimation,
+                            child,
+                          ) => FadeTransition(opacity: animation, child: child),
+                    );
+                  },
+                ),
+              ],
             ),
           ],
         ),

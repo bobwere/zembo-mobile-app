@@ -10,7 +10,7 @@ abstract class AppNotification with _$AppNotification {
     @JsonKey(name: 'user') User? user,
     @JsonKey(name: 'title') String? title,
     @JsonKey(name: 'is_read') bool? isRead,
-    @JsonKey(name: 'message') bool? message,
+    @JsonKey(name: 'message') String? message,
     @JsonKey(name: 'created_at') String? createdAt,
     @JsonKey(name: 'updated_at') String? updateAt,
   }) = _AppNotification;

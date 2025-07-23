@@ -3,12 +3,16 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:go_router/go_router.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:zembo_agent_app/application/auth/auth_cubit.dart';
+import 'package:zembo_agent_app/application/notification/notification_cubit.dart';
 import 'package:zembo_agent_app/application/shift/shift_cubit.dart';
 import 'package:zembo_agent_app/core/constants/enum.dart';
 import 'package:zembo_agent_app/core/utils/ui_util.dart';
+import 'package:zembo_agent_app/presentation/router/routes.dart';
 import 'package:zembo_agent_app/presentation/widgets/app_button.dart';
 import 'package:zembo_agent_app/presentation/widgets/app_loader.dart';
 import 'package:zembo_agent_app/presentation/widgets/digital_clock_widget.dart';
@@ -84,11 +88,92 @@ class HomePage extends StatelessWidget {
                           Align(
                             alignment: Alignment.topRight,
                             child: IconButton(
-                              onPressed: () {},
-                              icon: const Icon(
-                                LineAwesomeIcons.bell,
-                                color: Colors.white,
+                              icon: Stack(
+                                children: [
+                                  SizedBox(
+                                    height: ui.scaleWidthFactor(35),
+                                    width: ui.scaleWidthFactor(35),
+                                    child: SvgPicture.asset(
+                                      'assets/images/svg/notification.svg',
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  BlocBuilder<
+                                    NotificationCubit,
+                                    NotificationState
+                                  >(
+                                    builder: (context, state) {
+                                      final notifications = state.notifications!
+                                          .where((i) => !i.isRead!)
+                                          .toList();
+                                      if (notifications.isEmpty) {
+                                        return const SizedBox();
+                                      }
+
+                                      return Positioned(
+                                        bottom: 0,
+                                        left: 0,
+                                        child: Container(
+                                          height: ui.scaleWidthFactor(20),
+                                          width: ui.scaleWidthFactor(20),
+                                          decoration: const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.white,
+                                          ),
+                                          padding: EdgeInsets.all(
+                                            ui.scaleWidthFactor(2),
+                                          ),
+                                          child: Container(
+                                            decoration: const BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              gradient: LinearGradient(
+                                                colors: [
+                                                  Color.fromARGB(
+                                                    255,
+                                                    255,
+                                                    119,
+                                                    110,
+                                                  ),
+                                                  Color.fromARGB(
+                                                    255,
+                                                    255,
+                                                    141,
+                                                    133,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            padding: EdgeInsets.all(
+                                              ui.scaleWidthFactor(4),
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                notifications.length.toString(),
+                                                textScaler: TextScaler.linear(
+                                                  ui.textScaleFactor,
+                                                ),
+                                                style: ui
+                                                    .theme
+                                                    .textTheme
+                                                    .headlineMedium
+                                                    ?.copyWith(
+                                                      fontSize: 10,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: Colors.white,
+                                                    ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ],
                               ),
+                              onPressed: () {
+                                context.goNamed(notificationRoute);
+                              },
                             ),
                           ),
                           Align(

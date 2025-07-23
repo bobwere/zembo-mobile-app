@@ -14,7 +14,7 @@ _AppNotification _$AppNotificationFromJson(Map<String, dynamic> json) =>
           : User.fromJson(json['user'] as Map<String, dynamic>),
       title: json['title'] as String?,
       isRead: json['is_read'] as bool?,
-      message: json['message'] as bool?,
+      message: json['message'] as String?,
       createdAt: json['created_at'] as String?,
       updateAt: json['updated_at'] as String?,
     );

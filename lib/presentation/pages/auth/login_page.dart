@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:zembo_agent_app/application/auth/auth_cubit.dart';
 import 'package:zembo_agent_app/application/battery_request/battery_request_cubit.dart';
+import 'package:zembo_agent_app/application/notification/notification_cubit.dart';
 import 'package:zembo_agent_app/application/shift/shift_cubit.dart';
 import 'package:zembo_agent_app/core/constants/enum.dart';
 import 'package:zembo_agent_app/core/utils/ui_util.dart';
@@ -43,6 +44,7 @@ class _LoginPageState extends State<LoginPage> {
             context.read<ShiftCubit>().fetchCurrentDaysShiftHistory();
             context.read<ShiftCubit>().fetchAllShiftHistory(user.id!);
             context.read<BatteryRequestCubit>().getBatteryRequests(user.id!);
+            context.read<NotificationCubit>().getAllNotifications(user.id!);
           }
 
           context.goNamed(homeRoute);
