@@ -80,145 +80,179 @@ class _ScaffoldWithNestedNavigationState
   @override
   Widget build(BuildContext context) {
     final ui = UiUtil(context);
-    return BlocListener<BatteryRequestCubit, BatteryRequestState>(
+    return BlocListener<ShiftCubit, ShiftState>(
       listenWhen: (previous, current) =>
-          previous.syncBatteryRequestsStatus !=
-          current.syncBatteryRequestsStatus,
+          previous.syncLocalToRemoteShiftHistoryStatus !=
+          current.syncLocalToRemoteShiftHistoryStatus,
       listener: (context, state) {
-        if (state.syncBatteryRequestsStatus == AppStatus.submitting) {
+        if (state.syncLocalToRemoteShiftHistoryStatus == AppStatus.submitting) {
           showSnackBar(
             context,
             state: SnackbarState.info,
-            message: 'Syncing local battery requests with remote...',
+            message: 'Syncing local shift history with remote...',
           );
         }
 
-        if (state.syncBatteryRequestsStatus == AppStatus.failure) {
+        if (state.syncLocalToRemoteShiftHistoryStatus == AppStatus.failure) {
           showSnackBar(
             context,
-            message: 'Failed to sync battery requests',
+            message:
+                'Failed to sync local shift history with remote server successfully',
           );
         }
 
-        if (state.syncBatteryRequestsStatus == AppStatus.success) {
+        if (state.syncLocalToRemoteShiftHistoryStatus == AppStatus.success) {
           showSnackBar(
             context,
-            state: SnackbarState.success,
-            message: 'Battery requests synced successfully',
+            message:
+                'Local shift history synced with remote server successfully',
           );
         }
       },
-      child: BlocListener<ConnectivityCubit, ConnectivityState>(
+      child: BlocListener<BatteryRequestCubit, BatteryRequestState>(
+        listenWhen: (previous, current) =>
+            previous.syncBatteryRequestsStatus !=
+            current.syncBatteryRequestsStatus,
         listener: (context, state) {
-          if (!state.isConnected!) {
+          if (state.syncBatteryRequestsStatus == AppStatus.submitting) {
             showSnackBar(
               context,
-              message: 'No internet connection',
+              state: SnackbarState.info,
+              message: 'Syncing local battery requests with remote...',
             );
           }
 
-          if (state.isConnected!) {
+          if (state.syncBatteryRequestsStatus == AppStatus.failure) {
             showSnackBar(
               context,
-              message: 'Internet connection restored',
+              message: 'Failed to sync battery requests',
+            );
+          }
+
+          if (state.syncBatteryRequestsStatus == AppStatus.success) {
+            showSnackBar(
+              context,
               state: SnackbarState.success,
-            );
-            context.read<ShiftCubit>().syncLocalToRemoteShiftHistory(
-              context.read<AuthCubit>().state.user!.id!,
-            );
-            context.read<BatteryRequestCubit>().syncLocalToRemoteBatteryRequest(
-              context.read<AuthCubit>().state.user!.id!,
+              message: 'Battery requests synced successfully',
             );
           }
         },
-        child: Scaffold(
-          backgroundColor: Colors.white,
-          body: widget.navigationShell,
-          bottomNavigationBar: SafeArea(
-            child: Container(
-              height: Platform.isIOS ? 90 : 60,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.primary.withOpacity(0.09),
-                    offset: const Offset(0, -1),
-                    spreadRadius: 1,
-                    blurRadius: 4,
-                  ),
-                ],
-              ),
-              alignment: Alignment.center,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 2),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    ...<BottomNavigationItem>[
-                      BottomNavigationItem.home,
-                      BottomNavigationItem.batteryRequest,
-                      BottomNavigationItem.profile,
-                    ].map(
-                      (item) => GestureDetector(
-                        behavior: HitTestBehavior.opaque,
-                        onTap: () {
-                          _goBranch(item.idx);
+        child: BlocListener<ConnectivityCubit, ConnectivityState>(
+          listener: (context, state) {
+            if (!state.isConnected!) {
+              showSnackBar(
+                context,
+                message: 'No internet connection',
+              );
+            }
 
-                          setState(() {
-                            pageIndex = item.idx;
-                          });
-                        },
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width / 3,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              if (pageIndex == item.idx)
-                                Icon(
-                                  item.icon,
-                                  size: 20,
-                                  color: Theme.of(context).colorScheme.primary,
+            if (state.isConnected!) {
+              showSnackBar(
+                context,
+                message: 'Internet connection restored',
+                state: SnackbarState.success,
+              );
+              context.read<ShiftCubit>().syncLocalToRemoteShiftHistory(
+                context.read<AuthCubit>().state.user!.id!,
+              );
+              context
+                  .read<BatteryRequestCubit>()
+                  .syncLocalToRemoteBatteryRequest(
+                    context.read<AuthCubit>().state.user!.id!,
+                  );
+            }
+          },
+          child: Scaffold(
+            backgroundColor: Colors.white,
+            body: widget.navigationShell,
+            bottomNavigationBar: SafeArea(
+              child: Container(
+                height: Platform.isIOS ? 90 : 60,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.primary.withOpacity(0.09),
+                      offset: const Offset(0, -1),
+                      spreadRadius: 1,
+                      blurRadius: 4,
+                    ),
+                  ],
+                ),
+                alignment: Alignment.center,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 2),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      ...<BottomNavigationItem>[
+                        BottomNavigationItem.home,
+                        BottomNavigationItem.batteryRequest,
+                        BottomNavigationItem.profile,
+                      ].map(
+                        (item) => GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTap: () {
+                            _goBranch(item.idx);
+
+                            setState(() {
+                              pageIndex = item.idx;
+                            });
+                          },
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width / 3,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                if (pageIndex == item.idx)
+                                  Icon(
+                                    item.icon,
+                                    size: 20,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.primary,
+                                  ),
+                                if (pageIndex != item.idx)
+                                  Icon(
+                                    item.icon,
+                                    size: 20,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.primary.withOpacity(0.3),
+                                  ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  item.name,
+                                  textScaler: TextScaler.linear(
+                                    ui.textScaleFactor,
+                                  ),
+                                  style: Theme.of(context).textTheme.labelSmall
+                                      ?.copyWith(
+                                        fontSize: 14,
+                                        fontWeight: pageIndex == item.idx
+                                            ? FontWeight.w700
+                                            : FontWeight.w400,
+                                        color: pageIndex == item.idx
+                                            ? Theme.of(
+                                                context,
+                                              ).colorScheme.primary
+                                            : Theme.of(
+                                                context,
+                                              ).colorScheme.primary.withOpacity(
+                                                0.5,
+                                              ),
+                                      ),
                                 ),
-                              if (pageIndex != item.idx)
-                                Icon(
-                                  item.icon,
-                                  size: 20,
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.primary.withOpacity(0.3),
-                                ),
-                              const SizedBox(height: 4),
-                              Text(
-                                item.name,
-                                textScaler: TextScaler.linear(
-                                  ui.textScaleFactor,
-                                ),
-                                style: Theme.of(context).textTheme.labelSmall
-                                    ?.copyWith(
-                                      fontSize: 14,
-                                      fontWeight: pageIndex == item.idx
-                                          ? FontWeight.w700
-                                          : FontWeight.w400,
-                                      color: pageIndex == item.idx
-                                          ? Theme.of(
-                                              context,
-                                            ).colorScheme.primary
-                                          : Theme.of(
-                                              context,
-                                            ).colorScheme.primary.withOpacity(
-                                              0.5,
-                                            ),
-                                    ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

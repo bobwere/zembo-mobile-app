@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:zembo_agent_app/application/auth/auth_cubit.dart';
 import 'package:zembo_agent_app/application/notification/notification_cubit.dart';
@@ -229,21 +230,26 @@ class HomePage extends StatelessWidget {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        Text(
-                                          shiftState.shiftMessaging ?? '',
-                                          textScaler: TextScaler.linear(
-                                            ui.textScaleFactor,
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 16,
                                           ),
-                                          textAlign: TextAlign.center,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headlineMedium
-                                              ?.copyWith(
-                                                height: 1,
-                                                fontWeight: FontWeight.w400,
-                                                fontSize: 14,
-                                                color: Colors.grey.shade600,
-                                              ),
+                                          child: Text(
+                                            shiftState.shiftMessaging ?? '',
+                                            textScaler: TextScaler.linear(
+                                              ui.textScaleFactor,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headlineMedium
+                                                ?.copyWith(
+                                                  height: 1,
+                                                  fontWeight: FontWeight.w400,
+                                                  fontSize: 14,
+                                                  color: Colors.grey.shade600,
+                                                ),
+                                          ),
                                         ),
                                         if (shiftState.showStartShiftButton! ||
                                             shiftState.showEndShiftButton!) ...[
@@ -265,15 +271,15 @@ class HomePage extends StatelessWidget {
                                                         .read<ShiftCubit>()
                                                         .isWithinGeofenceRadius();
 
-                                                if (!(isWithinGeofenceRadius['isWithinGeofenceRadius']
-                                                    as bool)) {
-                                                  showSnackBar(
-                                                    context,
-                                                    message:
-                                                        'You are not within the 50 meters geofence radius of your work station to start your shift.',
-                                                  );
-                                                  return;
-                                                }
+                                                // if (!(isWithinGeofenceRadius['isWithinGeofenceRadius']
+                                                //     as bool)) {
+                                                //   showSnackBar(
+                                                //     context,
+                                                //     message:
+                                                //         'You are not within the 50 meters geofence radius of your work station to start your shift.',
+                                                //   );
+                                                //   return;
+                                                // }
 
                                                 position =
                                                     isWithinGeofenceRadius['currentPosition']
@@ -306,11 +312,7 @@ class HomePage extends StatelessWidget {
                                                   context
                                                       .read<ShiftCubit>()
                                                       .startShift(
-                                                        userId:
-                                                            authState
-                                                                .user
-                                                                ?.id ??
-                                                            0,
+                                                        user: authState.user!,
                                                         startTime: DateTime.now()
                                                             .toIso8601String(),
                                                         startLocationLng:
@@ -372,90 +374,192 @@ class HomePage extends StatelessWidget {
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
-                            SizedBox(height: ui.scaleHeightFactor(16)),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: ui.scaleWidthFactor(16),
-                                ),
-                                child: Text(
-                                  'Today',
-                                  textScaler: TextScaler.linear(
-                                    ui.textScaleFactor,
+                            if (shiftState
+                                .currentDaysShiftHistory!
+                                .isNotEmpty) ...[
+                              SizedBox(height: ui.scaleHeightFactor(16)),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: ui.scaleWidthFactor(16),
                                   ),
-                                  style: Theme.of(context).textTheme.titleMedium
-                                      ?.copyWith(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 20,
-                                        color: Colors.black,
-                                      ),
+                                  child: Text(
+                                    'Today',
+                                    textScaler: TextScaler.linear(
+                                      ui.textScaleFactor,
+                                    ),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium
+                                        ?.copyWith(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 20,
+                                          color: Colors.black,
+                                        ),
+                                  ),
                                 ),
                               ),
-                            ),
-                            SizedBox(height: ui.scaleHeightFactor(16)),
-                            SizedBox(
-                              height: ui.scaleHeightFactor(80),
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: 4,
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: ui.scaleWidthFactor(16),
+                              SizedBox(height: ui.scaleHeightFactor(16)),
+                              SizedBox(
+                                height: ui.scaleHeightFactor(80),
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount:
+                                      shiftState
+                                          .currentDaysShiftHistory
+                                          ?.length ??
+                                      0,
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: ui.scaleWidthFactor(16),
+                                  ),
+                                  itemBuilder: (context, index) {
+                                    final shift = shiftState
+                                        .currentDaysShiftHistory![index];
+
+                                    var timeString = '';
+
+                                    if (shift.startTime != null &&
+                                        shift.startTime != '') {
+                                      // have  endtime
+                                      if (shift.endTime == null ||
+                                          shift.endTime == '') {
+                                        final startTime =
+                                            DateFormat(
+                                              'HH:mm a',
+                                            ).format(
+                                              DateTime.parse(shift.startTime!),
+                                            );
+
+                                        timeString = '$startTime - In Progress';
+                                      } else {
+                                        final startTime =
+                                            DateFormat(
+                                              'HH:mm a',
+                                            ).format(
+                                              DateTime.parse(shift.startTime!),
+                                            );
+
+                                        final endTime =
+                                            DateFormat(
+                                              'HH:mm a',
+                                            ).format(
+                                              DateTime.parse(shift.endTime!),
+                                            );
+
+                                        timeString = '$startTime - $endTime';
+                                        //
+                                      }
+                                    }
+
+                                    return Container(
+                                      margin: EdgeInsets.only(
+                                        right: ui.scaleWidthFactor(16),
+                                      ),
+                                      width: ui.scaleWidthFactor(220),
+                                      height: ui.scaleHeightFactor(80),
+                                      decoration: BoxDecoration(
+                                        color: const Color.fromARGB(
+                                          255,
+                                          250,
+                                          206,
+                                          175,
+                                        ),
+                                        borderRadius: BorderRadius.circular(
+                                          ui.scaleWidthFactor(10),
+                                        ),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 12,
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            CircleAvatar(
+                                              radius: ui.scaleWidthFactor(20),
+                                              backgroundColor: Colors.white,
+                                              child: const Icon(
+                                                LineAwesomeIcons
+                                                    .briefcase_solid,
+                                                color: Colors.orange,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: ui.scaleWidthFactor(10),
+                                            ),
+                                            Flexible(
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    timeString,
+                                                    textScaler:
+                                                        TextScaler.linear(
+                                                          ui.textScaleFactor,
+                                                        ),
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodySmall
+                                                        ?.copyWith(
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontSize: 12,
+                                                          color: Colors
+                                                              .orange
+                                                              .shade800,
+                                                        ),
+                                                  ),
+                                                  Text(
+                                                    shift.endTime == null ||
+                                                            shift.endTime == ''
+                                                        ? 'Active Shift'
+                                                        : 'Completed Shift',
+                                                    textScaler:
+                                                        TextScaler.linear(
+                                                          ui.textScaleFactor,
+                                                        ),
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodySmall
+                                                        ?.copyWith(
+                                                          fontSize: 11,
+                                                          color: Colors
+                                                              .grey
+                                                              .shade600,
+                                                        ),
+                                                  ),
+                                                  Text(
+                                                    shift.synced == false
+                                                        ? 'Not Synced'
+                                                        : 'Synced',
+                                                    textScaler:
+                                                        TextScaler.linear(
+                                                          ui.textScaleFactor,
+                                                        ),
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodySmall
+                                                        ?.copyWith(
+                                                          fontSize: 11,
+                                                          color: Colors
+                                                              .grey
+                                                              .shade600,
+                                                        ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
                                 ),
-                                itemBuilder: (context, index) {
-                                  return Container(
-                                    margin: EdgeInsets.only(
-                                      right: ui.scaleWidthFactor(16),
-                                    ),
-                                    width: ui.scaleWidthFactor(190),
-                                    height: ui.scaleHeightFactor(80),
-                                    decoration: BoxDecoration(
-                                      color: const Color.fromARGB(
-                                        255,
-                                        250,
-                                        206,
-                                        175,
-                                      ),
-                                      borderRadius: BorderRadius.circular(
-                                        ui.scaleWidthFactor(10),
-                                      ),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 12,
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          CircleAvatar(
-                                            radius: ui.scaleWidthFactor(20),
-                                            backgroundColor: Colors.white,
-                                            child: const Icon(
-                                              LineAwesomeIcons.briefcase_solid,
-                                              color: Colors.orange,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: ui.scaleWidthFactor(10),
-                                          ),
-                                          const Flexible(
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text('9:00AM-10:00AM'),
-                                                Text('On Shift'),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                },
                               ),
-                            ),
+                            ],
                             SizedBox(height: ui.scaleHeightFactor(16)),
                             Padding(
                               padding: EdgeInsets.symmetric(
@@ -495,16 +599,38 @@ class HomePage extends StatelessWidget {
                               ),
                             ),
                             SizedBox(height: ui.scaleHeightFactor(16)),
-                            ListView.builder(
+                            ListView(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
-                              itemCount: 4,
                               padding: EdgeInsets.symmetric(
                                 horizontal: ui.scaleWidthFactor(16),
                               ),
-                              itemBuilder: (context, index) {
-                                return const ShiftHistoryTile();
-                              },
+                              children: const [
+                                ShiftHistoryTile(
+                                  day: '23',
+                                  month: 'Jul',
+                                  hoursClockedIn: 6,
+                                  isSatisfactory: true,
+                                ),
+                                ShiftHistoryTile(
+                                  day: '22',
+                                  month: 'Jul',
+                                  hoursClockedIn: 7,
+                                  isSatisfactory: true,
+                                ),
+                                ShiftHistoryTile(
+                                  day: '21',
+                                  month: 'Jul',
+                                  hoursClockedIn: 2,
+                                  isSatisfactory: false,
+                                ),
+                                ShiftHistoryTile(
+                                  day: '20',
+                                  month: 'Jul',
+                                  hoursClockedIn: 8,
+                                  isSatisfactory: true,
+                                ),
+                              ],
                             ),
                           ],
                         ),

@@ -3,8 +3,17 @@ import 'package:zembo_agent_app/core/utils/ui_util.dart';
 
 class ShiftHistoryTile extends StatefulWidget {
   const ShiftHistoryTile({
+    required this.day,
+    required this.month,
+    required this.hoursClockedIn,
+    required this.isSatisfactory,
     super.key,
   });
+
+  final String? day;
+  final String? month;
+  final int? hoursClockedIn;
+  final bool? isSatisfactory;
 
   @override
   State<ShiftHistoryTile> createState() => _ShiftHistoryTileState();
@@ -38,7 +47,7 @@ class _ShiftHistoryTileState extends State<ShiftHistoryTile> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    '6',
+                    widget.day ?? '',
                     style: ui.theme.textTheme.headlineMedium?.copyWith(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -46,7 +55,7 @@ class _ShiftHistoryTileState extends State<ShiftHistoryTile> {
                     ),
                   ),
                   Text(
-                    'Jan',
+                    widget.month ?? '',
                     style: ui.theme.textTheme.headlineMedium?.copyWith(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -63,7 +72,7 @@ class _ShiftHistoryTileState extends State<ShiftHistoryTile> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '6hrs clocked in',
+                    '${widget.hoursClockedIn}hrs clocked in',
                     textScaler: TextScaler.linear(ui.textScaleFactor),
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w600,
@@ -77,13 +86,15 @@ class _ShiftHistoryTileState extends State<ShiftHistoryTile> {
                       vertical: ui.scaleWidthFactor(2),
                     ),
                     decoration: BoxDecoration(
-                      color: isPositionTaken
-                          ? const Color(0xFFFF3B30)
-                          : const Color(0xFF34C759),
+                      color: widget.isSatisfactory ?? false
+                          ? const Color(0xFF34C759)
+                          : const Color(0xFFFF3B30),
                       borderRadius: BorderRadius.circular(100),
                     ),
                     child: Text(
-                      isPositionTaken ? 'Reserved' : 'Available',
+                      widget.isSatisfactory ?? false
+                          ? 'Satisfactory'
+                          : 'Unsatisfactory',
                       style: ui.theme.textTheme.headlineMedium?.copyWith(
                         fontSize: 10,
                         fontWeight: FontWeight.w600,

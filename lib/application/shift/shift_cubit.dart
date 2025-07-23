@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
@@ -16,6 +17,7 @@ import 'package:zembo_agent_app/domain/location/app_location.dart';
 import 'package:zembo_agent_app/domain/shift/shift.dart';
 import 'package:zembo_agent_app/domain/shift_history/shift_history.dart';
 import 'package:zembo_agent_app/domain/station/station.dart';
+import 'package:zembo_agent_app/domain/user/user.dart';
 
 part 'shift_cubit.freezed.dart';
 part 'shift_state.dart';
@@ -151,7 +153,7 @@ class ShiftCubit extends Cubit<ShiftState> {
           : await _localDBFacade.fetchActiveShift(userId: userId);
 
       if (shift == null) {
-        emit(state.copyWith.call(hasActiveShift: false));
+        emit(state.copyWith.call(hasActiveShift: false, activeShift: null));
       } else {
         emit(
           state.copyWith.call(
@@ -176,7 +178,7 @@ class ShiftCubit extends Cubit<ShiftState> {
   }
 
   Future<void> startShift({
-    required int userId,
+    required User user,
     required String startTime,
     required String startLocationLng,
     required String startLocationLat,
@@ -195,7 +197,7 @@ class ShiftCubit extends Cubit<ShiftState> {
         final photoUrl = await uploadFileToCloud(startPhotoUrl);
 
         await _shiftFacade.startShift(
-          userId: userId,
+          userId: user.id!,
           startTime: startTime,
           startLocationLng: startLocationLng,
           startLocationLat: startLocationLat,
@@ -205,6 +207,7 @@ class ShiftCubit extends Cubit<ShiftState> {
         await _localDBFacade.createShiftHistory(
           ShiftHistory.initial().copyWith.call(
             id: DateTime.now().millisecondsSinceEpoch,
+            user: user,
             synced: false,
             startTime: startTime,
             startLocation: AppLocation.initial().copyWith.call(
@@ -216,7 +219,7 @@ class ShiftCubit extends Cubit<ShiftState> {
         );
       }
 
-      await fetchActiveShift(userId);
+      await fetchActiveShift(user.id!);
 
       emit(
         state.copyWith.call(
@@ -225,7 +228,7 @@ class ShiftCubit extends Cubit<ShiftState> {
       );
 
       await fetchCurrentDaysShiftHistory();
-      await fetchAllShiftHistory(userId);
+      await fetchAllShiftHistory(user.id!);
       updateShiftMessagingAnStatus();
     } on DioException catch (e) {
       emit(
@@ -246,11 +249,32 @@ class ShiftCubit extends Cubit<ShiftState> {
 
   Future<void> syncLocalToRemoteShiftHistory(int userId) async {
     try {
+      final isConnected = await SimpleConnectionChecker.isConnectedToInternet();
+
+      if (!isConnected) {
+        return;
+      }
+
       // get unsynced shift history
       final allShiftHistory = await _localDBFacade.fetchAllShiftHistory();
       final unsyncedShiftHistory = allShiftHistory
           .where((shiftHistory) => shiftHistory.synced == false)
           .toList();
+
+      if (unsyncedShiftHistory.isEmpty) {
+        // get latest battery requests from remote
+        final latestShiftHistory = await _shiftFacade.fetchAllShiftHistory();
+
+        // merge to remote battery requests to local battery request
+        await _localDBFacade.batchUpdateLocalShiftHistory(latestShiftHistory);
+        return;
+      }
+
+      emit(
+        state.copyWith(
+          syncLocalToRemoteShiftHistoryStatus: AppStatus.submitting,
+        ),
+      );
 
       // upload unsynced shift history to cloud
       for (final shiftHistory in unsyncedShiftHistory) {
@@ -303,7 +327,18 @@ class ShiftCubit extends Cubit<ShiftState> {
 
       // rehydrate state
       await rehydrateState(userId);
+
+      emit(
+        state.copyWith(
+          syncLocalToRemoteShiftHistoryStatus: AppStatus.success,
+        ),
+      );
     } catch (e) {
+      emit(
+        state.copyWith(
+          syncLocalToRemoteShiftHistoryStatus: AppStatus.failure,
+        ),
+      );
       //
     }
   }
@@ -458,9 +493,9 @@ class ShiftCubit extends Cubit<ShiftState> {
       final isConnected = await SimpleConnectionChecker.isConnectedToInternet();
 
       var shiftHistory = <ShiftHistory>[];
-      await _localDBFacade.fetchAllShiftHistory();
       if (isConnected) {
         shiftHistory = await _shiftFacade.fetchAllShiftHistory();
+        unawaited(syncLocalToRemoteShiftHistory(userId));
       } else {
         shiftHistory = await _localDBFacade.fetchAllShiftHistory();
       }
@@ -488,14 +523,6 @@ class ShiftCubit extends Cubit<ShiftState> {
         ),
       );
     }
-  }
-
-  Future<bool> localDBhasUnsyncedData() async {
-    final shiftHistorys = await _localDBFacade.fetchAllShiftHistory();
-    final unsyncedShiftHistorys = shiftHistorys
-        .where((s) => s.synced == false)
-        .toList();
-    return unsyncedShiftHistorys.isNotEmpty;
   }
 
   Future<bool> isWithinGeofenceRadiusCheck(Position currentPosition) async {

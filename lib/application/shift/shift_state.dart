@@ -42,6 +42,8 @@ abstract class ShiftState with _$ShiftState {
     bool? showStartShiftButton,
     bool? showEndShiftButton,
     String? shiftMessaging,
+
+    AppStatus? syncLocalToRemoteShiftHistoryStatus,
   }) = _ShiftState;
 
   factory ShiftState.initial() => ShiftState(

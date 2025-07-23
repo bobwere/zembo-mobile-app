@@ -24,14 +24,6 @@ class BatteryRequestCubit extends Cubit<BatteryRequestState> {
   final IBatteryRequestFacade _batteryRequestFacade;
   final ILocalDBFacade _localDBFacade;
 
-  Future<bool> localDBhasUnsyncedData() async {
-    final batteryRequests = await _localDBFacade.fetchBatteryRequests();
-    final unsyncedBatteryRequests = batteryRequests
-        .where((battery) => battery.synced == false)
-        .toList();
-    return unsyncedBatteryRequests.isNotEmpty;
-  }
-
   Future<void> getBatteryRequests(int swapperId) async {
     try {
       emit(state.copyWith(fetchBatteryRequestsStatus: AppStatus.submitting));
