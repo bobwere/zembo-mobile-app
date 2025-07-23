@@ -12,6 +12,7 @@ import 'package:zembo_agent_app/application/local_db/i_localdb_facade.dart';
 import 'package:zembo_agent_app/application/shift/i_shift_facade.dart';
 import 'package:zembo_agent_app/core/constants/enum.dart';
 import 'package:zembo_agent_app/core/utils/core_util.dart';
+import 'package:zembo_agent_app/domain/location/app_location.dart';
 import 'package:zembo_agent_app/domain/shift/shift.dart';
 import 'package:zembo_agent_app/domain/shift_history/shift_history.dart';
 import 'package:zembo_agent_app/domain/station/station.dart';
@@ -188,13 +189,32 @@ class ShiftCubit extends Cubit<ShiftState> {
         ),
       );
 
-      await _shiftFacade.startShift(
-        userId: userId,
-        startTime: startTime,
-        startLocationLng: startLocationLng,
-        startLocationLat: startLocationLat,
-        startPhotoUrl: startPhotoUrl,
-      );
+      final isConnected = await SimpleConnectionChecker.isConnectedToInternet();
+
+      if (isConnected) {
+        final photoUrl = await uploadFileToCloud(startPhotoUrl);
+
+        await _shiftFacade.startShift(
+          userId: userId,
+          startTime: startTime,
+          startLocationLng: startLocationLng,
+          startLocationLat: startLocationLat,
+          startPhotoUrl: photoUrl,
+        );
+      } else {
+        await _localDBFacade.createShiftHistory(
+          ShiftHistory.initial().copyWith.call(
+            id: DateTime.now().millisecondsSinceEpoch,
+            synced: false,
+            startTime: startTime,
+            startLocation: AppLocation.initial().copyWith.call(
+              latitude: startLocationLat,
+              longitude: startLocationLng,
+            ),
+            startPhotoUrl: startPhotoUrl,
+          ),
+        );
+      }
 
       await fetchActiveShift(userId);
 
@@ -222,6 +242,77 @@ class ShiftCubit extends Cubit<ShiftState> {
         ),
       );
     }
+  }
+
+  Future<void> syncLocalToRemoteShiftHistory(int userId) async {
+    try {
+      // get unsynced shift history
+      final allShiftHistory = await _localDBFacade.fetchAllShiftHistory();
+      final unsyncedShiftHistory = allShiftHistory
+          .where((shiftHistory) => shiftHistory.synced == false)
+          .toList();
+
+      // upload unsynced shift history to cloud
+      for (final shiftHistory in unsyncedShiftHistory) {
+        if (shiftHistory.id! < 100000) {
+          // started and not synced
+          final photoUrl = shiftHistory.endPhotoUrl != null
+              ? await uploadFileToCloud(shiftHistory.endPhotoUrl!)
+              : null;
+
+          await _shiftFacade.endShift(
+            id: shiftHistory.id!,
+            endTime: shiftHistory.endTime,
+            endLocationLng: shiftHistory.endLocation?.longitude,
+            endLocationLat: shiftHistory.endLocation?.latitude,
+            endPhotoUrl: photoUrl,
+          );
+          continue;
+        }
+
+        // not started and not synced
+        final startPhotoUrl = await uploadFileToCloud(
+          shiftHistory.startPhotoUrl!,
+        );
+        final savedShift = await _shiftFacade.startShift(
+          userId: userId,
+          startTime: shiftHistory.startTime!,
+          startLocationLng: shiftHistory.startLocation?.longitude ?? '',
+          startLocationLat: shiftHistory.startLocation?.latitude ?? '',
+          startPhotoUrl: startPhotoUrl,
+        );
+
+        final endPhotoUrl = shiftHistory.endPhotoUrl != null
+            ? await uploadFileToCloud(shiftHistory.endPhotoUrl!)
+            : null;
+
+        await _shiftFacade.endShift(
+          id: savedShift.id!,
+          endTime: shiftHistory.endTime,
+          endLocationLng: shiftHistory.endLocation?.longitude,
+          endLocationLat: shiftHistory.endLocation?.latitude,
+          endPhotoUrl: endPhotoUrl,
+        );
+      }
+
+      // get latest shift history from remote
+      final latestShiftHistory = await _shiftFacade.fetchAllShiftHistory();
+
+      // merge to remote shift history to local shift history
+      await _localDBFacade.batchUpdateLocalShiftHistory(latestShiftHistory);
+
+      // rehydrate state
+      await rehydrateState(userId);
+    } catch (e) {
+      //
+    }
+  }
+
+  Future<void> rehydrateState(int userId) async {
+    await fetchActiveShift(userId);
+    await fetchCurrentDaysShiftHistory();
+    await fetchAllShiftHistory();
+    updateShiftMessagingAnStatus();
   }
 
   Future<String> uploadFileToCloud(String path) async {
@@ -259,13 +350,36 @@ class ShiftCubit extends Cubit<ShiftState> {
         ),
       );
 
-      await _shiftFacade.endShift(
-        id: id,
-        endTime: endTime,
-        endLocationLng: endLocationLng,
-        endLocationLat: endLocationLat,
-        endPhotoUrl: endPhotoUrl,
-      );
+      final isConnected = await SimpleConnectionChecker.isConnectedToInternet();
+
+      if (isConnected) {
+        final photoUrl = await uploadFileToCloud(endPhotoUrl!);
+
+        await _shiftFacade.endShift(
+          id: id,
+          endTime: endTime,
+          endLocationLng: endLocationLng,
+          endLocationLat: endLocationLat,
+          endPhotoUrl: photoUrl,
+        );
+      } else {
+        final shiftHistories = await _localDBFacade.fetchAllShiftHistory();
+
+        final shiftHistory = shiftHistories.where((s) => s.id == id).first;
+
+        await _localDBFacade.updateShiftHistory(
+          id,
+          shiftHistory.copyWith.call(
+            synced: false,
+            endTime: endTime,
+            endLocation: AppLocation.initial().copyWith.call(
+              latitude: endLocationLat,
+              longitude: endLocationLng,
+            ),
+            endPhotoUrl: endPhotoUrl,
+          ),
+        );
+      }
 
       await fetchActiveShift(userId);
 

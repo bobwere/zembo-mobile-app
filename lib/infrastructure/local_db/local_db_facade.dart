@@ -109,7 +109,7 @@ class LocalDBFacade implements ILocalDBFacade {
   }
 
   @override
-  Future<void> updateShiftHistory(ShiftHistory shiftHistory) async {
+  Future<void> updateShiftHistory(int id, ShiftHistory shiftHistory) async {
     final collection = await initialize();
     final shiftHistoryBox = await collection
         .openBox<List<Map<dynamic, dynamic>>>(
@@ -122,10 +122,26 @@ class LocalDBFacade implements ILocalDBFacade {
               <Map<String, dynamic>>[]
           ..add(shiftHistory.toJson());
 
-    final index = dataList.indexWhere((data) => data['id'] == shiftHistory.id);
+    final index = dataList.indexWhere((data) => data['id'] == id);
 
     dataList[index] = shiftHistory.toJson();
 
     await shiftHistoryBox.put('shift_history', dataList);
+  }
+
+  @override
+  Future<void> batchUpdateLocalShiftHistory(
+    List<ShiftHistory> shiftHistory,
+  ) async {
+    final collection = await initialize();
+    final shiftHistoryBox = await collection
+        .openBox<List<Map<dynamic, dynamic>>>(
+          'shift_history',
+        );
+
+    await shiftHistoryBox.put(
+      'shift_history',
+      shiftHistory.map((h) => h.toJson()).toList(),
+    );
   }
 }

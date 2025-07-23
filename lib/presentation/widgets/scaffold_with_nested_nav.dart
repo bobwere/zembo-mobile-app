@@ -6,10 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zembo_agent_app/application/auth/auth_cubit.dart';
+import 'package:zembo_agent_app/application/connectivity/connectivity_cubit.dart';
 import 'package:zembo_agent_app/application/notification/notification_cubit.dart';
+import 'package:zembo_agent_app/application/shift/shift_cubit.dart';
 import 'package:zembo_agent_app/core/constants/enum.dart';
 import 'package:zembo_agent_app/core/utils/ui_util.dart';
 import 'package:zembo_agent_app/infrastructure/notification/notification_service.dart';
+import 'package:zembo_agent_app/presentation/widgets/snackbar_widget.dart';
 
 class ScaffoldWithNestedNavigation extends StatefulWidget {
   const ScaffoldWithNestedNavigation({
@@ -76,114 +79,139 @@ class _ScaffoldWithNestedNavigationState
   @override
   Widget build(BuildContext context) {
     final ui = UiUtil(context);
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: widget.navigationShell,
-      bottomNavigationBar: SafeArea(
-        child: Container(
-          height: Platform.isIOS ? 90 : 60,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Theme.of(context).colorScheme.primary.withOpacity(0.09),
-                offset: const Offset(0, -1),
-                spreadRadius: 1,
-                blurRadius: 4,
-              ),
-            ],
-          ),
-          alignment: Alignment.center,
-          child: Padding(
-            padding: const EdgeInsets.only(top: 2),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                ...<BottomNavigationItem>[
-                  BottomNavigationItem.home,
-                  BottomNavigationItem.batteryRequest,
-                  BottomNavigationItem.profile,
-                ].map(
-                  (item) => GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onTap: () {
-                      _goBranch(item.idx);
+    return BlocListener<ConnectivityCubit, ConnectivityState>(
+      listener: (context, state) {
+        if (!state.isConnected!) {
+          showSnackBar(
+            context,
+            message: 'No internet connection',
+          );
+        }
 
-                      setState(() {
-                        pageIndex = item.idx;
-                      });
+        if (state.isConnected!) {
+          showSnackBar(
+            context,
+            message: 'Internet connection restored',
+            state: SnackbarState.success,
+          );
+          context.read<ShiftCubit>().syncLocalToRemoteShiftHistory(
+            context.read<AuthCubit>().state.user!.id!,
+          );
+        }
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: widget.navigationShell,
+        bottomNavigationBar: SafeArea(
+          child: Container(
+            height: Platform.isIOS ? 90 : 60,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.primary.withOpacity(0.09),
+                  offset: const Offset(0, -1),
+                  spreadRadius: 1,
+                  blurRadius: 4,
+                ),
+              ],
+            ),
+            alignment: Alignment.center,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 2),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  ...<BottomNavigationItem>[
+                    BottomNavigationItem.home,
+                    BottomNavigationItem.batteryRequest,
+                    BottomNavigationItem.profile,
+                  ].map(
+                    (item) => GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () {
+                        _goBranch(item.idx);
 
-                      // final userId =
-                      //     context.read<AuthCubit>().state.user?.id ?? '';
+                        setState(() {
+                          pageIndex = item.idx;
+                        });
 
-                      // switch (item.idx) {
-                      //   case 0:
-                      //     context.read<TableCubit>().fetchMarketTables(
-                      //       userId,
-                      //       onBackGround: true,
-                      //     );
-                      //   case 1:
-                      //     context.read<TableCubit>().fetchMarketTables(
-                      //       userId,
-                      //       onBackGround: true,
-                      //     );
-                      //   case 2:
-                      //     context.read<PaymentCubit>().fetchWallet(
-                      //       onBackGround: true,
-                      //     );
-                      //     context.read<PaymentCubit>().fetchWalletTransactions(
-                      //       onBackGround: true,
-                      //     );
-                      //   case 3:
-                      //     context.read<AuthCubit>().getUserProfile();
-                      //   default:
-                      // }
-                    },
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width / 3,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          if (pageIndex == item.idx)
-                            Icon(
-                              item.icon,
-                              size: 20,
-                              color: Theme.of(context).colorScheme.primary,
+                        // final userId =
+                        //     context.read<AuthCubit>().state.user?.id ?? '';
+
+                        // switch (item.idx) {
+                        //   case 0:
+                        //     context.read<TableCubit>().fetchMarketTables(
+                        //       userId,
+                        //       onBackGround: true,
+                        //     );
+                        //   case 1:
+                        //     context.read<TableCubit>().fetchMarketTables(
+                        //       userId,
+                        //       onBackGround: true,
+                        //     );
+                        //   case 2:
+                        //     context.read<PaymentCubit>().fetchWallet(
+                        //       onBackGround: true,
+                        //     );
+                        //     context.read<PaymentCubit>().fetchWalletTransactions(
+                        //       onBackGround: true,
+                        //     );
+                        //   case 3:
+                        //     context.read<AuthCubit>().getUserProfile();
+                        //   default:
+                        // }
+                      },
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width / 3,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            if (pageIndex == item.idx)
+                              Icon(
+                                item.icon,
+                                size: 20,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                            if (pageIndex != item.idx)
+                              Icon(
+                                item.icon,
+                                size: 20,
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.primary.withOpacity(0.3),
+                              ),
+                            const SizedBox(height: 4),
+                            Text(
+                              item.name,
+                              textScaler: TextScaler.linear(
+                                ui.textScaleFactor,
+                              ),
+                              style: Theme.of(context).textTheme.labelSmall
+                                  ?.copyWith(
+                                    fontSize: 14,
+                                    fontWeight: pageIndex == item.idx
+                                        ? FontWeight.w700
+                                        : FontWeight.w400,
+                                    color: pageIndex == item.idx
+                                        ? Theme.of(context).colorScheme.primary
+                                        : Theme.of(
+                                            context,
+                                          ).colorScheme.primary.withOpacity(
+                                            0.5,
+                                          ),
+                                  ),
                             ),
-                          if (pageIndex != item.idx)
-                            Icon(
-                              item.icon,
-                              size: 20,
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.primary.withOpacity(0.3),
-                            ),
-                          const SizedBox(height: 4),
-                          Text(
-                            item.name,
-                            textScaler: TextScaler.linear(
-                              ui.textScaleFactor,
-                            ),
-                            style: Theme.of(context).textTheme.labelSmall
-                                ?.copyWith(
-                                  fontSize: 14,
-                                  fontWeight: pageIndex == item.idx
-                                      ? FontWeight.w700
-                                      : FontWeight.w400,
-                                  color: pageIndex == item.idx
-                                      ? Theme.of(context).colorScheme.primary
-                                      : Theme.of(
-                                          context,
-                                        ).colorScheme.primary.withOpacity(0.5),
-                                ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

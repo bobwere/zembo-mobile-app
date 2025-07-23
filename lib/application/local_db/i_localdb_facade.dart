@@ -5,8 +5,9 @@ abstract class ILocalDBFacade {
   Future<ShiftHistory?> fetchActiveShift({required int userId});
   Future<List<ShiftHistory>> fetchCurrentDaysShiftHistory();
   Future<List<ShiftHistory>> fetchAllShiftHistory();
+  Future<void> batchUpdateLocalShiftHistory(List<ShiftHistory> shiftHistory);
   Future<void> createShiftHistory(ShiftHistory shiftHistory);
-  Future<void> updateShiftHistory(ShiftHistory shiftHistory);
+  Future<void> updateShiftHistory(int id, ShiftHistory shiftHistory);
   Future<void> saveUser(User user);
   Future<User> getUser();
 }

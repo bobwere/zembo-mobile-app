@@ -31,7 +31,7 @@ class ShiftFacade implements IShiftFacade {
   }
 
   @override
-  Future<void> startShift({
+  Future<ShiftHistory> startShift({
     required int userId,
     required String startTime,
     required String startLocationLng,
@@ -39,7 +39,7 @@ class ShiftFacade implements IShiftFacade {
     required String startPhotoUrl,
   }) async {
     try {
-      await _dio.post<dynamic>(
+      final res = await _dio.post<dynamic>(
         '/shift-history',
         data: {
           'user_id': userId,
@@ -49,13 +49,21 @@ class ShiftFacade implements IShiftFacade {
           'start_photo_url': startPhotoUrl,
         },
       );
+
+      final results = Map<String, dynamic>.from(
+        (res.data as Map<String, dynamic>)['data'] as Map<String, dynamic>,
+      );
+
+      final shiftHistory = ShiftHistory.fromJson(results);
+
+      return shiftHistory;
     } catch (e) {
       rethrow;
     }
   }
 
   @override
-  Future<void> endShift({
+  Future<ShiftHistory> endShift({
     required int id,
     String? endTime,
     String? endLocationLng,
@@ -63,7 +71,7 @@ class ShiftFacade implements IShiftFacade {
     String? endPhotoUrl,
   }) async {
     try {
-      await _dio.patch<dynamic>(
+      final res = await _dio.patch<dynamic>(
         '/shift-history/$id',
         data: {
           'end_time': endTime,
@@ -72,6 +80,14 @@ class ShiftFacade implements IShiftFacade {
           'end_photo_url': endPhotoUrl,
         },
       );
+
+      final results = Map<String, dynamic>.from(
+        (res.data as Map<String, dynamic>)['data'] as Map<String, dynamic>,
+      );
+
+      final shiftHistory = ShiftHistory.fromJson(results);
+
+      return shiftHistory;
     } catch (e) {
       rethrow;
     }
