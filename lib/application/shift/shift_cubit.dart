@@ -225,7 +225,7 @@ class ShiftCubit extends Cubit<ShiftState> {
       );
 
       await fetchCurrentDaysShiftHistory();
-      await fetchAllShiftHistory();
+      await fetchAllShiftHistory(userId);
       updateShiftMessagingAnStatus();
     } on DioException catch (e) {
       emit(
@@ -311,7 +311,7 @@ class ShiftCubit extends Cubit<ShiftState> {
   Future<void> rehydrateState(int userId) async {
     await fetchActiveShift(userId);
     await fetchCurrentDaysShiftHistory();
-    await fetchAllShiftHistory();
+    await fetchAllShiftHistory(userId);
     updateShiftMessagingAnStatus();
   }
 
@@ -390,7 +390,7 @@ class ShiftCubit extends Cubit<ShiftState> {
       );
 
       await fetchCurrentDaysShiftHistory();
-      await fetchAllShiftHistory();
+      await fetchAllShiftHistory(userId);
       updateShiftMessagingAnStatus();
     } on DioException catch (e) {
       emit(
@@ -447,7 +447,7 @@ class ShiftCubit extends Cubit<ShiftState> {
     }
   }
 
-  Future<void> fetchAllShiftHistory() async {
+  Future<void> fetchAllShiftHistory(int userId) async {
     try {
       emit(
         state.copyWith.call(
@@ -456,9 +456,18 @@ class ShiftCubit extends Cubit<ShiftState> {
       );
 
       final isConnected = await SimpleConnectionChecker.isConnectedToInternet();
-      final shiftHistory = isConnected
-          ? await _shiftFacade.fetchAllShiftHistory()
-          : await _localDBFacade.fetchAllShiftHistory();
+
+      var shiftHistory = <ShiftHistory>[];
+      await _localDBFacade.fetchAllShiftHistory();
+      if (isConnected) {
+        shiftHistory = await _shiftFacade.fetchAllShiftHistory();
+
+        if (!await localDBhasUnsyncedData()) {
+          await syncLocalToRemoteShiftHistory(userId);
+        }
+      } else {
+        shiftHistory = await _localDBFacade.fetchAllShiftHistory();
+      }
 
       emit(
         state.copyWith.call(
@@ -483,6 +492,14 @@ class ShiftCubit extends Cubit<ShiftState> {
         ),
       );
     }
+  }
+
+  Future<bool> localDBhasUnsyncedData() async {
+    final shiftHistorys = await _localDBFacade.fetchAllShiftHistory();
+    final unsyncedShiftHistorys = shiftHistorys
+        .where((s) => s.synced == false)
+        .toList();
+    return unsyncedShiftHistorys.isNotEmpty;
   }
 
   Future<bool> isWithinGeofenceRadiusCheck(Position currentPosition) async {

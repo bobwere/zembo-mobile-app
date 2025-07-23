@@ -21,6 +21,14 @@ class BatteryRequestCubit extends Cubit<BatteryRequestState> {
   final IBatteryRequestFacade _batteryRequestFacade;
   final ILocalDBFacade _localDBFacade;
 
+  Future<bool> localDBhasUnsyncedData() async {
+    final batteryRequests = await _localDBFacade.fetchBatteryRequests();
+    final unsyncedBatteryRequests = batteryRequests
+        .where((battery) => battery.synced == false)
+        .toList();
+    return unsyncedBatteryRequests.isNotEmpty;
+  }
+
   Future<void> getBatteryRequests(int swapperId) async {
     try {
       emit(state.copyWith(fetchBatteryRequestsStatus: AppStatus.submitting));
@@ -36,6 +44,10 @@ class BatteryRequestCubit extends Cubit<BatteryRequestState> {
               (request) => request.swapper!.id! == swapperId,
             )
             .toList();
+
+        if (!await localDBhasUnsyncedData()) {
+          await syncLocalToRemoteBatteryRequest(swapperId);
+        }
       } else {
         //
         requests = await _localDBFacade.fetchBatteryRequests();
@@ -134,9 +146,14 @@ class BatteryRequestCubit extends Cubit<BatteryRequestState> {
       // get latest battery requests from remote
       final latestBatteryRequests = await _batteryRequestFacade
           .getBatteryRequests();
+      final requests = latestBatteryRequests
+          .where(
+            (request) => request.swapper!.id! == userId,
+          )
+          .toList();
 
       // merge to remote battery requests to local battery request
-      await _localDBFacade.batchUpdateBatteryRequest(latestBatteryRequests);
+      await _localDBFacade.batchUpdateBatteryRequest(requests);
 
       // rehydrate state
       await rehydrateState(userId);
