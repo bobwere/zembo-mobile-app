@@ -208,8 +208,8 @@ return $default(_that.id,_that.name,_that.countryCode);case _:
 }
 
 /// @nodoc
-@JsonSerializable()
 
+@JsonSerializable(explicitToJson: true)
 class _Country implements Country {
    _Country({@JsonKey(name: 'id') this.id, @JsonKey(name: 'name') this.name, @JsonKey(name: 'country_code') this.countryCode});
   factory _Country.fromJson(Map<String, dynamic> json) => _$CountryFromJson(json);

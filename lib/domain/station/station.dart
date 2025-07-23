@@ -7,6 +7,7 @@ part 'station.g.dart';
 
 @freezed
 abstract class Station with _$Station {
+  @JsonSerializable(explicitToJson: true)
   factory Station({
     @JsonKey(name: 'id') int? id,
     @JsonKey(name: 'name') String? name,

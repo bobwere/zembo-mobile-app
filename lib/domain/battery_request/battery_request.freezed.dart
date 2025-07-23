@@ -266,8 +266,8 @@ return $default(_that.id,_that.swapper,_that.dispatchOfficer,_that.rider,_that.n
 }
 
 /// @nodoc
-@JsonSerializable()
 
+@JsonSerializable(explicitToJson: true)
 class _BatteryRequest implements BatteryRequest {
    _BatteryRequest({@JsonKey(name: 'id') this.id, @JsonKey(name: 'swapper') this.swapper, @JsonKey(name: 'dispatch_officer') this.dispatchOfficer, @JsonKey(name: 'rider') this.rider, @JsonKey(name: 'number_of_batteries') this.numberOfBatteries, @JsonKey(name: 'pickup_time') this.pickupTime, @JsonKey(name: 'delivery_time') this.deliveryTime, @JsonKey(name: 'status') this.status, @JsonKey(name: 'comment') this.comment, @JsonKey(name: 'destination') this.destination, @JsonKey(name: 'synced') this.synced, @JsonKey(name: 'created_at') this.createdAt, @JsonKey(name: 'updated_at') this.updatedAt});
   factory _BatteryRequest.fromJson(Map<String, dynamic> json) => _$BatteryRequestFromJson(json);

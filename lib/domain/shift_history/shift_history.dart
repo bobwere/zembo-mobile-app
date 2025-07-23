@@ -7,6 +7,7 @@ part 'shift_history.g.dart';
 
 @freezed
 abstract class ShiftHistory with _$ShiftHistory {
+  @JsonSerializable(explicitToJson: true)
   factory ShiftHistory({
     @JsonKey(name: 'id') int? id,
     @JsonKey(name: 'user') User? user,

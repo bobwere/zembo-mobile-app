@@ -233,8 +233,8 @@ return $default(_that.id,_that.name,_that.country,_that.location);case _:
 }
 
 /// @nodoc
-@JsonSerializable()
 
+@JsonSerializable(explicitToJson: true)
 class _Station implements Station {
    _Station({@JsonKey(name: 'id') this.id, @JsonKey(name: 'name') this.name, @JsonKey(name: 'country') this.country, @JsonKey(name: 'location') this.location});
   factory _Station.fromJson(Map<String, dynamic> json) => _$StationFromJson(json);

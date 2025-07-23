@@ -19,5 +19,8 @@ const String homePath = '/home';
 const String requestDeliveryRoute = 'request_delivery_route';
 const String requestDeliveryPath = '/request_delivery';
 
+const String addBatteryRequestRoute = 'add_battery_request_route';
+const String addBatteryRequestPath = 'add_battery_request';
+
 const String profileRoute = 'profile_route';
 const String profilePath = '/profile';

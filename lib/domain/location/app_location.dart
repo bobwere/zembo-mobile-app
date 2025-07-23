@@ -5,6 +5,7 @@ part 'app_location.g.dart';
 
 @freezed
 abstract class AppLocation with _$AppLocation {
+  @JsonSerializable(explicitToJson: true)
   factory AppLocation({
     @JsonKey(name: 'id') int? id,
     @JsonKey(name: 'name') String? name,

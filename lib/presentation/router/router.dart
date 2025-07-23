@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zembo_agent_app/application/auth/auth_cubit.dart';
 import 'package:zembo_agent_app/presentation/pages/auth/login_page.dart';
+import 'package:zembo_agent_app/presentation/pages/root/battery_requests/add_request_page.dart';
 import 'package:zembo_agent_app/presentation/pages/root/battery_requests/request_delivery_page.dart';
 import 'package:zembo_agent_app/presentation/pages/root/home/home_page.dart';
 import 'package:zembo_agent_app/presentation/pages/root/profile/profile_page.dart';
@@ -139,6 +140,26 @@ GoRouter goRouter = GoRouter(
                       ) => FadeTransition(opacity: animation, child: child),
                 );
               },
+              routes: [
+                GoRoute(
+                  name: addBatteryRequestRoute,
+                  path: addBatteryRequestPath,
+                  pageBuilder: (context, state) {
+                    return CustomTransitionPage<void>(
+                      key: state.pageKey,
+                      name: state.name,
+                      child: const AddBatteryRequestPage(),
+                      transitionsBuilder:
+                          (
+                            context,
+                            animation,
+                            secondaryAnimation,
+                            child,
+                          ) => FadeTransition(opacity: animation, child: child),
+                    );
+                  },
+                ),
+              ],
             ),
           ],
         ),

@@ -20,6 +20,6 @@ _Station _$StationFromJson(Map<String, dynamic> json) => _Station(
 Map<String, dynamic> _$StationToJson(_Station instance) => <String, dynamic>{
   'id': instance.id,
   'name': instance.name,
-  'country': instance.country,
-  'location': instance.location,
+  'country': instance.country?.toJson(),
+  'location': instance.location?.toJson(),
 };

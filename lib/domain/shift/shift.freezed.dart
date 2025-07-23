@@ -209,8 +209,8 @@ return $default(_that.id,_that.title,_that.startTime,_that.endTime);case _:
 }
 
 /// @nodoc
-@JsonSerializable()
 
+@JsonSerializable(explicitToJson: true)
 class _Shift implements Shift {
    _Shift({@JsonKey(name: 'id') this.id, @JsonKey(name: 'title') this.title, @JsonKey(name: 'start_time') this.startTime, @JsonKey(name: 'end_time') this.endTime});
   factory _Shift.fromJson(Map<String, dynamic> json) => _$ShiftFromJson(json);

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloudinary/cloudinary.dart';
 import 'package:injectable/injectable.dart';
 import 'package:zembo_agent_app/application/battery_request/i_battery_facade.dart';
@@ -16,7 +18,7 @@ class BatteryRequestFacade implements IBatteryRequestFacade {
     required int destination,
   }) async {
     try {
-      await _dio.post<dynamic>(
+      final res = await _dio.post<dynamic>(
         '/battery-request',
         data: {
           'swapper_id': swapperId,
@@ -24,6 +26,8 @@ class BatteryRequestFacade implements IBatteryRequestFacade {
           'destination': destination,
         },
       );
+
+      log(res.data.toString());
 
       return;
     } catch (e) {

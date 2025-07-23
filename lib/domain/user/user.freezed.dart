@@ -250,8 +250,8 @@ return $default(_that.id,_that.username,_that.country,_that.deviceToken,_that.ro
 }
 
 /// @nodoc
-@JsonSerializable()
 
+@JsonSerializable(explicitToJson: true)
 class _User implements User {
    _User({@JsonKey(name: 'id') this.id, @JsonKey(name: 'username') this.username, @JsonKey(name: 'country') this.country, @JsonKey(name: 'device_token') this.deviceToken, @JsonKey(name: 'role') this.role, @JsonKey(name: 'created_at') this.createdAt, @JsonKey(name: 'updated_at') this.updatedAt, @JsonKey(name: 'station') this.station, @JsonKey(name: 'shift') this.shift});
   factory _User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:cloudinary/cloudinary.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -44,10 +47,7 @@ class BatteryRequestCubit extends Cubit<BatteryRequestState> {
               (request) => request.swapper!.id! == swapperId,
             )
             .toList();
-
-        if (!await localDBhasUnsyncedData()) {
-          await syncLocalToRemoteBatteryRequest(swapperId);
-        }
+        unawaited(syncLocalToRemoteBatteryRequest(swapperId));
       } else {
         //
         requests = await _localDBFacade.fetchBatteryRequests();
@@ -80,7 +80,7 @@ class BatteryRequestCubit extends Cubit<BatteryRequestState> {
   Future<void> createBatteryRequest({
     required int numberOfBatteries,
     required AppLocation destination,
-    required User swapperId,
+    required User swapper,
   }) async {
     try {
       emit(state.copyWith(batteryRequestStatus: AppStatus.submitting));
@@ -89,7 +89,7 @@ class BatteryRequestCubit extends Cubit<BatteryRequestState> {
 
       if (isConnected) {
         await _batteryRequestFacade.createBatteryRequest(
-          swapperId: swapperId.id!,
+          swapperId: swapper.id!,
           numberOfBatteries: numberOfBatteries,
           destination: destination.id!,
         );
@@ -99,6 +99,7 @@ class BatteryRequestCubit extends Cubit<BatteryRequestState> {
             id: DateTime.now().millisecondsSinceEpoch,
             synced: false,
             numberOfBatteries: numberOfBatteries,
+            swapper: swapper,
             destination: destination,
             status: 'requested',
             createdAt: DateTime.now().toIso8601String(),
@@ -107,7 +108,7 @@ class BatteryRequestCubit extends Cubit<BatteryRequestState> {
         );
       }
 
-      await getBatteryRequests(swapperId.id!);
+      await getBatteryRequests(swapper.id!);
       emit(state.copyWith(batteryRequestStatus: AppStatus.success));
     } on DioException catch (e) {
       emit(
@@ -128,11 +129,34 @@ class BatteryRequestCubit extends Cubit<BatteryRequestState> {
 
   Future<void> syncLocalToRemoteBatteryRequest(int userId) async {
     try {
+      final isConnected = await SimpleConnectionChecker.isConnectedToInternet();
+
+      if (!isConnected) {
+        return;
+      }
+
       // get unsynced battery Requests
       final allBatteryRequests = await _localDBFacade.fetchBatteryRequests();
       final unsyncedBatteryRequests = allBatteryRequests
           .where((battery) => battery.synced == false)
           .toList();
+
+      if (unsyncedBatteryRequests.isEmpty) {
+        // get latest battery requests from remote
+        final latestBatteryRequests = await _batteryRequestFacade
+            .getBatteryRequests();
+        final requests = latestBatteryRequests
+            .where(
+              (request) => request.swapper!.id! == userId,
+            )
+            .toList();
+
+        // merge to remote battery requests to local battery request
+        await _localDBFacade.batchUpdateBatteryRequest(requests);
+        return;
+      }
+
+      emit(state.copyWith(syncBatteryRequestsStatus: AppStatus.submitting));
 
       // upload unsynced battery requess to cloud
       for (final batteryRequest in unsyncedBatteryRequests) {
@@ -157,8 +181,11 @@ class BatteryRequestCubit extends Cubit<BatteryRequestState> {
 
       // rehydrate state
       await rehydrateState(userId);
+
+      emit(state.copyWith(syncBatteryRequestsStatus: AppStatus.success));
     } catch (e) {
-      //
+      emit(state.copyWith(syncBatteryRequestsStatus: AppStatus.failure));
+      log(e.toString());
     }
   }
 

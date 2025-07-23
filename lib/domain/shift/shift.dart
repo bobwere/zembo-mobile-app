@@ -4,6 +4,7 @@ part 'shift.g.dart';
 
 @freezed
 abstract class Shift with _$Shift {
+  @JsonSerializable(explicitToJson: true)
   factory Shift({
     @JsonKey(name: 'id') int? id,
     @JsonKey(name: 'title') String? title,

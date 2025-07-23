@@ -49,6 +49,7 @@ class Bar extends StatelessWidget {
                 textScaler: TextScaler.linear(ui.textScaleFactor),
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                   fontWeight: FontWeight.w700,
+                  fontSize: 18,
                 ),
               ),
               const Spacer(),

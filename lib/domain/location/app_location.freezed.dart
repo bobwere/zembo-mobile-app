@@ -209,8 +209,8 @@ return $default(_that.id,_that.name,_that.latitude,_that.longitude);case _:
 }
 
 /// @nodoc
-@JsonSerializable()
 
+@JsonSerializable(explicitToJson: true)
 class _AppLocation implements AppLocation {
    _AppLocation({@JsonKey(name: 'id') this.id, @JsonKey(name: 'name') this.name, @JsonKey(name: 'lat') this.latitude, @JsonKey(name: 'lng') this.longitude});
   factory _AppLocation.fromJson(Map<String, dynamic> json) => _$AppLocationFromJson(json);

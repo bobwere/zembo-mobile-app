@@ -8,6 +8,7 @@ part 'user.g.dart';
 
 @freezed
 abstract class User with _$User {
+  @JsonSerializable(explicitToJson: true)
   factory User({
     @JsonKey(name: 'id') int? id,
     @JsonKey(name: 'username') String? username,

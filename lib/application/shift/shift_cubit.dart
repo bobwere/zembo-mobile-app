@@ -461,10 +461,6 @@ class ShiftCubit extends Cubit<ShiftState> {
       await _localDBFacade.fetchAllShiftHistory();
       if (isConnected) {
         shiftHistory = await _shiftFacade.fetchAllShiftHistory();
-
-        if (!await localDBhasUnsyncedData()) {
-          await syncLocalToRemoteShiftHistory(userId);
-        }
       } else {
         shiftHistory = await _localDBFacade.fetchAllShiftHistory();
       }

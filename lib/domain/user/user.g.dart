@@ -27,11 +27,11 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
 Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'id': instance.id,
   'username': instance.username,
-  'country': instance.country,
+  'country': instance.country?.toJson(),
   'device_token': instance.deviceToken,
   'role': instance.role,
   'created_at': instance.createdAt,
   'updated_at': instance.updatedAt,
-  'station': instance.station,
-  'shift': instance.shift,
+  'station': instance.station?.toJson(),
+  'shift': instance.shift?.toJson(),
 };

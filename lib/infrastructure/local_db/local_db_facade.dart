@@ -1,3 +1,5 @@
+// ignore_for_file: lines_longer_than_80_chars, unintended_html_in_doc_comment, cascade_invocations, inference_failure_on_function_invocation, document_ignores
+
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:injectable/injectable.dart';
 import 'package:zembo_agent_app/application/local_db/i_localdb_facade.dart';
@@ -10,23 +12,52 @@ class LocalDBFacade implements ILocalDBFacade {
   Future<BoxCollection> initialize() async {
     return BoxCollection.open(
       'ZemboDB',
-      {'shift_history', 'user'},
+      {'shift_history', 'user', 'battery_request'},
     );
+  }
+
+  /// Helper method to recursively convert Map<dynamic, dynamic> to Map<String, dynamic>
+  Map<String, dynamic> _convertMap(Map<dynamic, dynamic> source) {
+    final result = <String, dynamic>{};
+    source.forEach((key, value) {
+      final stringKey = key.toString();
+      if (value is Map<dynamic, dynamic>) {
+        result[stringKey] = _convertMap(value);
+      } else if (value is List) {
+        result[stringKey] = _convertList(value);
+      } else {
+        result[stringKey] = value;
+      }
+    });
+    return result;
+  }
+
+  /// Helper method to recursively convert List elements
+  List<dynamic> _convertList(List<dynamic> source) {
+    return source.map((item) {
+      if (item is Map<dynamic, dynamic>) {
+        return _convertMap(item);
+      } else if (item is List) {
+        return _convertList(item);
+      } else {
+        return item;
+      }
+    }).toList();
   }
 
   @override
   Future<void> createShiftHistory(ShiftHistory shiftHistory) async {
     final collection = await initialize();
-    final shiftHistoryBox = await collection
-        .openBox<List<Map<dynamic, dynamic>>>(
-          'shift_history',
-        );
+    final shiftHistoryBox = await collection.openBox('shift_history');
 
     final dataList =
-        (await shiftHistoryBox.get('shift_history'))
-                  as List<Map<String, dynamic>>? ??
-              <Map<String, dynamic>>[]
-          ..add(shiftHistory.toJson());
+        (await shiftHistoryBox.get('shift_history') as List<dynamic>?)
+            ?.cast<Map<dynamic, dynamic>>()
+            .map(_convertMap)
+            .toList() ??
+        <Map<String, dynamic>>[];
+
+    dataList.add(shiftHistory.toJson());
 
     await shiftHistoryBox.put('shift_history', dataList);
   }
@@ -50,16 +81,15 @@ class LocalDBFacade implements ILocalDBFacade {
   @override
   Future<List<ShiftHistory>> fetchAllShiftHistory() async {
     final collection = await initialize();
-    final shiftHistoryBox = await collection
-        .openBox<List<Map<dynamic, dynamic>>>(
-          'shift_history',
-        );
+    final shiftHistoryBox = await collection.openBox('shift_history');
 
     final shiftHistoryList = <ShiftHistory>[];
 
     final dataList =
-        (await shiftHistoryBox.get('shift_history'))
-            as List<Map<String, dynamic>>? ??
+        (await shiftHistoryBox.get('shift_history') as List<dynamic>?)
+            ?.cast<Map<dynamic, dynamic>>()
+            .map(_convertMap)
+            .toList() ??
         <Map<String, dynamic>>[];
 
     for (final data in dataList) {
@@ -87,45 +117,46 @@ class LocalDBFacade implements ILocalDBFacade {
   @override
   Future<User> getUser() async {
     final collection = await initialize();
-    final shiftHistoryBox = await collection.openBox<Map<dynamic, dynamic>>(
-      'user',
-    );
+    final userBox = await collection.openBox('user');
 
-    final user = await shiftHistoryBox.get('user');
+    final user = await userBox.get('user') as Map<dynamic, dynamic>?;
     if (user == null) {
       return User.initial();
     }
 
-    return User.fromJson(user as Map<String, dynamic>);
+    final userMap = _convertMap(user);
+    final savedUser = User.fromJson(userMap);
+    return savedUser;
   }
 
   @override
   Future<void> saveUser(User user) async {
     final collection = await initialize();
-    final shiftHistoryBox = await collection.openBox<Map<dynamic, dynamic>>(
-      'user',
-    );
+    final userBox = await collection.openBox('user');
 
-    await shiftHistoryBox.put('user', user.toJson());
+    final json = user.toJson();
+
+    await userBox.put('user', json);
   }
 
   @override
   Future<void> updateShiftHistory(int id, ShiftHistory shiftHistory) async {
     final collection = await initialize();
-    final shiftHistoryBox = await collection
-        .openBox<List<Map<dynamic, dynamic>>>(
-          'shift_history',
-        );
+    final shiftHistoryBox = await collection.openBox('shift_history');
 
     final dataList =
-        (await shiftHistoryBox.get('shift_history'))
-                  as List<Map<String, dynamic>>? ??
-              <Map<String, dynamic>>[]
-          ..add(shiftHistory.toJson());
+        (await shiftHistoryBox.get('shift_history') as List<dynamic>?)
+            ?.cast<Map<dynamic, dynamic>>()
+            .map(_convertMap)
+            .toList() ??
+        <Map<String, dynamic>>[];
 
     final index = dataList.indexWhere((data) => data['id'] == id);
-
-    dataList[index] = shiftHistory.toJson();
+    if (index >= 0) {
+      dataList[index] = shiftHistory.toJson();
+    } else {
+      dataList.add(shiftHistory.toJson());
+    }
 
     await shiftHistoryBox.put('shift_history', dataList);
   }
@@ -135,27 +166,61 @@ class LocalDBFacade implements ILocalDBFacade {
     List<ShiftHistory> shiftHistory,
   ) async {
     final collection = await initialize();
-    final shiftHistoryBox = await collection
-        .openBox<List<Map<dynamic, dynamic>>>(
-          'shift_history',
-        );
+    final shiftHistoryBox = await collection.openBox('shift_history');
 
-    await shiftHistoryBox.put(
-      'shift_history',
-      shiftHistory.map((h) => h.toJson()).toList(),
-    );
+    final data = shiftHistory.map((h) => h.toJson()).toList();
+
+    await shiftHistoryBox.put('shift_history', data);
   }
 
   @override
   Future<void> batchUpdateBatteryRequest(
     List<BatteryRequest> batteryRequests,
-  ) async {}
+  ) async {
+    final collection = await initialize();
+    final batteryRequestBox = await collection.openBox('battery_request');
 
-  @override
-  Future<List<BatteryRequest>> fetchBatteryRequests() async {
-    return [];
+    final data = batteryRequests.map((b) => b.toJson()).toList();
+
+    await batteryRequestBox.put('battery_request', data);
   }
 
   @override
-  Future<void> saveBatteryRequest(BatteryRequest batteryRequest) async {}
+  Future<List<BatteryRequest>> fetchBatteryRequests() async {
+    final collection = await initialize();
+    final batteryRequestBox = await collection.openBox('battery_request');
+
+    final batteryRequestList = <BatteryRequest>[];
+
+    final dataList =
+        (await batteryRequestBox.get('battery_request') as List<dynamic>?)
+            ?.cast<Map<dynamic, dynamic>>()
+            .map(_convertMap)
+            .toList() ??
+        <Map<String, dynamic>>[];
+
+    for (final data in dataList) {
+      final batteryRequest = BatteryRequest.fromJson(data);
+      batteryRequestList.add(batteryRequest);
+    }
+
+    return batteryRequestList;
+  }
+
+  @override
+  Future<void> saveBatteryRequest(BatteryRequest batteryRequest) async {
+    final collection = await initialize();
+    final batteryRequestBox = await collection.openBox('battery_request');
+
+    final dataList =
+        (await batteryRequestBox.get('battery_request') as List<dynamic>?)
+            ?.cast<Map<dynamic, dynamic>>()
+            .map(_convertMap)
+            .toList() ??
+        <Map<String, dynamic>>[];
+
+    dataList.add(batteryRequest.toJson());
+
+    await batteryRequestBox.put('battery_request', dataList);
+  }
 }

@@ -264,8 +264,8 @@ return $default(_that.id,_that.user,_that.shift,_that.startTime,_that.startLocat
 }
 
 /// @nodoc
-@JsonSerializable()
 
+@JsonSerializable(explicitToJson: true)
 class _ShiftHistory implements ShiftHistory {
    _ShiftHistory({@JsonKey(name: 'id') this.id, @JsonKey(name: 'user') this.user, @JsonKey(name: 'shift') this.shift, @JsonKey(name: 'start_time') this.startTime, @JsonKey(name: 'start_location') this.startLocation, @JsonKey(name: 'start_photo_url') this.startPhotoUrl, @JsonKey(name: 'end_time') this.endTime, @JsonKey(name: 'end_location') this.endLocation, @JsonKey(name: 'end_photo_url') this.endPhotoUrl, @JsonKey(name: 'created_at') this.createdAt, @JsonKey(name: 'synced') this.synced});
   factory _ShiftHistory.fromJson(Map<String, dynamic> json) => _$ShiftHistoryFromJson(json);

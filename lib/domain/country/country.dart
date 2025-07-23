@@ -5,6 +5,7 @@ part 'country.g.dart';
 
 @freezed
 abstract class Country with _$Country {
+  @JsonSerializable(explicitToJson: true)
   factory Country({
     @JsonKey(name: 'id') int? id,
     @JsonKey(name: 'name') String? name,

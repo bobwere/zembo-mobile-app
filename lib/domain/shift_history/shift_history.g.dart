@@ -34,13 +34,13 @@ _ShiftHistory _$ShiftHistoryFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$ShiftHistoryToJson(_ShiftHistory instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'user': instance.user,
-      'shift': instance.shift,
+      'user': instance.user?.toJson(),
+      'shift': instance.shift?.toJson(),
       'start_time': instance.startTime,
-      'start_location': instance.startLocation,
+      'start_location': instance.startLocation?.toJson(),
       'start_photo_url': instance.startPhotoUrl,
       'end_time': instance.endTime,
-      'end_location': instance.endLocation,
+      'end_location': instance.endLocation?.toJson(),
       'end_photo_url': instance.endPhotoUrl,
       'created_at': instance.createdAt,
       'synced': instance.synced,

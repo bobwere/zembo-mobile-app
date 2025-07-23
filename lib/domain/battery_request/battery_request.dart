@@ -7,6 +7,7 @@ part 'battery_request.g.dart';
 
 @freezed
 abstract class BatteryRequest with _$BatteryRequest {
+  @JsonSerializable(explicitToJson: true)
   factory BatteryRequest({
     @JsonKey(name: 'id') int? id,
     @JsonKey(name: 'swapper') User? swapper,
