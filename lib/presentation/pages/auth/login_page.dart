@@ -40,12 +40,22 @@ class _LoginPageState extends State<LoginPage> {
           );
 
           if (user != null) {
-            context.read<ShiftCubit>().fetchAllShiftHistory(user.id!);
-            context.read<BatteryRequestCubit>().getBatteryRequests(user.id!);
             context.read<NotificationCubit>().getAllNotifications(user.id!);
-          }
 
-          context.goNamed(homeRoute);
+            if (user.role == 'rider') {
+              context
+                  .read<BatteryRequestCubit>()
+                  .getRiderBatteryDeliveryRequests(user.id!);
+              context.goNamed(riderRequestDeliveryRoute);
+            }
+
+            if (user.role == 'swapper') {
+              context.read<ShiftCubit>().fetchAllShiftHistory(user.id!);
+              context.read<BatteryRequestCubit>().getBatteryRequests(user.id!);
+              context.read<NotificationCubit>().getAllNotifications(user.id!);
+              context.goNamed(homeRoute);
+            }
+          }
         }
 
         if (state.signInFormStatus == AppStatus.failure) {

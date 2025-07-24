@@ -11,6 +11,14 @@ abstract class BatteryRequestState with _$BatteryRequestState {
     String? fetchBatteryRequestError,
 
     AppStatus? syncBatteryRequestsStatus,
+
+    List<BatteryRequest>? riderBatteryRequests,
+    AppStatus? fetchRiderBatteryRequestsStatus,
+    String? fetchRiderBatteryRequestsError,
+
+    AppStatus? syncRiderBatteryRequestsStatus,
+    int? syncRiderBatteryRequestsStatusID,
+    String? syncRiderBatteryRequestsError,
   }) = _BatteryRequestState;
 
   factory BatteryRequestState.initial() => BatteryRequestState(

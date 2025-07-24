@@ -29,16 +29,30 @@ class SplashPage extends StatelessWidget {
 
           if (user != null) {
             unawaited(
-              context.read<ShiftCubit>().fetchAllShiftHistory(user.id!),
-            );
-            unawaited(
-              context.read<BatteryRequestCubit>().getBatteryRequests(user.id!),
-            );
-            unawaited(
               context.read<NotificationCubit>().getAllNotifications(user.id!),
             );
+
+            if (user.role == 'rider') {
+              unawaited(
+                context
+                    .read<BatteryRequestCubit>()
+                    .getRiderBatteryDeliveryRequests(user.id!),
+              );
+              context.goNamed(riderRequestDeliveryRoute);
+            }
+
+            if (user.role == 'swapper') {
+              unawaited(
+                context.read<ShiftCubit>().fetchAllShiftHistory(user.id!),
+              );
+              unawaited(
+                context.read<BatteryRequestCubit>().getBatteryRequests(
+                  user.id!,
+                ),
+              );
+              context.goNamed(homeRoute);
+            }
           }
-          context.goNamed(homeRoute);
         } else {
           context.goNamed(loginRoute);
         }

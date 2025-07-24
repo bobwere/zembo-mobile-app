@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:zembo_agent_app/application/auth/auth_cubit.dart';
+import 'package:zembo_agent_app/application/battery_request/battery_request_cubit.dart';
+import 'package:zembo_agent_app/core/constants/enum.dart';
 import 'package:zembo_agent_app/core/utils/ui_util.dart';
 import 'package:zembo_agent_app/domain/battery_request/battery_request.dart';
+import 'package:zembo_agent_app/presentation/widgets/app_button.dart';
 
 class BatteryRequestTile extends StatefulWidget {
   const BatteryRequestTile({
     required this.batteryRequest,
+    this.isRider = false,
     super.key,
   });
 
   final BatteryRequest batteryRequest;
+  final bool isRider;
 
   @override
   State<BatteryRequestTile> createState() => _BatteryRequestTileState();
@@ -240,6 +247,57 @@ class _BatteryRequestTileState extends State<BatteryRequestTile> {
                 ),
               ],
             ),
+            if (widget.isRider) ...[
+              SizedBox(height: ui.scaleHeightFactor(16)),
+              if (widget.batteryRequest.status == 'assigned')
+                Builder(
+                  builder: (context) {
+                    final isLoading = context.select<BatteryRequestCubit, bool>(
+                      (b) =>
+                          b.state.syncRiderBatteryRequestsStatus ==
+                          AppStatus.submitting,
+                    );
+
+                    return AppButton(
+                      isLoading: isLoading,
+                      onPressed: () {
+                        context
+                            .read<BatteryRequestCubit>()
+                            .updateRiderBatteryDeliveryRequestStatus(
+                              widget.batteryRequest.id!,
+                              'picked up',
+                              context.read<AuthCubit>().state.user!.id!,
+                            );
+                      },
+                      text: 'Mark as Picked Up',
+                    );
+                  },
+                ),
+              if (widget.batteryRequest.status == 'picked up')
+                Builder(
+                  builder: (context) {
+                    final isLoading = context.select<BatteryRequestCubit, bool>(
+                      (b) =>
+                          b.state.syncRiderBatteryRequestsStatus ==
+                          AppStatus.submitting,
+                    );
+
+                    return AppButton(
+                      isLoading: isLoading,
+                      onPressed: () {
+                        context
+                            .read<BatteryRequestCubit>()
+                            .updateRiderBatteryDeliveryRequestStatus(
+                              widget.batteryRequest.id!,
+                              'delivered',
+                              context.read<AuthCubit>().state.user!.id!,
+                            );
+                      },
+                      text: 'Mark as Delivered',
+                    );
+                  },
+                ),
+            ],
           ],
         ),
       ),

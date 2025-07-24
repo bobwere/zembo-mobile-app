@@ -7,4 +7,8 @@ abstract class IBatteryRequestFacade {
     required int numberOfBatteries,
     required int destination,
   });
+  Future<void> updateBatteryRequestStatus(
+    int requestId,
+    String status,
+  );
 }

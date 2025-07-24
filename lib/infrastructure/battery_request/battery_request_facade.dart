@@ -57,4 +57,23 @@ class BatteryRequestFacade implements IBatteryRequestFacade {
       rethrow;
     }
   }
+
+  @override
+  Future<void> updateBatteryRequestStatus(
+    int requestId,
+    String status,
+  ) async {
+    try {
+      await _dio.patch<dynamic>(
+        '/battery-request/$requestId',
+        data: {
+          'status': status,
+        },
+      );
+
+      return;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

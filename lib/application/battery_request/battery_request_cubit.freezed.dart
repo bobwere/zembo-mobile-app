@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$BatteryRequestState {
 
- AppStatus? get batteryRequestStatus; String? get batteryRequestError; List<BatteryRequest>? get batteryRequests; AppStatus? get fetchBatteryRequestsStatus; String? get fetchBatteryRequestError; AppStatus? get syncBatteryRequestsStatus;
+ AppStatus? get batteryRequestStatus; String? get batteryRequestError; List<BatteryRequest>? get batteryRequests; AppStatus? get fetchBatteryRequestsStatus; String? get fetchBatteryRequestError; AppStatus? get syncBatteryRequestsStatus; List<BatteryRequest>? get riderBatteryRequests; AppStatus? get fetchRiderBatteryRequestsStatus; String? get fetchRiderBatteryRequestsError; AppStatus? get syncRiderBatteryRequestsStatus; int? get syncRiderBatteryRequestsStatusID; String? get syncRiderBatteryRequestsError;
 /// Create a copy of BatteryRequestState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $BatteryRequestStateCopyWith<BatteryRequestState> get copyWith => _$BatteryReque
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is BatteryRequestState&&(identical(other.batteryRequestStatus, batteryRequestStatus) || other.batteryRequestStatus == batteryRequestStatus)&&(identical(other.batteryRequestError, batteryRequestError) || other.batteryRequestError == batteryRequestError)&&const DeepCollectionEquality().equals(other.batteryRequests, batteryRequests)&&(identical(other.fetchBatteryRequestsStatus, fetchBatteryRequestsStatus) || other.fetchBatteryRequestsStatus == fetchBatteryRequestsStatus)&&(identical(other.fetchBatteryRequestError, fetchBatteryRequestError) || other.fetchBatteryRequestError == fetchBatteryRequestError)&&(identical(other.syncBatteryRequestsStatus, syncBatteryRequestsStatus) || other.syncBatteryRequestsStatus == syncBatteryRequestsStatus));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BatteryRequestState&&(identical(other.batteryRequestStatus, batteryRequestStatus) || other.batteryRequestStatus == batteryRequestStatus)&&(identical(other.batteryRequestError, batteryRequestError) || other.batteryRequestError == batteryRequestError)&&const DeepCollectionEquality().equals(other.batteryRequests, batteryRequests)&&(identical(other.fetchBatteryRequestsStatus, fetchBatteryRequestsStatus) || other.fetchBatteryRequestsStatus == fetchBatteryRequestsStatus)&&(identical(other.fetchBatteryRequestError, fetchBatteryRequestError) || other.fetchBatteryRequestError == fetchBatteryRequestError)&&(identical(other.syncBatteryRequestsStatus, syncBatteryRequestsStatus) || other.syncBatteryRequestsStatus == syncBatteryRequestsStatus)&&const DeepCollectionEquality().equals(other.riderBatteryRequests, riderBatteryRequests)&&(identical(other.fetchRiderBatteryRequestsStatus, fetchRiderBatteryRequestsStatus) || other.fetchRiderBatteryRequestsStatus == fetchRiderBatteryRequestsStatus)&&(identical(other.fetchRiderBatteryRequestsError, fetchRiderBatteryRequestsError) || other.fetchRiderBatteryRequestsError == fetchRiderBatteryRequestsError)&&(identical(other.syncRiderBatteryRequestsStatus, syncRiderBatteryRequestsStatus) || other.syncRiderBatteryRequestsStatus == syncRiderBatteryRequestsStatus)&&(identical(other.syncRiderBatteryRequestsStatusID, syncRiderBatteryRequestsStatusID) || other.syncRiderBatteryRequestsStatusID == syncRiderBatteryRequestsStatusID)&&(identical(other.syncRiderBatteryRequestsError, syncRiderBatteryRequestsError) || other.syncRiderBatteryRequestsError == syncRiderBatteryRequestsError));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,batteryRequestStatus,batteryRequestError,const DeepCollectionEquality().hash(batteryRequests),fetchBatteryRequestsStatus,fetchBatteryRequestError,syncBatteryRequestsStatus);
+int get hashCode => Object.hash(runtimeType,batteryRequestStatus,batteryRequestError,const DeepCollectionEquality().hash(batteryRequests),fetchBatteryRequestsStatus,fetchBatteryRequestError,syncBatteryRequestsStatus,const DeepCollectionEquality().hash(riderBatteryRequests),fetchRiderBatteryRequestsStatus,fetchRiderBatteryRequestsError,syncRiderBatteryRequestsStatus,syncRiderBatteryRequestsStatusID,syncRiderBatteryRequestsError);
 
 @override
 String toString() {
-  return 'BatteryRequestState(batteryRequestStatus: $batteryRequestStatus, batteryRequestError: $batteryRequestError, batteryRequests: $batteryRequests, fetchBatteryRequestsStatus: $fetchBatteryRequestsStatus, fetchBatteryRequestError: $fetchBatteryRequestError, syncBatteryRequestsStatus: $syncBatteryRequestsStatus)';
+  return 'BatteryRequestState(batteryRequestStatus: $batteryRequestStatus, batteryRequestError: $batteryRequestError, batteryRequests: $batteryRequests, fetchBatteryRequestsStatus: $fetchBatteryRequestsStatus, fetchBatteryRequestError: $fetchBatteryRequestError, syncBatteryRequestsStatus: $syncBatteryRequestsStatus, riderBatteryRequests: $riderBatteryRequests, fetchRiderBatteryRequestsStatus: $fetchRiderBatteryRequestsStatus, fetchRiderBatteryRequestsError: $fetchRiderBatteryRequestsError, syncRiderBatteryRequestsStatus: $syncRiderBatteryRequestsStatus, syncRiderBatteryRequestsStatusID: $syncRiderBatteryRequestsStatusID, syncRiderBatteryRequestsError: $syncRiderBatteryRequestsError)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $BatteryRequestStateCopyWith<$Res>  {
   factory $BatteryRequestStateCopyWith(BatteryRequestState value, $Res Function(BatteryRequestState) _then) = _$BatteryRequestStateCopyWithImpl;
 @useResult
 $Res call({
- AppStatus? batteryRequestStatus, String? batteryRequestError, List<BatteryRequest>? batteryRequests, AppStatus? fetchBatteryRequestsStatus, String? fetchBatteryRequestError, AppStatus? syncBatteryRequestsStatus
+ AppStatus? batteryRequestStatus, String? batteryRequestError, List<BatteryRequest>? batteryRequests, AppStatus? fetchBatteryRequestsStatus, String? fetchBatteryRequestError, AppStatus? syncBatteryRequestsStatus, List<BatteryRequest>? riderBatteryRequests, AppStatus? fetchRiderBatteryRequestsStatus, String? fetchRiderBatteryRequestsError, AppStatus? syncRiderBatteryRequestsStatus, int? syncRiderBatteryRequestsStatusID, String? syncRiderBatteryRequestsError
 });
 
 
@@ -62,7 +62,7 @@ class _$BatteryRequestStateCopyWithImpl<$Res>
 
 /// Create a copy of BatteryRequestState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? batteryRequestStatus = freezed,Object? batteryRequestError = freezed,Object? batteryRequests = freezed,Object? fetchBatteryRequestsStatus = freezed,Object? fetchBatteryRequestError = freezed,Object? syncBatteryRequestsStatus = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? batteryRequestStatus = freezed,Object? batteryRequestError = freezed,Object? batteryRequests = freezed,Object? fetchBatteryRequestsStatus = freezed,Object? fetchBatteryRequestError = freezed,Object? syncBatteryRequestsStatus = freezed,Object? riderBatteryRequests = freezed,Object? fetchRiderBatteryRequestsStatus = freezed,Object? fetchRiderBatteryRequestsError = freezed,Object? syncRiderBatteryRequestsStatus = freezed,Object? syncRiderBatteryRequestsStatusID = freezed,Object? syncRiderBatteryRequestsError = freezed,}) {
   return _then(_self.copyWith(
 batteryRequestStatus: freezed == batteryRequestStatus ? _self.batteryRequestStatus : batteryRequestStatus // ignore: cast_nullable_to_non_nullable
 as AppStatus?,batteryRequestError: freezed == batteryRequestError ? _self.batteryRequestError : batteryRequestError // ignore: cast_nullable_to_non_nullable
@@ -70,7 +70,13 @@ as String?,batteryRequests: freezed == batteryRequests ? _self.batteryRequests :
 as List<BatteryRequest>?,fetchBatteryRequestsStatus: freezed == fetchBatteryRequestsStatus ? _self.fetchBatteryRequestsStatus : fetchBatteryRequestsStatus // ignore: cast_nullable_to_non_nullable
 as AppStatus?,fetchBatteryRequestError: freezed == fetchBatteryRequestError ? _self.fetchBatteryRequestError : fetchBatteryRequestError // ignore: cast_nullable_to_non_nullable
 as String?,syncBatteryRequestsStatus: freezed == syncBatteryRequestsStatus ? _self.syncBatteryRequestsStatus : syncBatteryRequestsStatus // ignore: cast_nullable_to_non_nullable
-as AppStatus?,
+as AppStatus?,riderBatteryRequests: freezed == riderBatteryRequests ? _self.riderBatteryRequests : riderBatteryRequests // ignore: cast_nullable_to_non_nullable
+as List<BatteryRequest>?,fetchRiderBatteryRequestsStatus: freezed == fetchRiderBatteryRequestsStatus ? _self.fetchRiderBatteryRequestsStatus : fetchRiderBatteryRequestsStatus // ignore: cast_nullable_to_non_nullable
+as AppStatus?,fetchRiderBatteryRequestsError: freezed == fetchRiderBatteryRequestsError ? _self.fetchRiderBatteryRequestsError : fetchRiderBatteryRequestsError // ignore: cast_nullable_to_non_nullable
+as String?,syncRiderBatteryRequestsStatus: freezed == syncRiderBatteryRequestsStatus ? _self.syncRiderBatteryRequestsStatus : syncRiderBatteryRequestsStatus // ignore: cast_nullable_to_non_nullable
+as AppStatus?,syncRiderBatteryRequestsStatusID: freezed == syncRiderBatteryRequestsStatusID ? _self.syncRiderBatteryRequestsStatusID : syncRiderBatteryRequestsStatusID // ignore: cast_nullable_to_non_nullable
+as int?,syncRiderBatteryRequestsError: freezed == syncRiderBatteryRequestsError ? _self.syncRiderBatteryRequestsError : syncRiderBatteryRequestsError // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -155,10 +161,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( AppStatus? batteryRequestStatus,  String? batteryRequestError,  List<BatteryRequest>? batteryRequests,  AppStatus? fetchBatteryRequestsStatus,  String? fetchBatteryRequestError,  AppStatus? syncBatteryRequestsStatus)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( AppStatus? batteryRequestStatus,  String? batteryRequestError,  List<BatteryRequest>? batteryRequests,  AppStatus? fetchBatteryRequestsStatus,  String? fetchBatteryRequestError,  AppStatus? syncBatteryRequestsStatus,  List<BatteryRequest>? riderBatteryRequests,  AppStatus? fetchRiderBatteryRequestsStatus,  String? fetchRiderBatteryRequestsError,  AppStatus? syncRiderBatteryRequestsStatus,  int? syncRiderBatteryRequestsStatusID,  String? syncRiderBatteryRequestsError)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _BatteryRequestState() when $default != null:
-return $default(_that.batteryRequestStatus,_that.batteryRequestError,_that.batteryRequests,_that.fetchBatteryRequestsStatus,_that.fetchBatteryRequestError,_that.syncBatteryRequestsStatus);case _:
+return $default(_that.batteryRequestStatus,_that.batteryRequestError,_that.batteryRequests,_that.fetchBatteryRequestsStatus,_that.fetchBatteryRequestError,_that.syncBatteryRequestsStatus,_that.riderBatteryRequests,_that.fetchRiderBatteryRequestsStatus,_that.fetchRiderBatteryRequestsError,_that.syncRiderBatteryRequestsStatus,_that.syncRiderBatteryRequestsStatusID,_that.syncRiderBatteryRequestsError);case _:
   return orElse();
 
 }
@@ -176,10 +182,10 @@ return $default(_that.batteryRequestStatus,_that.batteryRequestError,_that.batte
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( AppStatus? batteryRequestStatus,  String? batteryRequestError,  List<BatteryRequest>? batteryRequests,  AppStatus? fetchBatteryRequestsStatus,  String? fetchBatteryRequestError,  AppStatus? syncBatteryRequestsStatus)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( AppStatus? batteryRequestStatus,  String? batteryRequestError,  List<BatteryRequest>? batteryRequests,  AppStatus? fetchBatteryRequestsStatus,  String? fetchBatteryRequestError,  AppStatus? syncBatteryRequestsStatus,  List<BatteryRequest>? riderBatteryRequests,  AppStatus? fetchRiderBatteryRequestsStatus,  String? fetchRiderBatteryRequestsError,  AppStatus? syncRiderBatteryRequestsStatus,  int? syncRiderBatteryRequestsStatusID,  String? syncRiderBatteryRequestsError)  $default,) {final _that = this;
 switch (_that) {
 case _BatteryRequestState():
-return $default(_that.batteryRequestStatus,_that.batteryRequestError,_that.batteryRequests,_that.fetchBatteryRequestsStatus,_that.fetchBatteryRequestError,_that.syncBatteryRequestsStatus);case _:
+return $default(_that.batteryRequestStatus,_that.batteryRequestError,_that.batteryRequests,_that.fetchBatteryRequestsStatus,_that.fetchBatteryRequestError,_that.syncBatteryRequestsStatus,_that.riderBatteryRequests,_that.fetchRiderBatteryRequestsStatus,_that.fetchRiderBatteryRequestsError,_that.syncRiderBatteryRequestsStatus,_that.syncRiderBatteryRequestsStatusID,_that.syncRiderBatteryRequestsError);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -196,10 +202,10 @@ return $default(_that.batteryRequestStatus,_that.batteryRequestError,_that.batte
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( AppStatus? batteryRequestStatus,  String? batteryRequestError,  List<BatteryRequest>? batteryRequests,  AppStatus? fetchBatteryRequestsStatus,  String? fetchBatteryRequestError,  AppStatus? syncBatteryRequestsStatus)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( AppStatus? batteryRequestStatus,  String? batteryRequestError,  List<BatteryRequest>? batteryRequests,  AppStatus? fetchBatteryRequestsStatus,  String? fetchBatteryRequestError,  AppStatus? syncBatteryRequestsStatus,  List<BatteryRequest>? riderBatteryRequests,  AppStatus? fetchRiderBatteryRequestsStatus,  String? fetchRiderBatteryRequestsError,  AppStatus? syncRiderBatteryRequestsStatus,  int? syncRiderBatteryRequestsStatusID,  String? syncRiderBatteryRequestsError)?  $default,) {final _that = this;
 switch (_that) {
 case _BatteryRequestState() when $default != null:
-return $default(_that.batteryRequestStatus,_that.batteryRequestError,_that.batteryRequests,_that.fetchBatteryRequestsStatus,_that.fetchBatteryRequestError,_that.syncBatteryRequestsStatus);case _:
+return $default(_that.batteryRequestStatus,_that.batteryRequestError,_that.batteryRequests,_that.fetchBatteryRequestsStatus,_that.fetchBatteryRequestError,_that.syncBatteryRequestsStatus,_that.riderBatteryRequests,_that.fetchRiderBatteryRequestsStatus,_that.fetchRiderBatteryRequestsError,_that.syncRiderBatteryRequestsStatus,_that.syncRiderBatteryRequestsStatusID,_that.syncRiderBatteryRequestsError);case _:
   return null;
 
 }
@@ -211,7 +217,7 @@ return $default(_that.batteryRequestStatus,_that.batteryRequestError,_that.batte
 
 
 class _BatteryRequestState implements BatteryRequestState {
-   _BatteryRequestState({this.batteryRequestStatus, this.batteryRequestError, final  List<BatteryRequest>? batteryRequests, this.fetchBatteryRequestsStatus, this.fetchBatteryRequestError, this.syncBatteryRequestsStatus}): _batteryRequests = batteryRequests;
+   _BatteryRequestState({this.batteryRequestStatus, this.batteryRequestError, final  List<BatteryRequest>? batteryRequests, this.fetchBatteryRequestsStatus, this.fetchBatteryRequestError, this.syncBatteryRequestsStatus, final  List<BatteryRequest>? riderBatteryRequests, this.fetchRiderBatteryRequestsStatus, this.fetchRiderBatteryRequestsError, this.syncRiderBatteryRequestsStatus, this.syncRiderBatteryRequestsStatusID, this.syncRiderBatteryRequestsError}): _batteryRequests = batteryRequests,_riderBatteryRequests = riderBatteryRequests;
   
 
 @override final  AppStatus? batteryRequestStatus;
@@ -228,6 +234,20 @@ class _BatteryRequestState implements BatteryRequestState {
 @override final  AppStatus? fetchBatteryRequestsStatus;
 @override final  String? fetchBatteryRequestError;
 @override final  AppStatus? syncBatteryRequestsStatus;
+ final  List<BatteryRequest>? _riderBatteryRequests;
+@override List<BatteryRequest>? get riderBatteryRequests {
+  final value = _riderBatteryRequests;
+  if (value == null) return null;
+  if (_riderBatteryRequests is EqualUnmodifiableListView) return _riderBatteryRequests;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(value);
+}
+
+@override final  AppStatus? fetchRiderBatteryRequestsStatus;
+@override final  String? fetchRiderBatteryRequestsError;
+@override final  AppStatus? syncRiderBatteryRequestsStatus;
+@override final  int? syncRiderBatteryRequestsStatusID;
+@override final  String? syncRiderBatteryRequestsError;
 
 /// Create a copy of BatteryRequestState
 /// with the given fields replaced by the non-null parameter values.
@@ -239,16 +259,16 @@ _$BatteryRequestStateCopyWith<_BatteryRequestState> get copyWith => __$BatteryRe
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BatteryRequestState&&(identical(other.batteryRequestStatus, batteryRequestStatus) || other.batteryRequestStatus == batteryRequestStatus)&&(identical(other.batteryRequestError, batteryRequestError) || other.batteryRequestError == batteryRequestError)&&const DeepCollectionEquality().equals(other._batteryRequests, _batteryRequests)&&(identical(other.fetchBatteryRequestsStatus, fetchBatteryRequestsStatus) || other.fetchBatteryRequestsStatus == fetchBatteryRequestsStatus)&&(identical(other.fetchBatteryRequestError, fetchBatteryRequestError) || other.fetchBatteryRequestError == fetchBatteryRequestError)&&(identical(other.syncBatteryRequestsStatus, syncBatteryRequestsStatus) || other.syncBatteryRequestsStatus == syncBatteryRequestsStatus));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BatteryRequestState&&(identical(other.batteryRequestStatus, batteryRequestStatus) || other.batteryRequestStatus == batteryRequestStatus)&&(identical(other.batteryRequestError, batteryRequestError) || other.batteryRequestError == batteryRequestError)&&const DeepCollectionEquality().equals(other._batteryRequests, _batteryRequests)&&(identical(other.fetchBatteryRequestsStatus, fetchBatteryRequestsStatus) || other.fetchBatteryRequestsStatus == fetchBatteryRequestsStatus)&&(identical(other.fetchBatteryRequestError, fetchBatteryRequestError) || other.fetchBatteryRequestError == fetchBatteryRequestError)&&(identical(other.syncBatteryRequestsStatus, syncBatteryRequestsStatus) || other.syncBatteryRequestsStatus == syncBatteryRequestsStatus)&&const DeepCollectionEquality().equals(other._riderBatteryRequests, _riderBatteryRequests)&&(identical(other.fetchRiderBatteryRequestsStatus, fetchRiderBatteryRequestsStatus) || other.fetchRiderBatteryRequestsStatus == fetchRiderBatteryRequestsStatus)&&(identical(other.fetchRiderBatteryRequestsError, fetchRiderBatteryRequestsError) || other.fetchRiderBatteryRequestsError == fetchRiderBatteryRequestsError)&&(identical(other.syncRiderBatteryRequestsStatus, syncRiderBatteryRequestsStatus) || other.syncRiderBatteryRequestsStatus == syncRiderBatteryRequestsStatus)&&(identical(other.syncRiderBatteryRequestsStatusID, syncRiderBatteryRequestsStatusID) || other.syncRiderBatteryRequestsStatusID == syncRiderBatteryRequestsStatusID)&&(identical(other.syncRiderBatteryRequestsError, syncRiderBatteryRequestsError) || other.syncRiderBatteryRequestsError == syncRiderBatteryRequestsError));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,batteryRequestStatus,batteryRequestError,const DeepCollectionEquality().hash(_batteryRequests),fetchBatteryRequestsStatus,fetchBatteryRequestError,syncBatteryRequestsStatus);
+int get hashCode => Object.hash(runtimeType,batteryRequestStatus,batteryRequestError,const DeepCollectionEquality().hash(_batteryRequests),fetchBatteryRequestsStatus,fetchBatteryRequestError,syncBatteryRequestsStatus,const DeepCollectionEquality().hash(_riderBatteryRequests),fetchRiderBatteryRequestsStatus,fetchRiderBatteryRequestsError,syncRiderBatteryRequestsStatus,syncRiderBatteryRequestsStatusID,syncRiderBatteryRequestsError);
 
 @override
 String toString() {
-  return 'BatteryRequestState(batteryRequestStatus: $batteryRequestStatus, batteryRequestError: $batteryRequestError, batteryRequests: $batteryRequests, fetchBatteryRequestsStatus: $fetchBatteryRequestsStatus, fetchBatteryRequestError: $fetchBatteryRequestError, syncBatteryRequestsStatus: $syncBatteryRequestsStatus)';
+  return 'BatteryRequestState(batteryRequestStatus: $batteryRequestStatus, batteryRequestError: $batteryRequestError, batteryRequests: $batteryRequests, fetchBatteryRequestsStatus: $fetchBatteryRequestsStatus, fetchBatteryRequestError: $fetchBatteryRequestError, syncBatteryRequestsStatus: $syncBatteryRequestsStatus, riderBatteryRequests: $riderBatteryRequests, fetchRiderBatteryRequestsStatus: $fetchRiderBatteryRequestsStatus, fetchRiderBatteryRequestsError: $fetchRiderBatteryRequestsError, syncRiderBatteryRequestsStatus: $syncRiderBatteryRequestsStatus, syncRiderBatteryRequestsStatusID: $syncRiderBatteryRequestsStatusID, syncRiderBatteryRequestsError: $syncRiderBatteryRequestsError)';
 }
 
 
@@ -259,7 +279,7 @@ abstract mixin class _$BatteryRequestStateCopyWith<$Res> implements $BatteryRequ
   factory _$BatteryRequestStateCopyWith(_BatteryRequestState value, $Res Function(_BatteryRequestState) _then) = __$BatteryRequestStateCopyWithImpl;
 @override @useResult
 $Res call({
- AppStatus? batteryRequestStatus, String? batteryRequestError, List<BatteryRequest>? batteryRequests, AppStatus? fetchBatteryRequestsStatus, String? fetchBatteryRequestError, AppStatus? syncBatteryRequestsStatus
+ AppStatus? batteryRequestStatus, String? batteryRequestError, List<BatteryRequest>? batteryRequests, AppStatus? fetchBatteryRequestsStatus, String? fetchBatteryRequestError, AppStatus? syncBatteryRequestsStatus, List<BatteryRequest>? riderBatteryRequests, AppStatus? fetchRiderBatteryRequestsStatus, String? fetchRiderBatteryRequestsError, AppStatus? syncRiderBatteryRequestsStatus, int? syncRiderBatteryRequestsStatusID, String? syncRiderBatteryRequestsError
 });
 
 
@@ -276,7 +296,7 @@ class __$BatteryRequestStateCopyWithImpl<$Res>
 
 /// Create a copy of BatteryRequestState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? batteryRequestStatus = freezed,Object? batteryRequestError = freezed,Object? batteryRequests = freezed,Object? fetchBatteryRequestsStatus = freezed,Object? fetchBatteryRequestError = freezed,Object? syncBatteryRequestsStatus = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? batteryRequestStatus = freezed,Object? batteryRequestError = freezed,Object? batteryRequests = freezed,Object? fetchBatteryRequestsStatus = freezed,Object? fetchBatteryRequestError = freezed,Object? syncBatteryRequestsStatus = freezed,Object? riderBatteryRequests = freezed,Object? fetchRiderBatteryRequestsStatus = freezed,Object? fetchRiderBatteryRequestsError = freezed,Object? syncRiderBatteryRequestsStatus = freezed,Object? syncRiderBatteryRequestsStatusID = freezed,Object? syncRiderBatteryRequestsError = freezed,}) {
   return _then(_BatteryRequestState(
 batteryRequestStatus: freezed == batteryRequestStatus ? _self.batteryRequestStatus : batteryRequestStatus // ignore: cast_nullable_to_non_nullable
 as AppStatus?,batteryRequestError: freezed == batteryRequestError ? _self.batteryRequestError : batteryRequestError // ignore: cast_nullable_to_non_nullable
@@ -284,7 +304,13 @@ as String?,batteryRequests: freezed == batteryRequests ? _self._batteryRequests 
 as List<BatteryRequest>?,fetchBatteryRequestsStatus: freezed == fetchBatteryRequestsStatus ? _self.fetchBatteryRequestsStatus : fetchBatteryRequestsStatus // ignore: cast_nullable_to_non_nullable
 as AppStatus?,fetchBatteryRequestError: freezed == fetchBatteryRequestError ? _self.fetchBatteryRequestError : fetchBatteryRequestError // ignore: cast_nullable_to_non_nullable
 as String?,syncBatteryRequestsStatus: freezed == syncBatteryRequestsStatus ? _self.syncBatteryRequestsStatus : syncBatteryRequestsStatus // ignore: cast_nullable_to_non_nullable
-as AppStatus?,
+as AppStatus?,riderBatteryRequests: freezed == riderBatteryRequests ? _self._riderBatteryRequests : riderBatteryRequests // ignore: cast_nullable_to_non_nullable
+as List<BatteryRequest>?,fetchRiderBatteryRequestsStatus: freezed == fetchRiderBatteryRequestsStatus ? _self.fetchRiderBatteryRequestsStatus : fetchRiderBatteryRequestsStatus // ignore: cast_nullable_to_non_nullable
+as AppStatus?,fetchRiderBatteryRequestsError: freezed == fetchRiderBatteryRequestsError ? _self.fetchRiderBatteryRequestsError : fetchRiderBatteryRequestsError // ignore: cast_nullable_to_non_nullable
+as String?,syncRiderBatteryRequestsStatus: freezed == syncRiderBatteryRequestsStatus ? _self.syncRiderBatteryRequestsStatus : syncRiderBatteryRequestsStatus // ignore: cast_nullable_to_non_nullable
+as AppStatus?,syncRiderBatteryRequestsStatusID: freezed == syncRiderBatteryRequestsStatusID ? _self.syncRiderBatteryRequestsStatusID : syncRiderBatteryRequestsStatusID // ignore: cast_nullable_to_non_nullable
+as int?,syncRiderBatteryRequestsError: freezed == syncRiderBatteryRequestsError ? _self.syncRiderBatteryRequestsError : syncRiderBatteryRequestsError // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

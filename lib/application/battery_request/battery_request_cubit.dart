@@ -69,6 +69,93 @@ class BatteryRequestCubit extends Cubit<BatteryRequestState> {
     }
   }
 
+  Future<void> getRiderBatteryDeliveryRequests(int riderId) async {
+    try {
+      emit(
+        state.copyWith(
+          fetchRiderBatteryRequestsStatus: AppStatus.submitting,
+        ),
+      );
+
+      var requests = <BatteryRequest>[];
+
+      final batteryRequests = await _batteryRequestFacade.getBatteryRequests();
+      requests = batteryRequests
+          .where(
+            (request) => request.rider!.id! == riderId,
+          )
+          .toList();
+
+      emit(
+        state.copyWith(
+          riderBatteryRequests: requests,
+          fetchRiderBatteryRequestsStatus: AppStatus.success,
+        ),
+      );
+    } on DioException catch (e) {
+      emit(
+        state.copyWith.call(
+          fetchRiderBatteryRequestsError:
+              e.response?.data['error']['message'] as String?,
+          fetchRiderBatteryRequestsStatus: AppStatus.failure,
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith.call(
+          fetchRiderBatteryRequestsError: 'An error occurred',
+          fetchRiderBatteryRequestsStatus: AppStatus.failure,
+        ),
+      );
+    }
+  }
+
+  Future<void> updateRiderBatteryDeliveryRequestStatus(
+    int requestId,
+    String status,
+    int riderId,
+  ) async {
+    try {
+      emit(
+        state.copyWith(
+          syncRiderBatteryRequestsStatus: AppStatus.submitting,
+          syncRiderBatteryRequestsStatusID: requestId,
+        ),
+      );
+
+      await _batteryRequestFacade.updateBatteryRequestStatus(
+        requestId,
+        status,
+      );
+
+      await getRiderBatteryDeliveryRequests(riderId);
+
+      emit(
+        state.copyWith(
+          syncRiderBatteryRequestsStatus: AppStatus.success,
+          syncRiderBatteryRequestsStatusID: null,
+        ),
+      );
+    } on DioException catch (e) {
+      emit(
+        state.copyWith.call(
+          syncRiderBatteryRequestsError:
+              e.response?.data['error']['message'] as String?,
+          syncRiderBatteryRequestsStatus: AppStatus.failure,
+          syncRiderBatteryRequestsStatusID: null,
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith.call(
+          syncRiderBatteryRequestsError: 'An error occurred',
+          syncRiderBatteryRequestsStatus: AppStatus.failure,
+          syncRiderBatteryRequestsStatusID: null,
+        ),
+      );
+    }
+  }
+
   Future<void> createBatteryRequest({
     required int numberOfBatteries,
     required AppLocation destination,

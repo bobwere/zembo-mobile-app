@@ -22,8 +22,17 @@ const String notificationPath = 'notification';
 const String requestDeliveryRoute = 'request_delivery_route';
 const String requestDeliveryPath = '/request_delivery';
 
+const String riderRequestDeliveryRoute = 'rider_request_delivery_route';
+const String riderRequestDeliveryPath = '/rider_request_delivery';
+
+const String riderNotificationRoute = 'rider_notification_route';
+const String riderNotificationPath = 'rider_notification';
+
 const String addBatteryRequestRoute = 'add_battery_request_route';
 const String addBatteryRequestPath = 'add_battery_request';
 
 const String profileRoute = 'profile_route';
 const String profilePath = '/profile';
+
+const String riderProfileRoute = 'rider_profile_route';
+const String riderProfilePath = '/rider_profile';

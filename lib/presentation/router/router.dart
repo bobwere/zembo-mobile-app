@@ -11,6 +11,7 @@ import 'package:zembo_agent_app/presentation/pages/root/profile/profile_page.dar
 import 'package:zembo_agent_app/presentation/pages/splash/splash_page.dart';
 import 'package:zembo_agent_app/presentation/router/routes.dart';
 import 'package:zembo_agent_app/presentation/widgets/scaffold_with_nested_nav.dart';
+import 'package:zembo_agent_app/presentation/widgets/scaffold_with_nested_nav_rider.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -20,6 +21,13 @@ final _requestDeliveryShellNavigatorKey = GlobalKey<NavigatorState>(
   debugLabel: 'Request Delivery',
 );
 
+final _riderRequestDeliveryShellNavigatorKey = GlobalKey<NavigatorState>(
+  debugLabel: 'Rider Request Delivery',
+);
+
+final _riderProfileShellNavigatorKey = GlobalKey<NavigatorState>(
+  debugLabel: 'Rider Profile',
+);
 final _profileShellNavigatorKey = GlobalKey<NavigatorState>(
   debugLabel: 'Profile',
 );
@@ -83,7 +91,7 @@ GoRouter goRouter = GoRouter(
       },
     ),
 
-    // Stateful nested navigation
+    // Swapper Stateful nested navigation
     //
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
@@ -193,6 +201,90 @@ GoRouter goRouter = GoRouter(
             GoRoute(
               name: profileRoute,
               path: profilePath,
+              pageBuilder: (context, state) {
+                return CustomTransitionPage<void>(
+                  key: state.pageKey,
+                  name: state.name,
+                  child: const ProfilePage(),
+                  transitionsBuilder:
+                      (
+                        context,
+                        animation,
+                        secondaryAnimation,
+                        child,
+                      ) => FadeTransition(opacity: animation, child: child),
+                );
+              },
+            ),
+          ],
+        ),
+      ],
+    ),
+
+    //Rider Stateful nested navigation
+    //
+    StatefulShellRoute.indexedStack(
+      builder: (context, state, navigationShell) {
+        // the UI shell
+        return ScaffoldWithNestedNavigationRider(
+          navigationShell: navigationShell,
+        );
+      },
+      branches: [
+        // first branch
+        StatefulShellBranch(
+          navigatorKey: _riderRequestDeliveryShellNavigatorKey,
+          initialLocation: riderRequestDeliveryPath,
+          routes: [
+            GoRoute(
+              name: riderRequestDeliveryRoute,
+              path: riderRequestDeliveryPath,
+              pageBuilder: (context, state) {
+                return CustomTransitionPage<void>(
+                  key: state.pageKey,
+                  name: state.name,
+                  child: const RequestDeliveryPage(),
+                  transitionsBuilder:
+                      (
+                        context,
+                        animation,
+                        secondaryAnimation,
+                        child,
+                      ) => FadeTransition(opacity: animation, child: child),
+                );
+              },
+              routes: [
+                GoRoute(
+                  name: riderNotificationRoute,
+                  path: riderNotificationPath,
+                  pageBuilder: (context, state) {
+                    return CustomTransitionPage<void>(
+                      key: state.pageKey,
+                      name: state.name,
+                      child: const NotificationPage(),
+                      transitionsBuilder:
+                          (
+                            context,
+                            animation,
+                            secondaryAnimation,
+                            child,
+                          ) => FadeTransition(opacity: animation, child: child),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
+
+        // second branch
+        StatefulShellBranch(
+          navigatorKey: _riderProfileShellNavigatorKey,
+          initialLocation: riderProfilePath,
+          routes: [
+            GoRoute(
+              name: riderProfileRoute,
+              path: riderProfilePath,
               pageBuilder: (context, state) {
                 return CustomTransitionPage<void>(
                   key: state.pageKey,
