@@ -9,6 +9,8 @@ abstract class IBatteryRequestFacade {
   });
   Future<void> updateBatteryRequestStatus(
     int requestId,
-    String status,
-  );
+    String status, {
+    String? pickupTime,
+    String? deliveryTime,
+  });
 }

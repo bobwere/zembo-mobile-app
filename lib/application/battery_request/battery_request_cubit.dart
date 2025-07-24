@@ -36,7 +36,7 @@ class BatteryRequestCubit extends Cubit<BatteryRequestState> {
             .getBatteryRequests();
         requests = batteryRequests
             .where(
-              (request) => request.swapper!.id! == swapperId,
+              (request) => request.swapper?.id == swapperId,
             )
             .toList();
         unawaited(syncLocalToRemoteBatteryRequest(swapperId));
@@ -82,7 +82,7 @@ class BatteryRequestCubit extends Cubit<BatteryRequestState> {
       final batteryRequests = await _batteryRequestFacade.getBatteryRequests();
       requests = batteryRequests
           .where(
-            (request) => request.rider!.id! == riderId,
+            (request) => request.rider?.id == riderId,
           )
           .toList();
 
@@ -113,8 +113,10 @@ class BatteryRequestCubit extends Cubit<BatteryRequestState> {
   Future<void> updateRiderBatteryDeliveryRequestStatus(
     int requestId,
     String status,
-    int riderId,
-  ) async {
+    int riderId, {
+    String? pickupTime,
+    String? deliveryTime,
+  }) async {
     try {
       emit(
         state.copyWith(
@@ -126,6 +128,8 @@ class BatteryRequestCubit extends Cubit<BatteryRequestState> {
       await _batteryRequestFacade.updateBatteryRequestStatus(
         requestId,
         status,
+        pickupTime: pickupTime,
+        deliveryTime: deliveryTime,
       );
 
       await getRiderBatteryDeliveryRequests(riderId);

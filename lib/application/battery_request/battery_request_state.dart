@@ -23,5 +23,6 @@ abstract class BatteryRequestState with _$BatteryRequestState {
 
   factory BatteryRequestState.initial() => BatteryRequestState(
     batteryRequests: [],
+    riderBatteryRequests: [],
   );
 }

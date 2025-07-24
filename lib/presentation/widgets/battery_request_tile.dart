@@ -62,7 +62,11 @@ class _BatteryRequestTileState extends State<BatteryRequestTile> {
                       ),
                       SizedBox(height: ui.scaleHeightFactor(10)),
                       Text(
-                        'Requested on ${Jiffy.parseFromDateTime(DateTime.parse(widget.batteryRequest.createdAt!)).format(pattern: 'do MMM yyyy h:mm a')}\n${widget.batteryRequest.synced == false ? '(Not Synced)' : '(Synced)'}',
+                        'Requested on ${Jiffy.parseFromDateTime(DateTime.parse(widget.batteryRequest.createdAt!)).format(pattern: 'do MMM yyyy h:mm a')}\n${!widget.isRider
+                            ? widget.batteryRequest.synced == false
+                                  ? '(Not Synced)'
+                                  : '(Synced)'
+                            : ''}',
                         textScaler: TextScaler.linear(ui.textScaleFactor),
                         style: Theme.of(context).textTheme.headlineMedium
                             ?.copyWith(
@@ -136,14 +140,16 @@ class _BatteryRequestTileState extends State<BatteryRequestTile> {
                         style: Theme.of(context).textTheme.headlineMedium
                             ?.copyWith(
                               height: 1,
-                              fontWeight: FontWeight.w400,
+                              fontWeight: FontWeight.w600,
                               fontSize: 14,
-                              color: Colors.grey.shade800,
+                              color: Colors.black,
                             ),
                       ),
                       SizedBox(height: ui.scaleHeightFactor(5)),
                       Text(
-                        'Me',
+                        widget.isRider
+                            ? widget.batteryRequest.swapper?.username ?? 'N/A'
+                            : 'Me',
                         textScaler: TextScaler.linear(ui.textScaleFactor),
                         style: Theme.of(context).textTheme.headlineMedium
                             ?.copyWith(
@@ -180,9 +186,9 @@ class _BatteryRequestTileState extends State<BatteryRequestTile> {
                         style: Theme.of(context).textTheme.headlineMedium
                             ?.copyWith(
                               height: 1,
-                              fontWeight: FontWeight.w400,
+                              fontWeight: FontWeight.w600,
                               fontSize: 14,
-                              color: Colors.grey.shade800,
+                              color: Colors.black,
                             ),
                       ),
                       SizedBox(height: ui.scaleHeightFactor(5)),
@@ -225,14 +231,16 @@ class _BatteryRequestTileState extends State<BatteryRequestTile> {
                         style: Theme.of(context).textTheme.headlineMedium
                             ?.copyWith(
                               height: 1,
-                              fontWeight: FontWeight.w400,
+                              fontWeight: FontWeight.w600,
                               fontSize: 14,
-                              color: Colors.grey.shade800,
+                              color: Colors.black,
                             ),
                       ),
                       SizedBox(height: ui.scaleHeightFactor(5)),
                       Text(
-                        widget.batteryRequest.rider?.username ?? 'N/A',
+                        widget.isRider
+                            ? 'Me'
+                            : widget.batteryRequest.rider?.username ?? 'N/A',
                         textScaler: TextScaler.linear(ui.textScaleFactor),
                         style: Theme.of(context).textTheme.headlineMedium
                             ?.copyWith(
@@ -248,7 +256,7 @@ class _BatteryRequestTileState extends State<BatteryRequestTile> {
               ],
             ),
             if (widget.isRider) ...[
-              SizedBox(height: ui.scaleHeightFactor(16)),
+              SizedBox(height: ui.scaleHeightFactor(25)),
               if (widget.batteryRequest.status == 'assigned')
                 Builder(
                   builder: (context) {
@@ -267,6 +275,7 @@ class _BatteryRequestTileState extends State<BatteryRequestTile> {
                               widget.batteryRequest.id!,
                               'picked up',
                               context.read<AuthCubit>().state.user!.id!,
+                              pickupTime: DateTime.now().toIso8601String(),
                             );
                       },
                       text: 'Mark as Picked Up',
@@ -279,7 +288,9 @@ class _BatteryRequestTileState extends State<BatteryRequestTile> {
                     final isLoading = context.select<BatteryRequestCubit, bool>(
                       (b) =>
                           b.state.syncRiderBatteryRequestsStatus ==
-                          AppStatus.submitting,
+                              AppStatus.submitting &&
+                          b.state.syncRiderBatteryRequestsStatusID ==
+                              widget.batteryRequest.id!,
                     );
 
                     return AppButton(
@@ -291,6 +302,7 @@ class _BatteryRequestTileState extends State<BatteryRequestTile> {
                               widget.batteryRequest.id!,
                               'delivered',
                               context.read<AuthCubit>().state.user!.id!,
+                              deliveryTime: DateTime.now().toIso8601String(),
                             );
                       },
                       text: 'Mark as Delivered',

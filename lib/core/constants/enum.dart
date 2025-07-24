@@ -32,3 +32,23 @@ enum BottomNavigationItem {
   ///
   final IconData icon;
 }
+
+// Alternative: Separate enum for rider navigation with correct indices
+enum RiderBottomNavigationItem {
+  ///
+  batteryRequest(0, 'Battery Requests', LineAwesomeIcons.sync_solid),
+
+  ///
+  profile(1, 'Profile', LineAwesomeIcons.user_solid);
+
+  const RiderBottomNavigationItem(this.idx, this.name, this.icon);
+
+  ///
+  final int idx;
+
+  ///
+  final String name;
+
+  ///
+  final IconData icon;
+}

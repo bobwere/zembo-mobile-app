@@ -67,14 +67,32 @@ class _ScaffoldWithNestedNavigationRiderState
   }
 
   void _goBranch(int index) {
+    // Map the BottomNavigationItem indices to correct branch indices for rider
+    int branchIndex;
+    switch (index) {
+      case 1: // batteryRequest
+        branchIndex = 0; // Maps to first branch (Rider Request Delivery)
+      case 2: // profile
+        branchIndex = 1; // Maps to second branch (Rider Profile)
+      default:
+        branchIndex = 0; // Default to first branch
+    }
+
     widget.navigationShell.goBranch(
-      index,
+      branchIndex,
       // A common pattern when using bottom navigation bars is to support
       // navigating to the initial location when tapping the item that is
       // already active. This example demonstrates how to support this behavior,
       // using the initialLocation parameter of goBranch.
-      initialLocation: index == widget.navigationShell.currentIndex,
+      initialLocation: branchIndex == widget.navigationShell.currentIndex,
     );
+  }
+
+  // Helper method to check if a tab is currently selected
+  bool _isTabSelected(int itemIdx) {
+    if (itemIdx == 1) return pageIndex == 0; // batteryRequest maps to branch 0
+    if (itemIdx == 2) return pageIndex == 1; // profile maps to branch 1
+    return false;
   }
 
   @override
@@ -196,10 +214,14 @@ class _ScaffoldWithNestedNavigationRiderState
                         (item) => GestureDetector(
                           behavior: HitTestBehavior.opaque,
                           onTap: () {
+                            final branchIndex = item.idx == 1
+                                ? 0
+                                : 1; // Map indices correctly
                             _goBranch(item.idx);
 
                             setState(() {
-                              pageIndex = item.idx;
+                              pageIndex =
+                                  branchIndex; // Use mapped branch index
                             });
                           },
                           child: SizedBox(
@@ -207,7 +229,8 @@ class _ScaffoldWithNestedNavigationRiderState
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                if (pageIndex == item.idx)
+                                // Check if this tab is selected based on current branch
+                                if (_isTabSelected(item.idx))
                                   Icon(
                                     item.icon,
                                     size: 20,
@@ -215,7 +238,7 @@ class _ScaffoldWithNestedNavigationRiderState
                                       context,
                                     ).colorScheme.primary,
                                   ),
-                                if (pageIndex != item.idx)
+                                if (!_isTabSelected(item.idx))
                                   Icon(
                                     item.icon,
                                     size: 20,
@@ -232,10 +255,10 @@ class _ScaffoldWithNestedNavigationRiderState
                                   style: Theme.of(context).textTheme.labelSmall
                                       ?.copyWith(
                                         fontSize: 14,
-                                        fontWeight: pageIndex == item.idx
+                                        fontWeight: _isTabSelected(item.idx)
                                             ? FontWeight.w700
                                             : FontWeight.w400,
-                                        color: pageIndex == item.idx
+                                        color: _isTabSelected(item.idx)
                                             ? Theme.of(
                                                 context,
                                               ).colorScheme.primary

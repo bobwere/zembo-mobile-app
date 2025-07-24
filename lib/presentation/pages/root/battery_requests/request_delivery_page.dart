@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -87,10 +89,13 @@ class _RequestDeliveryPageState extends State<RequestDeliveryPage> {
                                       NotificationState
                                     >(
                                       builder: (context, state) {
-                                        final notifications = state
-                                            .notifications!
-                                            .where((i) => !i.isRead!)
-                                            .toList();
+                                        final notifications =
+                                            state.notifications
+                                                ?.where(
+                                                  (i) => !(i.isRead ?? false),
+                                                )
+                                                .toList() ??
+                                            [];
                                         if (notifications.isEmpty) {
                                           return const SizedBox();
                                         }
@@ -185,48 +190,78 @@ class _RequestDeliveryPageState extends State<RequestDeliveryPage> {
                             ),
                           ),
                         ),
-                      SizedBox(height: ui.scaleHeightFactor(20)),
-                      if (!isRider && state.batteryRequests!.isEmpty)
-                        const EmptyStateCard(
-                          title: 'No battery requests found',
-                          description:
-                              'You will find your battery requests here after you have requested for delivery.',
-                        )
-                      else if (isRider && state.riderBatteryRequests!.isEmpty)
-                        const EmptyStateCard(
-                          title: 'No Battery delivery requests found',
-                          description:
-                              'You will find your battery delivery requests here',
-                        )
-                      else if (!isRider)
-                        Expanded(
-                          child: ListView.builder(
-                            itemCount: state.batteryRequests!.length,
-                            itemBuilder: (context, index) {
-                              final batteryRequest =
-                                  state.batteryRequests![index];
-
-                              return BatteryRequestTile(
-                                batteryRequest: batteryRequest,
+                      Expanded(
+                        child: RefreshIndicator(
+                          onRefresh: () async {
+                            if (isRider) {
+                              unawaited(
+                                context
+                                    .read<BatteryRequestCubit>()
+                                    .getRiderBatteryDeliveryRequests(
+                                      context.read<AuthCubit>().state.user!.id!,
+                                    ),
                               );
-                            },
-                          ),
-                        )
-                      else if (isRider)
-                        Expanded(
-                          child: ListView.builder(
-                            itemCount: state.riderBatteryRequests!.length,
-                            itemBuilder: (context, index) {
-                              final batteryRequest =
-                                  state.riderBatteryRequests![index];
-
-                              return BatteryRequestTile(
-                                batteryRequest: batteryRequest,
-                                isRider: true,
+                            } else {
+                              unawaited(
+                                context
+                                    .read<BatteryRequestCubit>()
+                                    .getBatteryRequests(
+                                      context.read<AuthCubit>().state.user!.id!,
+                                    ),
                               );
-                            },
+                            }
+                          },
+                          child: ListView(
+                            children: [
+                              if (!isRider &&
+                                  (state.batteryRequests?.isEmpty ?? true))
+                                const EmptyStateCard(
+                                  title: 'No battery requests found',
+                                  description:
+                                      'You will find your battery requests here after you have requested for delivery.',
+                                )
+                              else if (isRider &&
+                                  (state.riderBatteryRequests?.isEmpty ?? true))
+                                const EmptyStateCard(
+                                  title: 'No Delivery Requests Yet!',
+                                  description:
+                                      'You will find your battery delivery requests here',
+                                )
+                              else if (!isRider &&
+                                  state.batteryRequests != null)
+                                ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: state.batteryRequests!.length,
+                                  itemBuilder: (context, index) {
+                                    final batteryRequest =
+                                        state.batteryRequests![index];
+
+                                    return BatteryRequestTile(
+                                      batteryRequest: batteryRequest,
+                                    );
+                                  },
+                                )
+                              else if (isRider &&
+                                  state.riderBatteryRequests != null)
+                                ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: state.riderBatteryRequests!.length,
+                                  itemBuilder: (context, index) {
+                                    final batteryRequest =
+                                        state.riderBatteryRequests![index];
+
+                                    return BatteryRequestTile(
+                                      batteryRequest: batteryRequest,
+                                      isRider: true,
+                                    );
+                                  },
+                                ),
+                            ],
                           ),
                         ),
+                      ),
                     ],
                   ),
                 );

@@ -61,13 +61,17 @@ class BatteryRequestFacade implements IBatteryRequestFacade {
   @override
   Future<void> updateBatteryRequestStatus(
     int requestId,
-    String status,
-  ) async {
+    String status, {
+    String? pickupTime,
+    String? deliveryTime,
+  }) async {
     try {
       await _dio.patch<dynamic>(
         '/battery-request/$requestId',
         data: {
           'status': status,
+          'pickup_time': pickupTime,
+          'delivery_time': deliveryTime,
         },
       );
 
