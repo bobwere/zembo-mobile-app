@@ -28,10 +28,6 @@ class SplashPage extends StatelessWidget {
           );
 
           if (user != null) {
-            unawaited(context.read<ShiftCubit>().fetchActiveShift(user.id!));
-            unawaited(
-              context.read<ShiftCubit>().fetchCurrentDaysShiftHistory(),
-            );
             unawaited(
               context.read<ShiftCubit>().fetchAllShiftHistory(user.id!),
             );

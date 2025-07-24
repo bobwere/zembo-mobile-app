@@ -139,44 +139,6 @@ class ShiftCubit extends Cubit<ShiftState> {
     updateShiftMessagingAnStatus();
   }
 
-  Future<void> fetchActiveShift(int userId) async {
-    try {
-      emit(
-        state.copyWith.call(
-          fetchHasActiveShiftStatus: AppStatus.submitting,
-        ),
-      );
-
-      final isConnected = await SimpleConnectionChecker.isConnectedToInternet();
-      final shift = isConnected
-          ? await _shiftFacade.fetchActiveShift(userId: userId)
-          : await _localDBFacade.fetchActiveShift(userId: userId);
-
-      if (shift == null) {
-        emit(state.copyWith.call(hasActiveShift: false, activeShift: null));
-      } else {
-        emit(
-          state.copyWith.call(
-            hasActiveShift: true,
-            activeShift: shift,
-          ),
-        );
-      }
-      emit(
-        state.copyWith.call(
-          fetchHasActiveShiftStatus: AppStatus.success,
-        ),
-      );
-      updateShiftMessagingAnStatus();
-    } catch (e) {
-      emit(
-        state.copyWith.call(
-          fetchHasActiveShiftStatus: AppStatus.failure,
-        ),
-      );
-    }
-  }
-
   Future<void> startShift({
     required User user,
     required String startTime,
@@ -215,11 +177,10 @@ class ShiftCubit extends Cubit<ShiftState> {
               longitude: startLocationLng,
             ),
             startPhotoUrl: startPhotoUrl,
+            createdAt: DateTime.now().toIso8601String(),
           ),
         );
       }
-
-      await fetchActiveShift(user.id!);
 
       emit(
         state.copyWith.call(
@@ -227,9 +188,7 @@ class ShiftCubit extends Cubit<ShiftState> {
         ),
       );
 
-      await fetchCurrentDaysShiftHistory();
       await fetchAllShiftHistory(user.id!);
-      updateShiftMessagingAnStatus();
     } on DioException catch (e) {
       emit(
         state.copyWith.call(
@@ -278,44 +237,47 @@ class ShiftCubit extends Cubit<ShiftState> {
 
       // upload unsynced shift history to cloud
       for (final shiftHistory in unsyncedShiftHistory) {
-        if (shiftHistory.id! < 100000) {
-          // started and not synced
-          final photoUrl = shiftHistory.endPhotoUrl != null
-              ? await uploadFileToCloud(shiftHistory.endPhotoUrl!)
-              : null;
-
-          await _shiftFacade.endShift(
-            id: shiftHistory.id!,
-            endTime: shiftHistory.endTime,
-            endLocationLng: shiftHistory.endLocation?.longitude,
-            endLocationLat: shiftHistory.endLocation?.latitude,
-            endPhotoUrl: photoUrl,
+        if (shiftHistory.id! > 100000) {
+          // not started and not synced
+          final startPhotoUrl = await uploadFileToCloud(
+            shiftHistory.startPhotoUrl!,
           );
+          final savedShift = await _shiftFacade.startShift(
+            userId: userId,
+            startTime: shiftHistory.startTime!,
+            startLocationLng: shiftHistory.startLocation?.longitude ?? '',
+            startLocationLat: shiftHistory.startLocation?.latitude ?? '',
+            startPhotoUrl: startPhotoUrl,
+          );
+
+          if (shiftHistory.endTime != null && shiftHistory.endTime != '') {
+            final endPhotoUrl = shiftHistory.endPhotoUrl != null
+                ? await uploadFileToCloud(shiftHistory.endPhotoUrl!)
+                : null;
+
+            await _shiftFacade.endShift(
+              id: savedShift.id!,
+              endTime: shiftHistory.endTime,
+              endLocationLng: shiftHistory.endLocation?.longitude,
+              endLocationLat: shiftHistory.endLocation?.latitude,
+              endPhotoUrl: endPhotoUrl,
+            );
+          }
+
           continue;
         }
 
-        // not started and not synced
-        final startPhotoUrl = await uploadFileToCloud(
-          shiftHistory.startPhotoUrl!,
-        );
-        final savedShift = await _shiftFacade.startShift(
-          userId: userId,
-          startTime: shiftHistory.startTime!,
-          startLocationLng: shiftHistory.startLocation?.longitude ?? '',
-          startLocationLat: shiftHistory.startLocation?.latitude ?? '',
-          startPhotoUrl: startPhotoUrl,
-        );
-
-        final endPhotoUrl = shiftHistory.endPhotoUrl != null
+        // started and not synced
+        final photoUrl = shiftHistory.endPhotoUrl != null
             ? await uploadFileToCloud(shiftHistory.endPhotoUrl!)
             : null;
 
         await _shiftFacade.endShift(
-          id: savedShift.id!,
+          id: shiftHistory.id!,
           endTime: shiftHistory.endTime,
           endLocationLng: shiftHistory.endLocation?.longitude,
           endLocationLat: shiftHistory.endLocation?.latitude,
-          endPhotoUrl: endPhotoUrl,
+          endPhotoUrl: photoUrl,
         );
       }
 
@@ -344,10 +306,7 @@ class ShiftCubit extends Cubit<ShiftState> {
   }
 
   Future<void> rehydrateState(int userId) async {
-    await fetchActiveShift(userId);
-    await fetchCurrentDaysShiftHistory();
     await fetchAllShiftHistory(userId);
-    updateShiftMessagingAnStatus();
   }
 
   Future<String> uploadFileToCloud(String path) async {
@@ -416,17 +375,13 @@ class ShiftCubit extends Cubit<ShiftState> {
         );
       }
 
-      await fetchActiveShift(userId);
-
       emit(
         state.copyWith.call(
           endShiftStatus: AppStatus.success,
         ),
       );
 
-      await fetchCurrentDaysShiftHistory();
       await fetchAllShiftHistory(userId);
-      updateShiftMessagingAnStatus();
     } on DioException catch (e) {
       emit(
         state.copyWith.call(
@@ -444,44 +399,6 @@ class ShiftCubit extends Cubit<ShiftState> {
     }
   }
 
-  Future<void> fetchCurrentDaysShiftHistory() async {
-    try {
-      emit(
-        state.copyWith.call(
-          fetchCurrentDaysShiftHistoryStatus: AppStatus.submitting,
-        ),
-      );
-
-      final isConnected = await SimpleConnectionChecker.isConnectedToInternet();
-      final shiftHistory = isConnected
-          ? await _shiftFacade.fetchCurrentDaysShiftHistory()
-          : await _localDBFacade.fetchCurrentDaysShiftHistory();
-
-      emit(
-        state.copyWith.call(
-          fetchCurrentDaysShiftHistoryStatus: AppStatus.success,
-          currentDaysShiftHistory: shiftHistory,
-        ),
-      );
-      updateShiftMessagingAnStatus();
-    } on DioException catch (e) {
-      emit(
-        state.copyWith.call(
-          fetchAllShiftHistoryError:
-              e.response?.data['error']['message'] as String?,
-          fetchCurrentDaysShiftHistoryStatus: AppStatus.failure,
-        ),
-      );
-    } catch (e) {
-      emit(
-        state.copyWith.call(
-          fetchAllShiftHistoryError: 'An error occurred',
-          fetchCurrentDaysShiftHistoryStatus: AppStatus.failure,
-        ),
-      );
-    }
-  }
-
   Future<void> fetchAllShiftHistory(int userId) async {
     try {
       emit(
@@ -492,20 +409,40 @@ class ShiftCubit extends Cubit<ShiftState> {
 
       final isConnected = await SimpleConnectionChecker.isConnectedToInternet();
 
-      var shiftHistory = <ShiftHistory>[];
+      var allShiftHistory = <ShiftHistory>[];
       if (isConnected) {
-        shiftHistory = await _shiftFacade.fetchAllShiftHistory();
+        allShiftHistory = await _shiftFacade.fetchAllShiftHistory();
         unawaited(syncLocalToRemoteShiftHistory(userId));
       } else {
-        shiftHistory = await _localDBFacade.fetchAllShiftHistory();
+        allShiftHistory = await _localDBFacade.fetchAllShiftHistory();
       }
+
+      final currentDaysShiftHistory = allShiftHistory.where((shiftHistory) {
+        final createdDate = DateTime.parse(shiftHistory.createdAt!);
+        final today = DateTime.now();
+        return createdDate.year == today.year &&
+            createdDate.month == today.month &&
+            createdDate.day == today.day;
+      }).toList();
+
+      final activeShift = allShiftHistory.firstWhere(
+        (shiftHistory) =>
+            shiftHistory.startTime != null &&
+            (shiftHistory.endTime == null || shiftHistory.endTime == ''),
+        orElse: ShiftHistory.initial,
+      );
 
       emit(
         state.copyWith.call(
           fetchAllShiftHistoryStatus: AppStatus.success,
-          allShiftHistory: shiftHistory,
+          allShiftHistory: allShiftHistory,
+          currentDaysShiftHistory: currentDaysShiftHistory,
+          activeShift: activeShift == ShiftHistory.initial()
+              ? null
+              : activeShift,
         ),
       );
+
       updateShiftMessagingAnStatus();
     } on DioException catch (e) {
       emit(

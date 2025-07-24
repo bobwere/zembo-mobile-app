@@ -1,5 +1,7 @@
 // ignore_for_file: lines_longer_than_80_chars, unintended_html_in_doc_comment, cascade_invocations, inference_failure_on_function_invocation, document_ignores
 
+import 'dart:developer';
+
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:injectable/injectable.dart';
 import 'package:zembo_agent_app/application/local_db/i_localdb_facade.dart';
@@ -67,7 +69,8 @@ class LocalDBFacade implements ILocalDBFacade {
     final shiftHistoryList = await fetchAllShiftHistory();
     final shift = shiftHistoryList.firstWhere(
       (shiftHistory) =>
-          shiftHistory.startTime != null && shiftHistory.endTime == null,
+          shiftHistory.startTime != null &&
+          (shiftHistory.endTime == null || shiftHistory.endTime == ''),
       orElse: ShiftHistory.initial,
     );
 
@@ -165,12 +168,17 @@ class LocalDBFacade implements ILocalDBFacade {
   Future<void> batchUpdateLocalShiftHistory(
     List<ShiftHistory> shiftHistory,
   ) async {
-    final collection = await initialize();
-    final shiftHistoryBox = await collection.openBox('shift_history');
+    try {
+      final collection = await initialize();
+      final shiftHistoryBox = await collection.openBox('shift_history');
 
-    final data = shiftHistory.map((h) => h.toJson()).toList();
+      final data = shiftHistory.map((h) => h.toJson()).toList();
 
-    await shiftHistoryBox.put('shift_history', data);
+      await shiftHistoryBox.put('shift_history', data);
+    } catch (e) {
+      log(e.toString());
+      //
+    }
   }
 
   @override

@@ -40,8 +40,6 @@ class _LoginPageState extends State<LoginPage> {
           );
 
           if (user != null) {
-            context.read<ShiftCubit>().fetchActiveShift(user.id!);
-            context.read<ShiftCubit>().fetchCurrentDaysShiftHistory();
             context.read<ShiftCubit>().fetchAllShiftHistory(user.id!);
             context.read<BatteryRequestCubit>().getBatteryRequests(user.id!);
             context.read<NotificationCubit>().getAllNotifications(user.id!);

@@ -104,6 +104,7 @@ class _ScaffoldWithNestedNavigationState
         if (state.syncLocalToRemoteShiftHistoryStatus == AppStatus.success) {
           showSnackBar(
             context,
+            state: SnackbarState.success,
             message:
                 'Local shift history synced with remote server successfully',
           );

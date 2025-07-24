@@ -459,12 +459,19 @@ class HomePage extends StatelessWidget {
                                       width: ui.scaleWidthFactor(220),
                                       height: ui.scaleHeightFactor(80),
                                       decoration: BoxDecoration(
-                                        color: const Color.fromARGB(
-                                          255,
-                                          250,
-                                          206,
-                                          175,
-                                        ),
+                                        color: shift.synced == false
+                                            ? const Color.fromARGB(
+                                                255,
+                                                250,
+                                                206,
+                                                175,
+                                              )
+                                            : const Color.fromARGB(
+                                                255,
+                                                207,
+                                                228,
+                                                254,
+                                              ),
                                         borderRadius: BorderRadius.circular(
                                           ui.scaleWidthFactor(10),
                                         ),
@@ -478,10 +485,12 @@ class HomePage extends StatelessWidget {
                                             CircleAvatar(
                                               radius: ui.scaleWidthFactor(20),
                                               backgroundColor: Colors.white,
-                                              child: const Icon(
+                                              child: Icon(
                                                 LineAwesomeIcons
                                                     .briefcase_solid,
-                                                color: Colors.orange,
+                                                color: shift.synced == false
+                                                    ? Colors.orange
+                                                    : Colors.blue,
                                               ),
                                             ),
                                             SizedBox(
@@ -507,9 +516,15 @@ class HomePage extends StatelessWidget {
                                                           fontWeight:
                                                               FontWeight.w600,
                                                           fontSize: 12,
-                                                          color: Colors
-                                                              .orange
-                                                              .shade800,
+                                                          color:
+                                                              shift.synced ==
+                                                                  false
+                                                              ? Colors
+                                                                    .orange
+                                                                    .shade800
+                                                              : Colors
+                                                                    .blue
+                                                                    .shade800,
                                                         ),
                                                   ),
                                                   Text(
