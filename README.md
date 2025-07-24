@@ -323,14 +323,6 @@ The app supports multiple build flavors for different environments:
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🆘 Support
-
-For support and questions:
-- **Documentation**: Check the docs/ directory
-- **Issues**: Create a GitHub issue
-- **Email**: support@zembo.energy
-- **Slack**: #zembo-agent-app
-
 ---
 
 **Built with ❤️ by Bob**
